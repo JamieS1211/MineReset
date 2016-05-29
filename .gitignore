@@ -2,6 +2,9 @@
 .gradle/*
 .project
 .settings/*
+gradle
+gradlew.bat
+gradlew
 run
 .idea
 build

@@ -28,7 +28,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.serializer.TextSerializers;
-import org.spongepowered.api.world.extent.ExtentBufferFactory;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -39,8 +38,6 @@ import java.util.logging.Logger;
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
 public class MineReset {
-
-	public static ExtentBufferFactory EXTENT_BUFFER_FACTORY;
 
 	Scheduler scheduler = Sponge.getScheduler();
 	Task.Builder taskBuilder = scheduler.createTaskBuilder();
@@ -133,6 +130,24 @@ public class MineReset {
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
 				.executor(new CheckTime())
+				.build());
+
+		subcommands.put(Arrays.asList("clear"), CommandSpec.builder()
+				.permission("minereset.clear")
+				.description(Text.of("Completely empty a min"))
+				.extendedDescription(Text.of("/mine clear [mine]"))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
+				.executor(new ClearMine())
+				.build());
+
+		subcommands.put(Arrays.asList("fill"), CommandSpec.builder()
+				.permission("minereset.fill")
+				.description(Text.of("Manually fill a mine"))
+				.extendedDescription(Text.of("/mine fill [mine]"))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
+				.executor(new FillMine())
 				.build());
 
 		subcommands.put(Arrays.asList("definegroup"), CommandSpec.builder()
@@ -255,7 +270,7 @@ public class MineReset {
 			} else if (timeUntilNextFill == 0) { // If time before group of mines should reset is 0 reset all mines in group.
 				if (Sponge.getServer().getOnlinePlayers().size() > 0) {
 					for (final Object mineObject : listOfMines) {
-						FillMineAction.fill(groupObject.toString(), mineObject.toString());
+						FillMineAction.fill(groupObject.toString(), mineObject.toString(), null);
 					}
 					MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" +
 							listOfMines + " are resetting now"));

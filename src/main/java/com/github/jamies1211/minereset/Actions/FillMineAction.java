@@ -13,13 +13,12 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.World;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Jamie on 27-May-16.
  */
 public class FillMineAction {
-	public static void fill(String group, String mine) {
+	public static void fill(String group, String mine, String definedBlock) {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
@@ -31,7 +30,6 @@ public class FillMineAction {
 		int y2 = config.getNode("4 - MineGroups", group, mine, "pos2", "y").getInt();
 		int z2 = config.getNode("4 - MineGroups", group, mine, "pos2", "z").getInt();
 		String mineWorldString = config.getNode("3 - Spawn", "SpawnWorld").getString();
-		UUID mineWorldUUID = UUID.fromString(mineWorldString);
 
 
 		/** Spawn data */
@@ -116,7 +114,11 @@ public class FillMineAction {
 				for (int z = zSmall; z <= zLarge; z++) {
 
 					DataContainer dataContainer = new MemoryDataContainer();
-					DataContainer cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(group, mine));
+
+					DataContainer cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
+					if (definedBlock == null) {
+						cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(group, mine)); // If mine being normally filled
+					}
 					BlockState state = BlockState.builder().build(cont).get();
 
 					for (World world : Sponge.getServer().getWorlds()) {
