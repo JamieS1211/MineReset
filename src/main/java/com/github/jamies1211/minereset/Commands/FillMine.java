@@ -35,7 +35,7 @@ public class FillMine implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " does not exist"));
 		} else {
 
-			FillMineAction.fill(group, mine, "minecraft:air");
+			FillMineAction.fill(group, mine, null);
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " has been filled"));
 		}
 

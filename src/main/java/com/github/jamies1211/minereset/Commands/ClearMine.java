@@ -35,7 +35,7 @@ public class ClearMine implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " does not exist"));
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " has been cleared"));
-			FillMineAction.fill(group, mine, null);
+			FillMineAction.fill(group, mine, "minecraft:air");
 		}
 
 		return CommandResult.success();

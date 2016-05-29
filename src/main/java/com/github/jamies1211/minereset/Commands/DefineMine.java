@@ -21,7 +21,7 @@ public class DefineMine implements CommandExecutor {
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
 		final String group = args.<String>getOne("group").get();
-		final String mine = args.<String>getOne("name").get();
+		final String mine = args.<String>getOne("name").get().toUpperCase();
 		final int x1 = args.<Integer>getOne("x1").get();
 		final int y1 = args.<Integer>getOne("y1").get();
 		final int z1 = args.<Integer>getOne("z1").get();
@@ -51,7 +51,7 @@ public class DefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "pos2", "x").setValue(x2);
 					config.getNode("4 - MineGroups", group, mine, "pos2", "y").setValue(y2);
 					config.getNode("4 - MineGroups", group, mine, "pos2", "z").setValue(z2);
-					config.getNode("4 - MineGroups", group, mine, "world").setValue(player.getWorld().toString());
+					config.getNode("4 - MineGroups", group, mine, "MineWorld").setValue(player.getWorld().getUniqueId().toString());
 					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue("minecraft:stone[variant=stone]");
 					MineReset.plugin.save();
 					src.sendMessage(Text.of("You have defined a new mine"));

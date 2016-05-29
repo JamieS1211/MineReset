@@ -20,7 +20,7 @@ public class AddOre implements CommandExecutor {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
-		final String mine = args.<String>getOne("name").get();
+		final String mine = args.<String>getOne("name").get().toUpperCase();
 		final double percentage = args.<Double>getOne("percentage").get();
 
 		Boolean alreadyExists = false;

@@ -29,7 +29,7 @@ public class FillMineAction {
 		int x2 = config.getNode("4 - MineGroups", group, mine, "pos2", "x").getInt();
 		int y2 = config.getNode("4 - MineGroups", group, mine, "pos2", "y").getInt();
 		int z2 = config.getNode("4 - MineGroups", group, mine, "pos2", "z").getInt();
-		String mineWorldString = config.getNode("3 - Spawn", "SpawnWorld").getString();
+		String mineWorldString = config.getNode("4 - MineGroups", group, mine, "MineWorld").getString();
 
 
 		/** Spawn data */
@@ -72,7 +72,7 @@ public class FillMineAction {
 					if (player.getLocation().getY() >= ySmall && player.getLocation().getY() <= yLarge) {
 						if (player.getLocation().getZ() >= zSmall && player.getLocation().getZ() - 1 <= zLarge) {
 
-							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &9The mine you were in has just been reset so you have been teleported 1 to spawn."));
+							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &9The mine you were in has just been reset so you have been teleported to spawn."));
 
 							double targetPitch = player.getRotation().getX();
 							double targetYaw = player.getRotation().getY();
@@ -115,10 +115,14 @@ public class FillMineAction {
 
 					DataContainer dataContainer = new MemoryDataContainer();
 
-					DataContainer cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
+					DataContainer cont;
+
 					if (definedBlock == null) {
 						cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(group, mine)); // If mine being normally filled
+					} else {
+						cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
 					}
+
 					BlockState state = BlockState.builder().build(cont).get();
 
 					for (World world : Sponge.getServer().getWorlds()) {
