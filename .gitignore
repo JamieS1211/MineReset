@@ -1,0 +1,11 @@
+.classpath
+.gradle/*
+.project
+.settings/*
+run
+.idea
+build
+*.iml
+out
+bin
+Thumbs.db

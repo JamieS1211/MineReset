@@ -1,0 +1,43 @@
+plugins {
+    id "com.qixalite.spongestart" version "1.4.3"
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+    //id 'org.spongepowered.plugin' version '0.5.1'
+}
+
+defaultTasks 'build', 'shadowJar'
+
+group = 'io.github.jamies1211.minereset'
+version = '1.0.0'
+description = 'MineReset'
+sourceCompatibility = 1.8
+
+
+repositories {
+    mavenCentral()
+    maven {
+        name 'Sonatype'
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+    maven { url "https://jitpack.io" }
+    maven {
+        name 'sponge'
+        url 'http://repo.spongepowered.org/maven'
+    }
+    maven { url "http://repo.maven.apache.org/maven2" }
+    //maven { url  "http://dl.bintray.com/austinv11/maven" }
+}
+
+spongestart{
+    eula true
+
+    //optional configs
+    spongeVanillaBuild 'LATEST'
+    spongeForgeBuild '4.1.0-BETA-1346'
+    forgeServerFolder 'run'
+    //vanillaServerFolder 'run/vanilla'
+}
+
+dependencies {
+    compile 'org.spongepowered:spongeapi:4.0.3'
+}
