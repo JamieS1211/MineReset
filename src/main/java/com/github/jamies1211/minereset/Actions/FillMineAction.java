@@ -9,6 +9,9 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.MemoryDataContainer;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.World;
 
@@ -127,7 +130,8 @@ public class FillMineAction {
 
 					for (World world : Sponge.getServer().getWorlds()) {
 						if (world.getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
-							world.getLocation(x, y, z).setBlock(state);
+							Cause cause =  Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get()));
+							world.setBlock(x, y, z, state, false, cause);
 						}
 					}
 
