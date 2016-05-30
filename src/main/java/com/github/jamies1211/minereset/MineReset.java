@@ -87,8 +87,6 @@ public class MineReset {
 	public void onServerStart(GameInitializationEvent event) {
 		getLogger().info("Mine reset has started.");
 
-		//EXTENT_BUFFER_FACTORY = Sponge.getRegistry().getExtentBufferFactory();
-
 		final HashMap<List<String>, CommandSpec> subcommands = new HashMap<List<String>, CommandSpec>();
 		subcommands.put(Arrays.asList("help"), CommandSpec.builder()
 				.permission("minereset.help")
@@ -210,6 +208,7 @@ public class MineReset {
 			}
 			config = configManager.load();
 
+			this.setRemindTimes();
 		} catch (IOException exception) {
 			getLogger().info("The default configuration could not be loaded or created!");
 		}
@@ -237,6 +236,7 @@ public class MineReset {
 		try {
 			this.config = getConfigManager().load();
 			getLogger().info("File Loaded");
+			this.setRemindTimes();
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
@@ -244,40 +244,48 @@ public class MineReset {
 
 	public int secondsSinceStart;
 
+	public List<String> remindTimes;
+
+	public void setRemindTimes() {
+		this.remindTimes = new ArrayList<String>(Arrays.asList(config.getNode("2 - RemindSecondList").getString().split(", ")));
+	}
+
+	public List<String> getRemindTimes() {
+		return this.remindTimes;
+	}
+
 	public void cycle() {
+		if (Sponge.getServer().getOnlinePlayers().size() > 0) {
 
-		final String configReminderTimes = config.getNode("2 - RemindSecondList").getString();
-		final List<String> remindTimes = new ArrayList<String>(Arrays.asList(configReminderTimes.split(", ")));
+			for (final Object groupObject: config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 
-		for (final Object groupObject: config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
+				int timeUntilNextFill = TimeUntillFill.getTimeUntilFill(groupObject.toString());
+				Set<Object> listOfMines = new TreeSet<>(config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
+				listOfMines.remove("resetTime");
+				listOfMines.remove("initialDelay");
 
-			int timeUntilNextFill = TimeUntillFill.getTimeUntilFill(groupObject.toString());
-			Set<Object> listOfMines = new TreeSet<>(config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
-			listOfMines.remove("resetTime");
-			listOfMines.remove("initialDelay");
+				if (this.remindTimes.contains(Integer.toString(timeUntilNextFill))) { // If time before group of mines reset is on remind time list send messages.
 
-			if(remindTimes.contains(Integer.toString(timeUntilNextFill))) { // If time before group of mines reset is on remind time list send messages.
+					for (Player player : Sponge.getServer().getOnlinePlayers()) {
+						player.sendMessage(ChatTypes.ACTION_BAR, TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e&l" +
+								listOfMines + " will reset in: " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
+					}
 
-				for (Player player : Sponge.getServer().getOnlinePlayers()) {
-					player.sendMessage(ChatTypes.ACTION_BAR, TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e&l" +
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e&l" +
 							listOfMines + " will reset in: " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
-				}
 
-				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e&l" +
-						listOfMines + " will reset in: " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
-
-
-			} else if (timeUntilNextFill == 0) { // If time before group of mines should reset is 0 reset all mines in group.
-				if (Sponge.getServer().getOnlinePlayers().size() > 0) {
+				} else if (timeUntilNextFill == 0) { // If time before group of mines should reset is 0 reset all mines in group.
 					for (final Object mineObject : listOfMines) {
 						FillMineAction.fill(groupObject.toString(), mineObject.toString(), null);
 					}
 					MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" +
 							listOfMines + " are resetting now"));
-				} else {
-					MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" +
-							listOfMines + " won't reset now as no player is online"));
+
 				}
+			}
+		} else {
+			if (secondsSinceStart % 60 == 0) {
+				MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e won't reset now as no player is online"));
 			}
 		}
 		secondsSinceStart++;
