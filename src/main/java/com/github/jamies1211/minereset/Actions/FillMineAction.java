@@ -11,7 +11,6 @@ import org.spongepowered.api.data.MemoryDataContainer;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.World;
 
@@ -43,6 +42,7 @@ public class FillMineAction {
 		String spawnWorldString = config.getNode("3 - Spawn", "SpawnWorld").getString();
 		UUID spawnWorldUUID = UUID.fromString(spawnWorldString);
 
+		/** Manipulate mine co-ordinates */
 		int xLarge = x1;
 		int xSmall = x2;
 
@@ -67,6 +67,7 @@ public class FillMineAction {
 			zSmall = z1;
 		}
 
+		/** Move players inside mine on fill to spawn */
 		for (Player player : Sponge.getServer().getOnlinePlayers()) {
 
 			if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
@@ -112,38 +113,7 @@ public class FillMineAction {
 			}
 		}
 
-		for (int x = xSmall; x <= xLarge; x++) {
-			for (int y = ySmall; y <= yLarge; y++) {
-				for (int z = zSmall; z <= zLarge; z++) {
-
-					DataContainer dataContainer = new MemoryDataContainer();
-
-					DataContainer cont;
-
-					if (definedBlock == null) {
-						cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(group, mine)); // If mine being normally filled
-					} else {
-						cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
-					}
-
-					BlockState state = BlockState.builder().build(cont).get();
-
-					for (World world : Sponge.getServer().getWorlds()) {
-						if (world.getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
-							Cause cause =  Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get()));
-							world.setBlock(x, y, z, state, false, cause);
-						}
-					}
-
-				}
-			}
-		}
-	}
-
-	public static String getRandomBlock (String group, String mine) {
-
-		ConfigurationNode config = MineReset.plugin.getConfig();
-
+		/** Generate all the mine data maps */
 		HashMap<Integer, String> blockMap = new HashMap<Integer, String>();
 		HashMap<Integer, Float> blockPercentages = new HashMap<Integer, Float>();
 		String FallbackBlock = config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString();
@@ -171,11 +141,39 @@ public class FillMineAction {
 			}
 		}
 
+		DataContainer dataContainer = new MemoryDataContainer();
+		DataContainer cont = null;
+
+		if (definedBlock != null) {
+			cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
+		}
+
+		/** Place the correct block for each block in the mine */
+		for (int x = xSmall; x <= xLarge; x++) {
+			for (int y = ySmall; y <= yLarge; y++) {
+				for (int z = zSmall; z <= zLarge; z++) {
+
+					if (definedBlock == null) {
+						cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(blockMap, blockPercentages, blockMap.size(), FallbackBlock)); // If mine being normally filled
+					}
+
+					BlockState state = BlockState.builder().build(cont).get();
+
+					for (World world : Sponge.getServer().getWorlds()) {
+						if (world.getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
+							world.setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+	public static String getRandomBlock (HashMap<Integer, String> blockMap, HashMap<Integer, Float> blockPercentages, int numberOfItemsToIterate, String FallbackBlock) {
 
 		float RandomlyGeneratedChanceValue = (new Random().nextFloat() * 100);
 		float currentTotalPercentate = 0;
-		int numberOfItemsToIterate = blockMap.size();
-		String Block = null;
 
 		for (int currentItemIteration = 1; currentItemIteration <= numberOfItemsToIterate; currentItemIteration++) {
 			currentTotalPercentate = currentTotalPercentate + blockPercentages.get(currentItemIteration); // Updates the working percentage.]
@@ -185,13 +183,10 @@ public class FillMineAction {
 			}
 
 			if ((currentTotalPercentate <= RandomlyGeneratedChanceValue) && (nextTotalPercentate >= RandomlyGeneratedChanceValue)) {
-				Block = blockMap.get(currentItemIteration + 1);
+				return blockMap.get(currentItemIteration + 1);
 			}
 		}
 
-		if (Block == null) {
-			return FallbackBlock;
-		}
-		return Block;
+		return FallbackBlock;
 	}
 }
