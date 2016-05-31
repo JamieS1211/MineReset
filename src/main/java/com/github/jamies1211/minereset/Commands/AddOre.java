@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands;
 
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
@@ -9,6 +10,9 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.serializer.TextSerializers;
+
+import java.util.HashMap;
 
 /**
  * Created by Jamie on 28-May-16.
@@ -23,7 +27,6 @@ public class AddOre implements CommandExecutor {
 		final String mine = args.<String>getOne("name").get().toUpperCase();
 		final double percentage = args.<Double>getOne("percentage").get();
 
-		Boolean alreadyExists = false;
 		String group = null;
 		if (src instanceof Player) {
 
@@ -31,26 +34,38 @@ public class AddOre implements CommandExecutor {
 
 			for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 				if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
-					alreadyExists = true;
 					group = groupObject.toString();
 				}
 			}
 
-			if (alreadyExists) {
+			if (group != null) {
 
-				String block = player.getLocation().sub(0, 1, 0).getBlock().toString();
+				float currentFullPercentage = 0;
 
-				int currentSize = config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().size();
+				for (final Object groupItems : config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet()) { // For all ores in a mine
+					if (!groupItems.toString().equalsIgnoreCase("fallback")) { // If it is not the fallback
+						currentFullPercentage =+ config.getNode("4 - MineGroups", group, mine, "ores", groupItems.toString(), "percentage").getFloat(); // Totals up the percentage.
+					}
+				}
 
-				config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "BlockState").setValue(block);
-				config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "percentage").setValue(percentage);
-				MineReset.plugin.save();
-				src.sendMessage(Text.of("You have added " + block + " to mine: " + mine + " at " + percentage + "%"));
+				if (currentFullPercentage + percentage <= 100) {
+
+					String block = player.getLocation().sub(0, 1, 0).getBlock().toString();
+
+					int currentSize = config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().size();
+
+					config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "BlockState").setValue(block);
+					config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "percentage").setValue(percentage);
+					MineReset.plugin.save();
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AddedOre +block + " to mine: " + mine + " at " + percentage + "%"));
+				} else {
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OrePrecentageError));
+				}
 			} else {
-				src.sendMessage(Text.of("The mine you listed does not exist: " + mine));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 			}
 		} else {
-			src.sendMessage(Text.of("This command must be run by a player"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));
 		}
 
 		return CommandResult.success();

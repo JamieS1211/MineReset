@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands;
 
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
@@ -9,6 +10,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.serializer.TextSerializers;
 
 /**
  * Created by Jamie on 29-May-16.
@@ -40,10 +42,10 @@ public class MineSetSpawn implements CommandExecutor {
 				config.getNode("3 - Spawn", "SpawnDirection").setValue("North");
 			}
 			config.getNode("3 - Spawn", "SpawnWorld").setValue(player.getWorld().getUniqueId().toString());
-			src.sendMessage(Text.of("You have set the spawn for mines to x:" + x + " y:" + y + " z:" + z + " facing:" + facing));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SetSpawn +  " x:" + x + " y:" + y + " z:" + z + " facing:" + facing));
 
 		} else {
-			src.sendMessage(Text.of("This command must be run by a player"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));
 		}
 
 

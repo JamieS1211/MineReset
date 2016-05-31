@@ -1,9 +1,10 @@
 package com.github.jamies1211.minereset.Actions;
 
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
+import org.spongepowered.api.text.serializer.TextSerializers;
 
 /**
  * Created by Jamie on 27-May-16.
@@ -24,7 +25,7 @@ public class TimeUntillFill {
 
 		if (resetTime < 60) {
 			resetTime = 60;
-			MessageChannel.TO_CONSOLE.send(Text.of("Reset time was read from config at less than 60 seconds. It has been changed to 60"));
+			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.ResetTimeTooShortError));
 		}
 
 		int timeUntilNextFill = (resetTime - 1 - ((secondsSinceStart - initialDelay) % resetTime));

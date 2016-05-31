@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Actions;
 
 import com.flowpowered.math.vector.Vector3d;
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
@@ -11,6 +12,7 @@ import org.spongepowered.api.data.MemoryDataContainer;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.World;
 
@@ -76,7 +78,7 @@ public class FillMineAction {
 					if (player.getLocation().getY() >= ySmall && player.getLocation().getY() <= yLarge) {
 						if (player.getLocation().getZ() >= zSmall && player.getLocation().getZ() - 1 <= zLarge) {
 
-							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &9The mine you were in has just been reset so you have been teleported to spawn."));
+							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InsideFillingMine));
 
 							double targetPitch = player.getRotation().getX();
 							double targetYaw = player.getRotation().getY();
@@ -99,7 +101,7 @@ public class FillMineAction {
 								targetYaw = 90;
 								targetRoll = 90;
 							} else {
-								System.out.println("Teleport function direction not valid so unused");
+								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.TeleportRotationError));
 							}
 
 							Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
@@ -176,13 +178,15 @@ public class FillMineAction {
 		float currentTotalPercentate = 0;
 
 		for (int currentItemIteration = 1; currentItemIteration <= numberOfItemsToIterate; currentItemIteration++) {
-			currentTotalPercentate = currentTotalPercentate + blockPercentages.get(currentItemIteration); // Updates the working percentage.]
 			float nextTotalPercentate = 100;
-			if ((currentItemIteration + 1) < numberOfItemsToIterate) {
+
+			currentTotalPercentate = currentTotalPercentate + blockPercentages.get(currentItemIteration); // Updates the working percentage.
+
+			if ((currentItemIteration + 1) < numberOfItemsToIterate) { // If last item round to 100.
 				nextTotalPercentate = currentTotalPercentate + blockPercentages.get(currentItemIteration + 1);
 			}
 
-			if ((currentTotalPercentate <= RandomlyGeneratedChanceValue) && (nextTotalPercentate >= RandomlyGeneratedChanceValue)) {
+			if ((currentTotalPercentate <= RandomlyGeneratedChanceValue) && (nextTotalPercentate >= RandomlyGeneratedChanceValue)) { // Random between this and next ore use this ore.
 				return blockMap.get(currentItemIteration + 1);
 			}
 		}

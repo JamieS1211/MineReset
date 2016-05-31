@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Commands;
 
 import com.github.jamies1211.minereset.Actions.FillMineAction;
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
@@ -32,11 +33,10 @@ public class FillMine implements CommandExecutor {
 		}
 
 		if (group == null) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " does not exist"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		} else {
-
 			FillMineAction.fill(group, mine, null);
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " has been filled"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineFilled));
 		}
 
 		return CommandResult.success();

@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Commands;
 
 import com.github.jamies1211.minereset.Actions.TimeUntillFill;
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import com.github.jamies1211.minereset.SecondsToString;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -38,9 +39,9 @@ public class CheckTime implements CommandExecutor {
 		}
 
 		if (group == null) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " does not exist"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &e" + mine + " will reset in: " +
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix  + mine + " " + Messages.ResetTime + " " +
 					SecondsToString.secondsToTimeString(TimeUntillFill.getTimeUntilFill(group))));
 		}
 

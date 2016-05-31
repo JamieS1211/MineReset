@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands;
 
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
@@ -8,7 +9,7 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.serializer.TextSerializers;
 
 /**
  * Created by Jamie on 28-May-16.
@@ -20,7 +21,7 @@ public class DefineMine implements CommandExecutor {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
-		final String group = args.<String>getOne("group").get();
+		final String group = args.<String>getOne("group").get().toUpperCase();
 		final String mine = args.<String>getOne("name").get().toUpperCase();
 		final int x1 = args.<Integer>getOne("x1").get();
 		final int y1 = args.<Integer>getOne("y1").get();
@@ -40,7 +41,7 @@ public class DefineMine implements CommandExecutor {
 				for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 					if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
 						alreadyExists = true;
-						src.sendMessage(Text.of("A mine with this name already exists"));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineAlreadyExists));
 					}
 				}
 
@@ -54,14 +55,14 @@ public class DefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "MineWorld").setValue(player.getWorld().getUniqueId().toString());
 					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue("minecraft:stone[variant=stone]");
 					MineReset.plugin.save();
-					src.sendMessage(Text.of("You have defined a new mine"));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DefinedNewMine + mine));
 				}
 
 			} else {
-				src.sendMessage(Text.of("The mine group you listed does not exist"));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + group + " " + Messages.MineGroupDoesNotExist));
 			}
 		} else {
-			src.sendMessage(Text.of("This command must be run by a player"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));
 		}
 
 		return CommandResult.success();

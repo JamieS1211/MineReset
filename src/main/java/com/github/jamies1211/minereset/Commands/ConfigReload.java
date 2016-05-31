@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands;
 
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -17,7 +18,7 @@ public class ConfigReload implements CommandExecutor {
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
 		MineReset.plugin.reload();
-		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&l[Mines]&r &eConfig has been reloaded"));
+		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ConfigReloaded));
 
 		return CommandResult.success();
 	}
