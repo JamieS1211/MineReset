@@ -71,8 +71,10 @@ public class AddOre implements CommandExecutor {
 						} else {
 							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OrePrecentageError));
 						}
+					} else if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.UnableToAddFallback));
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.OreAlreadyInMine));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreAlreadyInMine));
 					}
 				} else {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));

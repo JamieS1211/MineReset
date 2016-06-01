@@ -34,29 +34,30 @@ public class UpdateOre implements CommandExecutor {
 
 			String block = player.getLocation().sub(0, 1, 0).getBlock().toString();
 
-			if (percentage == 0) {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreRemoved));
-			} else if (percentage > 0) {
+			for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
+				if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
+					group = groupObject.toString();
+				}
+			}
+			if (group != null) {
 
-				for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
-					if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
-						group = groupObject.toString();
+				String itemIndex = null;
+
+				for (final Object itemObject : config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet()) {
+					if (!itemObject.toString().equalsIgnoreCase("fallback")) {
+						if (config.getNode("4 - MineGroups", group, mine, "ores", itemObject, "BlockState").getString().equalsIgnoreCase(block)) {
+							itemIndex = itemObject.toString();
+						}
 					}
 				}
 
-				if (group != null) {
+				if (itemIndex != null) {
+					if (percentage == 0) {
+						config.getNode("4 - MineGroups", group, mine, "ores").removeChild(itemIndex);
+						MineReset.plugin.save();
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreRemoved));
+					} else if (percentage > 0) {
 
-					String itemIndex = null;
-
-					for (final Object itemObject : config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet()) {
-						if (!itemObject.toString().equalsIgnoreCase("fallback")) {
-							if (config.getNode("4 - MineGroups", group, mine, "ores", itemObject, "BlockState").getString().equalsIgnoreCase(block)) {
-								itemIndex = itemObject.toString();
-							}
-						}
-					}
-
-					if (itemIndex != null) {
 						/** Total up percentages */
 						float currentFullPercentage = 0;
 
@@ -67,22 +68,30 @@ public class UpdateOre implements CommandExecutor {
 						}
 
 						if (currentFullPercentage + percentage <= 100) {
+							String oldBlockPercentage = config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "percentage").getString();
 
-							config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "percentage").setValue(percentage);
-							MineReset.plugin.save();
-							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " in " + mine + " updated to " + percentage + "%"));
+							if (oldBlockPercentage.equalsIgnoreCase(Double.toString(percentage))) {
+								config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "percentage").setValue(percentage);
+								MineReset.plugin.save();
+								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " in " + mine + " updated to " + percentage + "% from " + oldBlockPercentage + "%"));
+							} else {
+								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreSamePercentageError + " " + block + " in " + mine));
+							}
 						} else {
 							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OrePrecentageError));
 						}
 
+
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreNotInMine + " " + mine));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PercentageTooSmallUpdate));
 					}
+				} else if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.UnableToEditFallback));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreNotInMine));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PercentageTooSmallUpdate));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 			}
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));

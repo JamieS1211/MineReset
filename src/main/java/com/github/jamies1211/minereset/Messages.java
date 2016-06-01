@@ -38,8 +38,11 @@ public class Messages {
 	public static final String PercentageTooSmall = "the percentage value you entered is too small. Percentage must be greater than 0";
 	public static final String PercentageTooSmallUpdate = "the percentage value you entered is too small. Percentage must be greater than 0. A value of 0 will remove the ore from the mine";
 	public static final String OreRemoved = "has been removed as you entered 0%";
-	public static final String OreAlreadyInMine = "The block you are standing on is already in the listed mine so wasn't added. You can change the percentage of the block in the config file";
-	public static final String OreNotInMine = "The block you are standing on is not in the listed mine so can't be edited";
+	public static final String OreAlreadyInMine = "is already in the listed mine so wasn't added. You can change the percentage of the block using the \"/mine updateore\" command";
+	public static final String OreNotInMine = "is not in the listed mine so can't be edited";
+	public static final String UnableToAddFallback = "is the default block so you cannot add it to the mine again. It is used to top the mine up to 100% full after all the other ores are taken into account";
+	public static final String UnableToEditFallback = "is the default block so you cannot edit its percentage or remove it. It is used to top the mine up to 100% full after all the other ores are taken into account";
+	public static final String OreSamePercentageError = "No changes were made because the new percentage is the same as the old percentage for";
 
 	/** Command Usages */
 	public static final String Help = "/mine help";
