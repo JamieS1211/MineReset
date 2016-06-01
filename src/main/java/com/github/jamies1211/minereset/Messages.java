@@ -76,4 +76,18 @@ public class Messages {
 	public static final String NoPlayerOnline = "mine re-filling disabled as no player is online";
 	public static final String WillResetIn = "will reset in:";
 	public static final String InsideFillingMine = "&9The mine you were in has just been reset so you have been teleported to spawn.";
+
+	/** Permissions */
+//	help: "minereset.help"
+//	time: "minereset.check.time"
+//	reload: "minereset.reload"
+//	save: "minereset.save"
+//	setspawn: "minereset.setspawn"
+//	clear: "minereset.clear"
+//	fill: "minereset.fill"
+//	definegroup: "minereset.define.group"
+//	definemine: "minereset.define.mine"
+//	list: "minereset.list"
+//	info: "minereset.details"
+//	addore: "minereset.mine.addore"
 }

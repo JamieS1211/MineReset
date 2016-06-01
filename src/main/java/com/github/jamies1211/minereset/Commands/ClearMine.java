@@ -21,8 +21,7 @@ public class ClearMine implements CommandExecutor {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
-		String mine = args.<String>getOne("name").get();
-		mine = mine.toUpperCase();
+		String mine = args.<String>getOne("name").get().toUpperCase();
 
 		String group = null;
 

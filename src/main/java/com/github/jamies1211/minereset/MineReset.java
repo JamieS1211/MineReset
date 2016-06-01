@@ -19,6 +19,8 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
+import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Scheduler;
 import org.spongepowered.api.scheduler.Task;
@@ -62,13 +64,34 @@ public class MineReset {
 	@Listener
 	public void onServerLoadComplete(GameLoadCompleteEvent event) {
 		plugin = this;
-		reload();
 
 		taskBuilder.execute(new Runnable() {
 			public void run() {
 				cycle();
 			}
 		}).interval(1, TimeUnit.SECONDS).name("MineTick").submit(plugin);
+	}
+
+	@Listener
+	public void gameLoadComplere(GameStartingServerEvent event) {
+		try {
+			if (!defaultConfig.exists()) {
+				defaultConfig.createNewFile();
+				config = configManager.load();
+				configManager.save(config);
+				setupconfig();
+				save();
+				getLogger().info("Created new configuration file as none detected!");
+			} else {
+				getLogger().info("Detected configuration file and loaded");
+			}
+			config = configManager.load();
+
+		} catch (IOException exception) {
+			getLogger().info("The default configuration could not be loaded or created!");
+		}
+
+		reload();
 	}
 
 	public ConfigurationNode getConfig() {
@@ -212,25 +235,6 @@ public class MineReset {
 				.children(subcommands)
 				.build();
 		Sponge.getCommandManager().register(this, safariCommand, "mine");
-
-
-		try {
-			if (!defaultConfig.exists()) {
-				defaultConfig.createNewFile();
-				config = configManager.load();
-				configManager.save(config);
-				setupconfig();
-				save();
-				getLogger().info("Created new configuration file as none detected!");
-			} else {
-				getLogger().info("Detected configuration file and loaded");
-			}
-			config = configManager.load();
-
-			this.setRemindTimes();
-		} catch (IOException exception) {
-			getLogger().info("The default configuration could not be loaded or created!");
-		}
 	}
 
 	private void setupconfig() {
@@ -240,6 +244,7 @@ public class MineReset {
 		this.config.getNode("3 - Spawn", "SpawnY").setValue(85);
 		this.config.getNode("3 - Spawn", "SpawnZ").setValue(9.5);
 		this.config.getNode("3 - Spawn", "SpawnDirection").setValue("West");
+		this.config.getNode("3 - Spawn", "SpawnWorld").setValue(Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
 		save();
 	}
 
@@ -255,7 +260,7 @@ public class MineReset {
 		try {
 			this.config = getConfigManager().load();
 			getLogger().info("File Loaded");
-			this.setRemindTimes();
+			remindTimes = new ArrayList<String>(Arrays.asList(config.getNode("2 - RemindSecondList").getString().split(", ")));
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
@@ -264,14 +269,6 @@ public class MineReset {
 	public int secondsSinceStart;
 
 	public List<String> remindTimes;
-
-	public void setRemindTimes() {
-		this.remindTimes = new ArrayList<String>(Arrays.asList(config.getNode("2 - RemindSecondList").getString().split(", ")));
-	}
-
-	public List<String> getRemindTimes() {
-		return this.remindTimes;
-	}
 
 	public void cycle() {
 		if (Sponge.getServer().getOnlinePlayers().size() > 0) {
