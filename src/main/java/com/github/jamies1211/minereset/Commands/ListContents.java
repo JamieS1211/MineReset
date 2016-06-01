@@ -31,16 +31,15 @@ public class ListContents implements CommandExecutor {
 		final String type = args.<String>getOne("type").get().toUpperCase();
 
 		if (type.equalsIgnoreCase("groups")) {
-			String message = config.getNode("4 - MineGroups").getChildrenMap().keySet().toString();
 
-			if (message != null) {
-				src.sendMessage(Text.of(message));
+			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().size() > 0) {
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "All Groups: " + config.getNode("4 - MineGroups").getChildrenMap().keySet().toString()));
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoMineGroups));
 			}
 
 		} else if (type.equalsIgnoreCase("mines")) {
-			String message = "All mines: ";
+			String message = "All Mines: ";
 
 			for (final Object groupObject: config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 				Set<Object> listOfMines = new TreeSet<>(config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
@@ -53,7 +52,7 @@ public class ListContents implements CommandExecutor {
 			}
 
 			if (!message.equalsIgnoreCase("All mines: ")) {
-				src.sendMessage(Text.of(message));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + message));
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoMines));
 			}

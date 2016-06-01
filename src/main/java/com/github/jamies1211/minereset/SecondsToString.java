@@ -7,24 +7,43 @@ public class SecondsToString {
 
 	public static String secondsToTimeString(int totalSeconds) {
 		final int seconds = totalSeconds % 60; // Seconds more then int minutes.
-		final int mins = (totalSeconds - seconds) / 60; // Minutes rounded down.
+		final int minutes = ((totalSeconds - seconds) / 60) % 60; // Minutes rounded down.
+		final int hours = ((((totalSeconds - seconds) / 60) - minutes) / 60); // Hours rounded down.
+
 
 		String secondUnit = "seconds";
 		String minuteUnit = "minutes";
+		String hourUnit = "hours";
+
+		String secondsString = Integer.toString(seconds);
+		String minutesString = Integer.toString(minutes);
+		String hoursString = Integer.toString(hours);
 
 		if (seconds == 1) { // Removes plural if not needed.
 			secondUnit = "second";
+		} else if (seconds == 0 && (hours != 0 || minutes != 0)) {
+			secondsString = "";
+			secondUnit = "";
 		}
 
-		if (mins == 1) { // Removes plural if not needed.
+		if (minutes == 1) { // Removes plural if not needed.
 			minuteUnit = "minute";
+		} else if (minutes == 0) {
+			minutesString = "";
+			minuteUnit = "";
 		}
 
-		if (mins == 0) { // If mins are 0 don't return minutes.
-			return seconds + secondUnit;
-		} else {
-			return mins + minuteUnit + " " + seconds + secondUnit;
+		if (hours == 1) { // Removes plural if not needed.
+			hourUnit = "hour";
+		} else if (hours == 0) {
+			hoursString = "";
+			hourUnit = "";
 		}
+
+
+
+		return hoursString + hourUnit + " " + minutesString + minuteUnit + " " + secondsString + secondUnit;
+
 	}
 
 }

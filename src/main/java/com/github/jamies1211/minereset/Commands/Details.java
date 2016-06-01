@@ -2,7 +2,9 @@ package com.github.jamies1211.minereset.Commands;
 
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
+import com.github.jamies1211.minereset.SecondsToString;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -28,26 +30,32 @@ public class Details implements CommandExecutor {
 		final String type = args.<String>getOne("type").get().toUpperCase();
 		final String name = args.<String>getOne("name").get().toUpperCase();
 
-		TreeMap<String, String> infoMap = new TreeMap<String, String>();
+		TreeMap<String, Integer> infoMap = new TreeMap<String, Integer>();
 
 		if (type.equalsIgnoreCase("group")) {
 			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().contains(name)) {
 				List mineList = new ArrayList<>();
 				for (Object detail : config.getNode("4 - MineGroups", name).getChildrenMap().keySet()) {
 					if (detail.toString().equalsIgnoreCase("initialDelay") || detail.toString().equalsIgnoreCase("resetTime")) {
-						String value = config.getNode("4 - MineGroups", name, detail.toString()).getValue().toString();
-						infoMap.put(detail.toString(), value);
+						infoMap.put(detail.toString(), config.getNode("4 - MineGroups", name, detail.toString()).getInt());
 					} else {
 						mineList.add(detail.toString());
 					}
 				}
 
 				if (!infoMap.isEmpty()) {
-					if (mineList.size() > 0) {
-						src.sendMessage(Text.of(infoMap.toString()));
-						src.sendMessage(Text.of(infoMap + " Mines: " + mineList));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " reset time: " + SecondsToString.secondsToTimeString(infoMap.get("resetTime"))));
+					if (infoMap.get("initialDelay") == 0) {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: No initial delay"));
 					} else {
-						src.sendMessage(Text.of(infoMap + " Mines: NO MINES"));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: " + SecondsToString.secondsToTimeString(infoMap.get("initialDelay"))));
+					}
+					if (mineList.size() < 1) {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " has no mines"));
+					} else if (mineList.size() == 1) {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " contains mine: " + mineList));
+					} else {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " contains mines: " + mineList));
 					}
 				} else {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoMineGroups));
@@ -67,15 +75,33 @@ public class Details implements CommandExecutor {
 			}
 
 			if (group != null) {
-				for (Object dataObject : config.getNode("4 - MineGroups", group, name, "ores").getChildrenMap().keySet()) {
-					if (dataObject.toString().equalsIgnoreCase("fallback")) {
-						infoMap.put("Default Block", config.getNode("4 - MineGroups", group, name, "ores", "fallback", "BlockState").getString());
-					} else {
-						infoMap.put(config.getNode("4 - MineGroups", group, name, "ores", dataObject.toString(), "BlockState").getString(),
-								config.getNode("4 - MineGroups", group, name, "ores", dataObject.toString(), "percentage").getString() + "%");
+
+				for (final Object groupItems : config.getNode("4 - MineGroups", group, name, "ores").getChildrenMap().keySet()) {
+					String itemName = groupItems.toString();
+					if (itemName.equalsIgnoreCase("fallback")) {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Default Block: " +
+								config.getNode("4 - MineGroups", group, name, "ores", itemName, "BlockState").getString()));
+
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Ore count: " +
+								(config.getNode("4 - MineGroups", group, name, "ores").getChildrenMap().keySet().size() - 1)));
 					}
 				}
-				src.sendMessage(Text.of(infoMap.toString()));
+
+				int oreCount = 1;
+
+				for (final Object groupItems : config.getNode("4 - MineGroups", group, name, "ores").getChildrenMap().keySet()) {
+					String itemName = groupItems.toString();
+					if (!itemName.equalsIgnoreCase("fallback")) {
+						String blockStateString = config.getNode("4 - MineGroups", group, name, "ores", itemName, "BlockState").getString();
+						String percentage = config.getNode("4 - MineGroups", group, name, "ores", itemName, "percentage").getString();
+
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Ore" + oreCount
+								+ " : " + blockStateString + " at " + percentage + "%"));
+
+						oreCount++;
+					}
+				}
+
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + name + " " + Messages.MineDoesNotExist));
 			}

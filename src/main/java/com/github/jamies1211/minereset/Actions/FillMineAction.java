@@ -70,45 +70,47 @@ public class FillMineAction {
 		}
 
 		/** Move players inside mine on fill to spawn */
-		for (Player player : Sponge.getServer().getOnlinePlayers()) {
+		if (definedBlock != "minecraft:air") { // If end block is air
+			for (Player player : Sponge.getServer().getOnlinePlayers()) {
 
-			if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
+				if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
 
-				if (player.getLocation().getX() >= xSmall && player.getLocation().getX() - 1 <= xLarge) {
-					if (player.getLocation().getY() >= ySmall && player.getLocation().getY() <= yLarge) {
-						if (player.getLocation().getZ() >= zSmall && player.getLocation().getZ() - 1 <= zLarge) {
+					if (player.getLocation().getX() >= xSmall && player.getLocation().getX() - 1 <= xLarge) {
+						if (player.getLocation().getY() >= ySmall && player.getLocation().getY() <= yLarge) {
+							if (player.getLocation().getZ() >= zSmall && player.getLocation().getZ() - 1 <= zLarge) {
 
-							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InsideFillingMine));
+								player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InsideFillingMine));
 
-							double targetPitch = player.getRotation().getX();
-							double targetYaw = player.getRotation().getY();
-							double targetRoll = player.getRotation().getZ();
+								double targetPitch = player.getRotation().getX();
+								double targetYaw = player.getRotation().getY();
+								double targetRoll = player.getRotation().getZ();
 
-							if (direction.equalsIgnoreCase("North")) {
-								targetPitch = 0;
-								targetYaw = 180;
-								targetRoll = 180;
-							} else if (direction.equalsIgnoreCase("South")) {
-								targetPitch = 0;
-								targetYaw = 0;
-								targetRoll = 0;
-							} else if (direction.equalsIgnoreCase("East")) {
-								targetPitch = 0;
-								targetYaw = 270;
-								targetRoll = 270;
-							} else if (direction.equalsIgnoreCase("West")) {
-								targetPitch = 0;
-								targetYaw = 90;
-								targetRoll = 90;
-							} else {
-								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.TeleportRotationError));
+								if (direction.equalsIgnoreCase("North")) {
+									targetPitch = 0;
+									targetYaw = 180;
+									targetRoll = 180;
+								} else if (direction.equalsIgnoreCase("South")) {
+									targetPitch = 0;
+									targetYaw = 0;
+									targetRoll = 0;
+								} else if (direction.equalsIgnoreCase("East")) {
+									targetPitch = 0;
+									targetYaw = 270;
+									targetRoll = 270;
+								} else if (direction.equalsIgnoreCase("West")) {
+									targetPitch = 0;
+									targetYaw = 90;
+									targetRoll = 90;
+								} else {
+									MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.TeleportRotationError));
+								}
+
+								Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
+								Vector3d spawnRotation = new Vector3d(targetPitch, targetYaw, targetRoll);
+
+								player.transferToWorld(spawnWorldUUID, spawn);
+								player.setRotation(spawnRotation);
 							}
-
-							Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
-							Vector3d spawnRotation = new Vector3d(targetPitch, targetYaw, targetRoll);
-
-							player.transferToWorld(spawnWorldUUID, spawn);
-							player.setRotation(spawnRotation);
 						}
 					}
 				}

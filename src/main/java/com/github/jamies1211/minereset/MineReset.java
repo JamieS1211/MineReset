@@ -19,7 +19,6 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Scheduler;
@@ -171,6 +170,15 @@ public class MineReset {
 				.executor(new FillMine())
 				.build());
 
+		subcommands.put(Arrays.asList("fillblock"), CommandSpec.builder()
+				.permission("minereset.fillblock")
+				.description(Text.of(Messages.FillblockDescription))
+				.extendedDescription(Text.of(Messages.FillblockExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
+				.executor(new FillBlock())
+				.build());
+
 		subcommands.put(Arrays.asList("definegroup"), CommandSpec.builder()
 				.permission("minereset.define.group")
 				.description(Text.of(Messages.DefineGroupDescription))
@@ -180,6 +188,16 @@ public class MineReset {
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("resetTime"))),
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("initialDelay"))))
 				.executor(new DefineGroup())
+				.build());
+
+		subcommands.put(Arrays.asList("deletegroup"), CommandSpec.builder()
+				.permission("minereset.define.group")
+				.description(Text.of(Messages.DeleteGroupDescription))
+				.extendedDescription(Text.of(Messages.DeleteGroupExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
+						GenericArguments.onlyOne(GenericArguments.remainingJoinedStrings(Text.of("safe"))))
+				.executor(new DeleteGroup())
 				.build());
 
 		subcommands.put(Arrays.asList("definemine"), CommandSpec.builder()
@@ -196,6 +214,15 @@ public class MineReset {
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("y2"))),
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("z2"))))
 				.executor(new DefineMine())
+				.build());
+
+		subcommands.put(Arrays.asList("deletemine"), CommandSpec.builder()
+				.permission("minereset.delete.mine")
+				.description(Text.of(Messages.DeleteMineDescription))
+				.extendedDescription(Text.of(Messages.DeleteMineExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
+				.executor(new DeleteMine())
 				.build());
 
 		subcommands.put(Arrays.asList("list"), CommandSpec.builder()
@@ -227,6 +254,16 @@ public class MineReset {
 				.executor(new AddOre())
 				.build());
 
+		subcommands.put(Arrays.asList("updateore"), CommandSpec.builder()
+				.permission("minereset.mine.updateore")
+				.description(Text.of(Messages.UpdateoreDescription))
+				.extendedDescription(Text.of(Messages.UpdateoreExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
+						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("percentage"))))
+				.executor(new UpdateOre())
+				.build());
+
 		final CommandSpec safariCommand = CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(Messages.HelpDescription))
@@ -254,6 +291,7 @@ public class MineReset {
 		} catch (final IOException e) {
 			getLogger().info("Failed to save config file!");
 		}
+		this.reload();
 	}
 
 	public void reload() {
@@ -282,27 +320,29 @@ public class MineReset {
 
 				if (this.remindTimes.contains(Integer.toString(timeUntilNextFill))) { // If time before group of mines reset is on remind time list send messages.
 
-					for (Player player : Sponge.getServer().getOnlinePlayers()) {
-						player.sendMessage(ChatTypes.ACTION_BAR, TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "&l" +
+					if (listOfMines.size() > 0) {
+						for (Player player : Sponge.getServer().getOnlinePlayers()) {
+							player.sendMessage(ChatTypes.ACTION_BAR, TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "&l" +
+									listOfMines + " " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
+						}
+
+						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
 								listOfMines + " " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
 					}
-
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
-							listOfMines + " " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
 
 				} else if (timeUntilNextFill == 0) { // If time before group of mines should reset is 0 reset all mines in group.
 					for (final Object mineObject : listOfMines) {
 						FillMineAction.fill(groupObject.toString(), mineObject.toString(), null);
 					}
-
-					if (listOfMines.size() > 1) {
-						MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
-								listOfMines + " " + Messages.ResetingNowPlural));
-					} else {
-						MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
-								listOfMines + " " + Messages.ResetingNowSingular));
+					if (listOfMines.size() > 0) {
+						if (listOfMines.size() > 1) {
+							MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
+									listOfMines + " " + Messages.ResetingNowPlural));
+						} else {
+							MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
+									listOfMines + " " + Messages.ResetingNowSingular));
+						}
 					}
-
 				}
 			}
 		} else {

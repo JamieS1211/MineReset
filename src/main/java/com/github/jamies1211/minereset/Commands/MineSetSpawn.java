@@ -42,7 +42,7 @@ public class MineSetSpawn implements CommandExecutor {
 				config.getNode("3 - Spawn", "SpawnDirection").setValue("North");
 			}
 			config.getNode("3 - Spawn", "SpawnWorld").setValue(player.getWorld().getUniqueId().toString());
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SetSpawn +  " x:" + x + " y:" + y + " z:" + z + " facing:" + facing));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SetSpawnPoint +  " x:" + x + " y:" + y + " z:" + z + " facing:" + facing));
 
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));

@@ -57,16 +57,34 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.FillExtendedDescription));
 		}
 
-		if (src.hasPermission("minereset.definegroup")) {
+		if (src.hasPermission("minereset.fillblock")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lFill Block Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.Fillblock));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.FillblockExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.define.group")) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lDefine Group Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.DefineGroup));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.DefineGroupExtendedDescription));
 		}
 
-		if (src.hasPermission("minereset.definemine")) {
+		if (src.hasPermission("minereset.delete.group")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lDelete Group Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.DeleteGroup));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.DeleteGroupExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.define.mine")) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lDefine Mine Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.DefineMine));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.DefineMineExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.define.mine")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lDelete Mine Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.DeleteMine));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.DeleteMineExtendedDescription));
 		}
 
 		if (src.hasPermission("minereset.list")) {
