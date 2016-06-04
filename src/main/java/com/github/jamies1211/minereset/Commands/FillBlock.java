@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands;
 
+import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
@@ -39,7 +40,7 @@ public class FillBlock implements CommandExecutor {
 			if (group == null) {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 			} else {
-				String block = player.getLocation().sub(0, 1, 0).getBlock().toString();
+				String block = BlockBelowPlayer.getBlockStringBelowPlayer(player);
 				FillMineAction.fill(group, mine, block);
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineFilledBlock + " " + block));
 			}
