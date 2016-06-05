@@ -162,12 +162,8 @@ public class FillMineAction {
 					}
 
 					BlockState state = BlockState.builder().build(cont).get();
-
-					for (World world : Sponge.getServer().getWorlds()) {
-						if (world.getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
-							world.setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
-						}
-					}
+					UUID mineWorldUUID = UUID.fromString(mineWorldString);
+					Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
 
 				}
 			}
