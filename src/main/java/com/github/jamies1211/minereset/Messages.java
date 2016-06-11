@@ -47,10 +47,10 @@ public class Messages {
 	/** Command Usages */
 	public static final String Help = "/mine help";
 	public static final String HelpDescription = "Shows mine help";
-	public static final String HelpExtendedDescription = "Use this command to list all the safari sub commands and how to use them";
+	public static final String HelpExtendedDescription = "Use this command to list all the mine sub commands user has access to and how to use them";
 	public static final String Reload = "/mine reload";
-	public static final String ReloadDescription = "Reloads mine config fine";
-	public static final String ReloadExtendedDescription = "Reloads mine config fine";
+	public static final String ReloadDescription = "Reloads mine config file";
+	public static final String ReloadExtendedDescription = "Reloads mine config file";
 	public static final String Save = "/mine save";
 	public static final String SaveDescription = "Use this command to save mine config";
 	public static final String SaveExtendedDescription = "Saves the mine config being used over one in folder";
@@ -109,7 +109,7 @@ public class Messages {
 //	setspawn: "minereset.setspawn"
 //	clear: "minereset.clear"
 //	fill: "minereset.fill"
-//	fill: "minereset.fillblock"
+//	fillblock: "minereset.fillblock"
 //	definegroup: "minereset.define.group"
 //	deletegroup: "minereset.delete.group"
 //	definemine: "minereset.define.mine"

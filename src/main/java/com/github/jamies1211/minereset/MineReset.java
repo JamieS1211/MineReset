@@ -264,14 +264,14 @@ public class MineReset {
 				.executor(new UpdateOre())
 				.build());
 
-		final CommandSpec safariCommand = CommandSpec.builder()
+		final CommandSpec mineCommand = CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(Messages.HelpDescription))
 				.extendedDescription(Text.of(Messages.HelpExtendedDescription))
 				.executor(new MineHelp())
 				.children(subcommands)
 				.build();
-		Sponge.getCommandManager().register(this, safariCommand, "mine");
+		Sponge.getCommandManager().register(this, mineCommand, "mine");
 	}
 
 	private void setupconfig() {
