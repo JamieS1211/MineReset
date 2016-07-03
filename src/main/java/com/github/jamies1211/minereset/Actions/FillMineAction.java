@@ -14,7 +14,6 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
-import org.spongepowered.api.world.World;
 
 import java.util.*;
 
@@ -70,7 +69,9 @@ public class FillMineAction {
 		}
 
 		/** Move players inside mine on fill to spawn */
-		if (definedBlock != "minecraft:air") { // If end block is air
+
+		if ((definedBlock != null) && (!definedBlock.equalsIgnoreCase("minecraft:air"))) { // If end block is not air
+		//if (definedBlock != "minecraft:air") { // If end block is not air
 			for (Player player : Sponge.getServer().getOnlinePlayers()) {
 
 				if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
@@ -118,12 +119,10 @@ public class FillMineAction {
 		}
 
 		/** Generate all the mine data maps */
-		HashMap<Integer, String> blockMap = new HashMap<Integer, String>();
-		HashMap<Integer, Float> blockPercentages = new HashMap<Integer, Float>();
+		HashMap<Integer, BlockInfo> blockMap = new HashMap<>();
 		String FallbackBlock = config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString();
 
-		blockMap.put(1, "minecraft:stone[variant=stone]");
-		blockPercentages.put(1, 100f);
+		blockMap.put(1, new BlockInfo("minecraft:stone[variant=stone]"));
 		int currentItemCount = 1;
 
 		for (final Object groupItems : config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet()) { // For all ores in a mine
@@ -133,15 +132,14 @@ public class FillMineAction {
 				String itemName = groupItems.toString();
 
 				String blockStateString = config.getNode("4 - MineGroups", group, mine, "ores", itemName, "BlockState").getString();
-				float percentage = config.getNode("4 - MineGroups", group, mine, "ores", groupItems.toString(), "percentage").getFloat();
+				double percentage = config.getNode("4 - MineGroups", group, mine, "ores", groupItems.toString(), "percentage").getFloat();
 
-				float fallBackPercentage = blockPercentages.get(1);
-				float updatedFallBackPercentage = fallBackPercentage - percentage;
+				double fallBackPercentage = blockMap.get(1).percentage;
+				double updatedFallBackPercentage = fallBackPercentage - percentage;
 
-				blockPercentages.put(1, updatedFallBackPercentage); // Updates the fall back percentage.
+				blockMap.get(1).percentage = updatedFallBackPercentage; // Updates the fall back percentage.
 
-				blockMap.put(currentItemCount, blockStateString); // Places the new block.
-				blockPercentages.put(currentItemCount, percentage); // Adds percentage for the new block.
+				blockMap.put(currentItemCount, new BlockInfo(blockStateString, percentage)); // Places the new block and percentage.
 			}
 		}
 
@@ -158,34 +156,33 @@ public class FillMineAction {
 				for (int z = zSmall; z <= zLarge; z++) {
 
 					if (definedBlock == null) {
-						cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(blockMap, blockPercentages, blockMap.size(), FallbackBlock)); // If mine being normally filled
+						cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(blockMap, blockMap.size(), FallbackBlock)); // If mine being normally filled
 					}
 
 					BlockState state = BlockState.builder().build(cont).get();
 					UUID mineWorldUUID = UUID.fromString(mineWorldString);
 					Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
-
 				}
 			}
 		}
 	}
 
-	public static String getRandomBlock (HashMap<Integer, String> blockMap, HashMap<Integer, Float> blockPercentages, int numberOfItemsToIterate, String FallbackBlock) {
+	public static String getRandomBlock (HashMap<Integer, BlockInfo> blockMap, int numberOfItemsToIterate, String FallbackBlock) {
 
-		float RandomlyGeneratedChanceValue = (new Random().nextFloat() * 100);
-		float currentTotalPercentate = 0;
+		double RandomlyGeneratedChanceValue = (new Random().nextDouble() * 100);
+		double currentTotalPercentate = 0;
 
 		for (int currentItemIteration = 1; currentItemIteration <= numberOfItemsToIterate; currentItemIteration++) {
-			float nextTotalPercentate = 100;
+			double nextTotalPercentate = 100;
 
-			currentTotalPercentate = currentTotalPercentate + blockPercentages.get(currentItemIteration); // Updates the working percentage.
+			currentTotalPercentate = currentTotalPercentate + blockMap.get(currentItemIteration).percentage; // Updates the working percentage.
 
 			if ((currentItemIteration + 1) < numberOfItemsToIterate) { // If last item round to 100.
-				nextTotalPercentate = currentTotalPercentate + blockPercentages.get(currentItemIteration + 1);
+				nextTotalPercentate = currentTotalPercentate + blockMap.get(currentItemIteration + 1).percentage;
 			}
 
 			if ((currentTotalPercentate <= RandomlyGeneratedChanceValue) && (nextTotalPercentate >= RandomlyGeneratedChanceValue)) { // Random between this and next ore use this ore.
-				return blockMap.get(currentItemIteration + 1);
+				return blockMap.get(currentItemIteration + 1).blockStateString;
 			}
 		}
 

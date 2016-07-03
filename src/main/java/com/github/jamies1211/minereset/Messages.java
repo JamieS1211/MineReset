@@ -1,5 +1,14 @@
 package com.github.jamies1211.minereset;
 
+import com.github.jamies1211.minereset.Commands.AddRemindTime;
+import com.github.jamies1211.minereset.Commands.ListReminder;
+import com.github.jamies1211.minereset.Commands.RemoveRemindTime;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.text.Text;
+
+import java.util.Arrays;
+
 /**
  * Created by Jamie on 31-May-16.
  */
@@ -27,6 +36,7 @@ public class Messages {
 	public static final String MineGroupAlreadyExists = "is the name of already existing mine group";
 	public static final String DefinedNewMine = "You have defined a new mine with the name: ";
 	public static final String DefinedNewMineGroup = "You have defined a new mine group with the name: ";
+	public static final String RedefinedMine = "You have redefined the mine to the defined information";
 	public static final String ResetTimeTooShort = "Your reset time for a new group must be 1 minute or more";
 	public static final String DelayTooShort = "Your delay can't be less than 0";
 	public static final String AddedOre = "You have added: ";
@@ -43,6 +53,13 @@ public class Messages {
 	public static final String UnableToAddFallback = "is the default block so you cannot add it to the mine again. It is used to top the mine up to 100% full after all the other ores are taken into account";
 	public static final String UnableToEditFallback = "is the default block so you cannot edit its percentage or remove it. It is used to top the mine up to 100% full after all the other ores are taken into account";
 	public static final String OreSamePercentageError = "No changes were made because the new percentage is the same as the old percentage for";
+	public static final String RemindList = "List of seconds before mine reset a reminder message is issued:";
+	public static final String RemindTimeExist = "That time is already on the list of times to send a reset reminder so was not added";
+	public static final String RemindTimeNotExist = "That time is not on the list of times to send a reset reminder so was not removed";
+	public static final String RemindTimeAdd1 = "You have added";
+	public static final String RemindTimeAdd2 = "to the list of times a message will be sent before a mine reset reminding of a mine reset";
+	public static final String RemindTimeRemove1 = "You have removed";
+	public static final String RemindTimeRemove2 = "from the list of times a message will be sent before a mine reset reminding of a mine reset";
 
 	/** Command Usages */
 	public static final String Help = "/mine help";
@@ -93,6 +110,15 @@ public class Messages {
 	public static final String Updateore = "Usage /mine updatemore [mine] [percentage]";
 	public static final String UpdateoreDescription = "Updates the block you are standing on in listed mine to listed percentage";
 	public static final String UpdateoreExtendedDescription = "Updates the block you are standing on in listed mine to listed percentage";
+	public static final String ListReminder = "Usage /mine listreminders";
+	public static final String ListReminderDescription = "List the times before a mine reset reminder messages are sent";
+	public static final String ListReminderExtendedDescription = "List the times before a mine reset reminder messages are sent";
+	public static final String AddRemindTime = "Usage /mine addremindtime [seconds]";
+	public static final String AddRemindTimeDescription = "Add a time (in seconds) to send a reset reminder message before a mine reset";
+	public static final String AddRemindTimeExtendedDescription = "Add a time (in seconds) to send a reset reminder message before a mine reset";
+	public static final String RemoveRemindTime = "Usage /mine removeremindtime [seconds]";
+	public static final String RemoveRemindTimeDescription = "Remove a time (in seconds) to send a reset reminder message before a mine reset";
+	public static final String RemoveRemindTimeExtendedDescription = "Remove a time (in seconds) to send a reset reminder message before a mine reset";
 
 	/** Player Messages */
 	public static final String ResetingNowSingular = "is resetting now";
@@ -117,5 +143,11 @@ public class Messages {
 //	list: "minereset.list"
 //	info: "minereset.details"
 //	addore: "minereset.mine.addore"
-//	updateore: "minereset.mine.updateore"
+//	updateore: "minereset.mine.updateore
+//  listreminders: "minereset.mine.listremindtime"
+//  addremindtime: "minereset.mine.addremindtime"
+//  removeremindtime: "minereset.mine.removeremindtime"
+
+
+
 }

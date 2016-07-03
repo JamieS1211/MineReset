@@ -105,6 +105,30 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.AddoreExtendedDescription));
 		}
 
+		if (src.hasPermission("minereset.updateore")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate Ore Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.Updateore));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateoreExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.listreminders")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lList Remind Times Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.ListReminder));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.ListReminderExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.addremindtime")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lAdd RemindTime Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.AddRemindTime));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.AddRemindTimeExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.removeremindtime")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lRemove RemindTime Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.RemoveRemindTime));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.RemoveRemindTime));
+		}
+
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e&l[Mine Help End]"));
 		return CommandResult.success();
 	}

@@ -264,6 +264,31 @@ public class MineReset {
 				.executor(new UpdateOre())
 				.build());
 
+		subcommands.put(Arrays.asList("listreminders"), CommandSpec.builder()
+				.permission("minereset.mine.listremindtime")
+				.description(Text.of(Messages.ListReminderDescription))
+				.extendedDescription(Text.of(Messages.ListReminderExtendedDescription))
+				.executor(new ListReminder())
+				.build());
+
+		subcommands.put(Arrays.asList("addremindtime"), CommandSpec.builder()
+				.permission("minereset.mine.addremindtime")
+				.description(Text.of(Messages.AddRemindTimeDescription))
+				.extendedDescription(Text.of(Messages.AddRemindTimeExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("time"))))
+				.executor(new AddRemindTime())
+				.build());
+
+		subcommands.put(Arrays.asList("removeremindtime"), CommandSpec.builder()
+				.permission("minereset.mine.removeremindtime")
+				.description(Text.of(Messages.RemoveRemindTimeDescription))
+				.extendedDescription(Text.of(Messages.RemoveRemindTimeExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("time"))))
+				.executor(new RemoveRemindTime())
+				.build());
+
 		final CommandSpec mineCommand = CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(Messages.HelpDescription))
@@ -306,7 +331,7 @@ public class MineReset {
 
 	public int secondsSinceStart;
 
-	public List<String> remindTimes;
+	public static List<String> remindTimes;
 
 	public void cycle() {
 		if (Sponge.getServer().getOnlinePlayers().size() > 0) {
