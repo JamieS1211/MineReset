@@ -81,7 +81,13 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.DefineMineExtendedDescription));
 		}
 
-		if (src.hasPermission("minereset.define.mine")) {
+		if (src.hasPermission("minereset.redefine.mine")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lRedefine Mine Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.RedefineMine));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.RedefineMineExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.delete.mine")) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lDelete Mine Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.DeleteMine));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.DeleteMineExtendedDescription));

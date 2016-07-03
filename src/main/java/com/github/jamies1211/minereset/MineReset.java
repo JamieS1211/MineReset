@@ -216,6 +216,22 @@ public class MineReset {
 				.executor(new DefineMine())
 				.build());
 
+		subcommands.put(Arrays.asList("redefinemine"), CommandSpec.builder()
+				.permission("minereset.redefine.mine")
+				.description(Text.of(Messages.RedefineMineDescription))
+				.extendedDescription(Text.of(Messages.RedefineMineExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("x1"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("y1"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("z1"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("x2"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("y2"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("z2"))))
+				.executor(new RedefineMine())
+				.build());
+
 		subcommands.put(Arrays.asList("deletemine"), CommandSpec.builder()
 				.permission("minereset.delete.mine")
 				.description(Text.of(Messages.DeleteMineDescription))

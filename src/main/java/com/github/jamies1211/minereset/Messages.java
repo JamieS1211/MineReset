@@ -95,6 +95,9 @@ public class Messages {
 	public static final String DefineMine = "/mine definemine [group] [mine name] [pos1x] [pos1y] [pos1z] [pos2x] [pos2y] [pos2z]";
 	public static final String DefineMineDescription = "Create a new mine";
 	public static final String DefineMineExtendedDescription = "Create a new mine in listed group with name and positions as listed";
+	public static final String RedefineMine = "/mine redefinemine [group] [mine name] [pos1x] [pos1y] [pos1z] [pos2x] [pos2y] [pos2z]";
+	public static final String RedefineMineDescription = "Redefine a mine to change its settings";
+	public static final String RedefineMineExtendedDescription = "Redefine a mine to change its settings to listed group with name and positions as listed";
 	public static final String DeleteMine = "/mine deletemine [mine name]";
 	public static final String DeleteMineDescription = "Delete a mine";
 	public static final String DeleteMineExtendedDescription = "Delete the mine listed";
@@ -139,6 +142,7 @@ public class Messages {
 //	definegroup: "minereset.define.group"
 //	deletegroup: "minereset.delete.group"
 //	definemine: "minereset.define.mine"
+//	redefinemine: "minereset.redefine.mine"
 //	deletemine: "minereset.delete.mine"
 //	list: "minereset.list"
 //	info: "minereset.details"
@@ -147,7 +151,4 @@ public class Messages {
 //  listreminders: "minereset.mine.listremindtime"
 //  addremindtime: "minereset.mine.addremindtime"
 //  removeremindtime: "minereset.mine.removeremindtime"
-
-
-
 }
