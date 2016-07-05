@@ -36,7 +36,8 @@ public class Messages {
 	public static final String MineGroupAlreadyExists = "is the name of already existing mine group";
 	public static final String DefinedNewMine = "You have defined a new mine with the name: ";
 	public static final String DefinedNewMineGroup = "You have defined a new mine group with the name: ";
-	public static final String RedefinedMine = "You have redefined the mine to the defined information";
+	public static final String UpdateMineGroup = "You have updated the mine group with the name: ";
+	public static final String RedefinedMine = "You have redefined the mine to the defined information for mine:";
 	public static final String ResetTimeTooShort = "Your reset time for a new group must be 1 minute or more";
 	public static final String DelayTooShort = "Your delay can't be less than 0";
 	public static final String AddedOre = "You have added: ";
@@ -53,6 +54,8 @@ public class Messages {
 	public static final String UnableToAddFallback = "is the default block so you cannot add it to the mine again. It is used to top the mine up to 100% full after all the other ores are taken into account";
 	public static final String UnableToEditFallback = "is the default block so you cannot edit its percentage or remove it. It is used to top the mine up to 100% full after all the other ores are taken into account";
 	public static final String OreSamePercentageError = "No changes were made because the new percentage is the same as the old percentage for";
+	public static final String ChangedFallback = "You have changed the fallback block to:";
+	public static final String SameFallback = "No changes were made because this is already the fallback block";
 	public static final String RemindList = "List of seconds before mine reset a reminder message is issued:";
 	public static final String RemindTimeExist = "That time is already on the list of times to send a reset reminder so was not added";
 	public static final String RemindTimeNotExist = "That time is not on the list of times to send a reset reminder so was not removed";
@@ -89,6 +92,9 @@ public class Messages {
 	public static final String DefineGroup = "/mine definegroup [group name] [reset time] [initial delay]";
 	public static final String DefineGroupDescription = "Create a new mine group";
 	public static final String DefineGroupExtendedDescription = "Create a new mine group with name, reset time and initial delay as listed";
+	public static final String UpdateGroup = "/mine updategroup [group name] [reset time] [initial delay]";
+	public static final String UpdateGroupDescription = "Updates an existing mine group";
+	public static final String UpdateGroupExtendedDescription = "Updates an existing mine group with name, reset time and initial delay as listed";
 	public static final String DeleteGroup = "/mine deletegroup [group name] [safe|force]";
 	public static final String DeleteGroupDescription = "Deletes an existing mine group";
 	public static final String DeleteGroupExtendedDescription = "Deletes an existing mine group. If safe then deletion will fail if mine group has contents";
@@ -113,6 +119,9 @@ public class Messages {
 	public static final String Updateore = "Usage /mine updatemore [mine] [percentage]";
 	public static final String UpdateoreDescription = "Updates the block you are standing on in listed mine to listed percentage";
 	public static final String UpdateoreExtendedDescription = "Updates the block you are standing on in listed mine to listed percentage";
+	public static final String Updatefallback = "Usage /mine updatemfallback [mine]";
+	public static final String UpdatefallbackDescription = "Updates the mine listed to use the block you are standing on as the fallback block";
+	public static final String UpdatefallbackExtendedDescription = "Updates the mine listed to use the block you are standing on as the fallback block";
 	public static final String ListReminder = "Usage /mine listreminders";
 	public static final String ListReminderDescription = "List the times before a mine reset reminder messages are sent";
 	public static final String ListReminderExtendedDescription = "List the times before a mine reset reminder messages are sent";
@@ -147,7 +156,8 @@ public class Messages {
 //	list: "minereset.list"
 //	info: "minereset.details"
 //	addore: "minereset.mine.addore"
-//	updateore: "minereset.mine.updateore
+//	updateore: "minereset.mine.updateore"
+//  updatefallback: "minereset.mine.updatefallback"
 //  listreminders: "minereset.mine.listremindtime"
 //  addremindtime: "minereset.mine.addremindtime"
 //  removeremindtime: "minereset.mine.removeremindtime"

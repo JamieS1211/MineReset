@@ -25,6 +25,27 @@ public class FillMineAction {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
+		/** General data */
+		if (config.getNode("4 - MineGroups", group, mine, "SmartFill").getValue() == null) {
+			config.getNode("4 - MineGroups", group, mine, "SmartFill").setValue("false");
+			MineReset.plugin.save();
+		}
+
+		if (config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").getValue() == null) {
+			config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");
+			MineReset.plugin.save();
+		}
+
+		if (config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").getValue() == null) {
+			config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue("3");
+			MineReset.plugin.save();
+		}
+
+
+		Boolean useSmartFill = config.getNode("4 - MineGroups", group, mine, "SmartFill").getBoolean();
+		Boolean smartFillOnlyAir = config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").getBoolean();
+		int safeRadius = config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").getInt();
+
 		/** Mine data */
 		int x1 = config.getNode("4 - MineGroups", group, mine, "pos1", "x").getInt();
 		int y1 = config.getNode("4 - MineGroups", group, mine, "pos1", "y").getInt();
@@ -33,6 +54,7 @@ public class FillMineAction {
 		int y2 = config.getNode("4 - MineGroups", group, mine, "pos2", "y").getInt();
 		int z2 = config.getNode("4 - MineGroups", group, mine, "pos2", "z").getInt();
 		String mineWorldString = config.getNode("4 - MineGroups", group, mine, "MineWorld").getString();
+		UUID mineWorldUUID = UUID.fromString(mineWorldString);
 
 
 		/** Spawn data */
@@ -68,49 +90,50 @@ public class FillMineAction {
 			zSmall = z1;
 		}
 
-		/** Move players inside mine on fill to spawn */
+		/** Move players inside mine on fill to spawn if smart fill setting not being used */
 
-		if ((definedBlock != null) && (!definedBlock.equalsIgnoreCase("minecraft:air"))) { // If end block is not air
-		//if (definedBlock != "minecraft:air") { // If end block is not air
-			for (Player player : Sponge.getServer().getOnlinePlayers()) {
+		if (!useSmartFill) {
+			if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
+				for (Player player : Sponge.getServer().getOnlinePlayers()) {
 
-				if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
+					if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
 
-					if (player.getLocation().getX() >= xSmall && player.getLocation().getX() - 1 <= xLarge) {
-						if (player.getLocation().getY() >= ySmall && player.getLocation().getY() <= yLarge) {
-							if (player.getLocation().getZ() >= zSmall && player.getLocation().getZ() - 1 <= zLarge) {
+						if (player.getLocation().getX() >= xSmall && player.getLocation().getX() - 1 <= xLarge) {
+							if (player.getLocation().getY() >= ySmall && player.getLocation().getY() <= yLarge) {
+								if (player.getLocation().getZ() >= zSmall && player.getLocation().getZ() - 1 <= zLarge) {
 
-								player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InsideFillingMine));
+									player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InsideFillingMine));
 
-								double targetPitch = player.getRotation().getX();
-								double targetYaw = player.getRotation().getY();
-								double targetRoll = player.getRotation().getZ();
+									double targetPitch = player.getRotation().getX();
+									double targetYaw = player.getRotation().getY();
+									double targetRoll = player.getRotation().getZ();
 
-								if (direction.equalsIgnoreCase("North")) {
-									targetPitch = 0;
-									targetYaw = 180;
-									targetRoll = 180;
-								} else if (direction.equalsIgnoreCase("South")) {
-									targetPitch = 0;
-									targetYaw = 0;
-									targetRoll = 0;
-								} else if (direction.equalsIgnoreCase("East")) {
-									targetPitch = 0;
-									targetYaw = 270;
-									targetRoll = 270;
-								} else if (direction.equalsIgnoreCase("West")) {
-									targetPitch = 0;
-									targetYaw = 90;
-									targetRoll = 90;
-								} else {
-									MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.TeleportRotationError));
+									if (direction.equalsIgnoreCase("North")) {
+										targetPitch = 0;
+										targetYaw = 180;
+										targetRoll = 180;
+									} else if (direction.equalsIgnoreCase("South")) {
+										targetPitch = 0;
+										targetYaw = 0;
+										targetRoll = 0;
+									} else if (direction.equalsIgnoreCase("East")) {
+										targetPitch = 0;
+										targetYaw = 270;
+										targetRoll = 270;
+									} else if (direction.equalsIgnoreCase("West")) {
+										targetPitch = 0;
+										targetYaw = 90;
+										targetRoll = 90;
+									} else {
+										MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.TeleportRotationError));
+									}
+
+									Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
+									Vector3d spawnRotation = new Vector3d(targetPitch, targetYaw, targetRoll);
+
+									player.transferToWorld(spawnWorldUUID, spawn);
+									player.setRotation(spawnRotation);
 								}
-
-								Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
-								Vector3d spawnRotation = new Vector3d(targetPitch, targetYaw, targetRoll);
-
-								player.transferToWorld(spawnWorldUUID, spawn);
-								player.setRotation(spawnRotation);
 							}
 						}
 					}
@@ -155,13 +178,39 @@ public class FillMineAction {
 			for (int y = ySmall; y <= yLarge; y++) {
 				for (int z = zSmall; z <= zLarge; z++) {
 
-					if (definedBlock == null) {
-						cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(blockMap, blockMap.size(), FallbackBlock)); // If mine being normally filled
+					Boolean placement = true;
+
+					if (useSmartFill) { // If using smart fill.
+						if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
+							for (Player player : Sponge.getServer().getOnlinePlayers()) {
+								if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) { // If player in world.
+									if (CheckInVolume.checkInVolume(player, xSmall, ySmall, zSmall, xLarge, yLarge, zLarge)) { // If player in mine.
+										if (player.getLocation().getPosition().distance(x, y, z) <= safeRadius) { // If block in safty zone.
+
+											if (!smartFillOnlyAir) { // If not using only air cancel block place.
+												placement = false;
+											} else { // If using only air make sure start block is solid.
+												if (!IsSolidBlock.isSold(Sponge.getServer().getWorld(mineWorldUUID).get().getBlock(x, y, z).getType())) {
+													placement = false;
+												}
+											}
+
+										}
+									}
+								}
+							}
+
+						}
 					}
 
-					BlockState state = BlockState.builder().build(cont).get();
-					UUID mineWorldUUID = UUID.fromString(mineWorldString);
-					Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
+					if (placement) {
+						if (definedBlock == null) {
+							cont = dataContainer.set(DataQuery.of("BlockState"), getRandomBlock(blockMap, blockMap.size(), FallbackBlock)); // If mine being normally filled
+						}
+
+						BlockState state = BlockState.builder().build(cont).get();
+						Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
+					}
 				}
 			}
 		}

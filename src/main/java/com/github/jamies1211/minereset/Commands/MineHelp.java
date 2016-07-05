@@ -69,6 +69,12 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.DefineGroupExtendedDescription));
 		}
 
+		if (src.hasPermission("minereset.update.group")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate Group Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.UpdateGroup));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateGroupExtendedDescription));
+		}
+
 		if (src.hasPermission("minereset.delete.group")) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lDelete Group Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.DeleteGroup));
@@ -115,6 +121,12 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate Ore Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.Updateore));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateoreExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.updatefallback")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate Fallback Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.Updatefallback));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdatefallbackExtendedDescription));
 		}
 
 		if (src.hasPermission("minereset.listreminders")) {

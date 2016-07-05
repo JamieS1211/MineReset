@@ -190,6 +190,17 @@ public class MineReset {
 				.executor(new DefineGroup())
 				.build());
 
+		subcommands.put(Arrays.asList("updategroup"), CommandSpec.builder()
+				.permission("minereset.update.group")
+				.description(Text.of(Messages.UpdateGroupDescription))
+				.extendedDescription(Text.of(Messages.UpdateGroupExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("resetTime"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("initialDelay"))))
+				.executor(new UpdateGroup())
+				.build());
+
 		subcommands.put(Arrays.asList("deletegroup"), CommandSpec.builder()
 				.permission("minereset.define.group")
 				.description(Text.of(Messages.DeleteGroupDescription))
@@ -280,6 +291,15 @@ public class MineReset {
 				.executor(new UpdateOre())
 				.build());
 
+		subcommands.put(Arrays.asList("updatefallback"), CommandSpec.builder()
+				.permission("minereset.mine.updatefallback")
+				.description(Text.of(Messages.UpdatefallbackDescription))
+				.extendedDescription(Text.of(Messages.UpdatefallbackExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
+				.executor(new UpdateFallback())
+				.build());
+
 		subcommands.put(Arrays.asList("listreminders"), CommandSpec.builder()
 				.permission("minereset.mine.listremindtime")
 				.description(Text.of(Messages.ListReminderDescription))
@@ -323,6 +343,17 @@ public class MineReset {
 		this.config.getNode("3 - Spawn", "SpawnZ").setValue(9.5);
 		this.config.getNode("3 - Spawn", "SpawnDirection").setValue("West");
 		this.config.getNode("3 - Spawn", "SpawnWorld").setValue(Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
+		this.config.getNode("5 - Lists", "AirBlocks").setValue(
+				"\"minecraft:torch\", \"minecraft:redstone_torch\", \"minecraft:redstone_wire\", \"minecraft:powered_repeater\", \"minecraft:unpowered_repeater\", \"minecraft:powered_comparator\",\n" +
+				"\"minecraft:unpowered_comparator\", \"minecraft:wooden_button\", \"minecraft:stone_button\", \"minecraft:lever\", \"minecraft:tripwire_hook\", \"minecraft:stone_pressure_plate\",\n" +
+				"\"minecraft:wooden_pressure_plate\", \"minecraft:light_weighted_pressure_plate\", \"minecraft:heavy_weighted_pressure_plate\", \"minecraft:trapdoor\", \"minecraft:iron_trapdoor\",\n" +
+				"\"minecraft:fence_gate\", \"minecraft:spruce_fence_gate\", \"minecraft:birch_fence_gate\", \"minecraft:jungle_fence_gate\", \"minecraft:dark_oak_fence_gate\", \"minecraft:acacia_fence_gate\",\n" +
+				"\"minecraft:wooden_door\", \"minecraft:iron_door\", \"minecraft:spruce_door\", \"minecraft:birch_door\", \"minecraft:jungle_door\", \"minecraft:acacia_door\", \"minecraft:dark_oak_door\", \n" +
+				"\"minecraft:rail\", \"minecraft:golden_rail\", \"minecraft:detector_rail\", \"minecraft:activator_rail\", \"minecraft:tallgrass\", \"minecraft:sapling\", \"minecraft:deadbush\",\n" +
+				"\"minecraft:yellow_flower\", \"minecraft:red_flower\", \"minecraft:brown_mushroom\", \"minecraft:red_mushroom\", \"minecraft:ladder\", \"minecraft:snow_layer\", \"minecraft:fence\",\n" +
+				"\"minecraft:nether_brick_fence\", \"minecraft:iron_bars\", \"minecraft:glass_pane\", \"minecraft:vine\", \"minecraft:waterlily\", \"minecraft:cobblestone_wall\", \"minecraft:anvil\",\n" +
+				"\"minecraft:stained_glass_pane\", \"minecraft:carpet\", \"minecraft:double_plant\", \"minecraft:wall_sign\", \"minecraft:standing_sign\", \"minecraft:skull\", \"minecraft:brewing_stand\",\n" +
+				"\"minecraft:skull\", \"minecraft:standing_banner\"");
 		save();
 	}
 
@@ -339,7 +370,7 @@ public class MineReset {
 		try {
 			this.config = getConfigManager().load();
 			getLogger().info("File Loaded");
-			remindTimes = new ArrayList<String>(Arrays.asList(config.getNode("2 - RemindSecondList").getString().split(", ")));
+			remindTimes = new ArrayList<>(Arrays.asList(config.getNode("2 - RemindSecondList").getString().split(", ")));
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
