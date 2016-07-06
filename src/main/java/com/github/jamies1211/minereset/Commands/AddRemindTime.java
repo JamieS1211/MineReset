@@ -36,7 +36,6 @@ public class AddRemindTime implements CommandExecutor {
 			timeListString = timeListString + time; // Add time to list.
 
 			config.getNode("2 - RemindSecondList").setValue(timeListString); // Wright changes to file.
-
 			MineReset.plugin.save();
 
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindTimeAdd1 +

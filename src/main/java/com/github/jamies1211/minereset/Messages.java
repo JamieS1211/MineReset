@@ -63,6 +63,12 @@ public class Messages {
 	public static final String RemindTimeAdd2 = "to the list of times a message will be sent before a mine reset reminding of a mine reset";
 	public static final String RemindTimeRemove1 = "You have removed";
 	public static final String RemindTimeRemove2 = "from the list of times a message will be sent before a mine reset reminding of a mine reset";
+	public static final String AirBlockExist = "That time is already on the list of times to send a reset reminder so was not added";
+	public static final String AirBlockNotExist = "That block is not on the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
+	public static final String AirBlockAdd1 = "You have added";
+	public static final String AirBlockAdd2 = "to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
+	public static final String AirBlockRemove1 = "You have removed";
+	public static final String AirBlockRemove2 = "from the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
 
 	/** Command Usages */
 	public static final String Help = "/mine help";
@@ -131,6 +137,15 @@ public class Messages {
 	public static final String RemoveRemindTime = "Usage /mine removeremindtime [seconds]";
 	public static final String RemoveRemindTimeDescription = "Remove a time (in seconds) to send a reset reminder message before a mine reset";
 	public static final String RemoveRemindTimeExtendedDescription = "Remove a time (in seconds) to send a reset reminder message before a mine reset";
+	public static final String MineSetupSmartFill = "Usage /mine setupsmartfill [mine] [true|false(enabled)] [radius] [true|false(only air)]";
+	public static final String MineSetupSmartFillDescription = "Changes the smart fill settings for the listed mine to the listed settings";
+	public static final String MineSetupSmartFillExtendedDescription = "Changes the smart fill settings for the listed mine to the listed settings";
+	public static final String AddAirBlock = "Usage /mine addairblock";
+	public static final String AddAirBlockDescription = "Adds the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
+	public static final String AddAirBlockExtendedDescription = "Adds the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
+	public static final String RemoveAirBlock = "Usage /mine removeairblock";
+	public static final String RemoveAirBlockDescription = "Removes the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
+	public static final String RemoveAirBlockExtendedDescription = "Removes the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
 
 	/** Player Messages */
 	public static final String ResetingNowSingular = "is resetting now";
@@ -149,6 +164,7 @@ public class Messages {
 //	fill: "minereset.fill"
 //	fillblock: "minereset.fillblock"
 //	definegroup: "minereset.define.group"
+// updategroup: "minereset.update.group"
 //	deletegroup: "minereset.delete.group"
 //	definemine: "minereset.define.mine"
 //	redefinemine: "minereset.redefine.mine"
@@ -161,4 +177,7 @@ public class Messages {
 //  listreminders: "minereset.mine.listremindtime"
 //  addremindtime: "minereset.mine.addremindtime"
 //  removeremindtime: "minereset.mine.removeremindtime"
+//  setupsmartfill: "minereset.mine.setup.smartfill"
+//  addairblock: "minereset.mine.addairblock"
+//  removeairblock: "minereset.mine.removeairblock"
 }

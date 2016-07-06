@@ -31,20 +31,20 @@ public class FillMineAction {
 			MineReset.plugin.save();
 		}
 
-		if (config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").getValue() == null) {
-			config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");
-			MineReset.plugin.save();
-		}
-
 		if (config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").getValue() == null) {
 			config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue("3");
 			MineReset.plugin.save();
 		}
 
+		if (config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").getValue() == null) {
+			config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");
+			MineReset.plugin.save();
+		}
+
 
 		Boolean useSmartFill = config.getNode("4 - MineGroups", group, mine, "SmartFill").getBoolean();
-		Boolean smartFillOnlyAir = config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").getBoolean();
 		int safeRadius = config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").getInt();
+		Boolean smartFillOnlyAir = config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").getBoolean();
 
 		/** Mine data */
 		int x1 = config.getNode("4 - MineGroups", group, mine, "pos1", "x").getInt();

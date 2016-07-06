@@ -16,4 +16,14 @@ public class BlockBelowPlayer {
 
 		return block;
 	}
+
+	public static String getBlockTypeStringBelowPlayer(Player player) {
+		String block = player.getLocation().sub(0, 1, 0).getBlock().getType().getName();
+
+		if (block.contains("light_")) { // For light blue wool causes error.
+			block = block.replace("light_", "light");
+		}
+
+		return block;
+	}
  }

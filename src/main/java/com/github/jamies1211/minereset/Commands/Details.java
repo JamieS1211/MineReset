@@ -77,6 +77,32 @@ public class Details implements CommandExecutor {
 
 			if (group != null) {
 
+
+				int resetTime = config.getNode("4 - MineGroups", group, "resetTime").getInt();
+				int initialDelay = config.getNode("4 - MineGroups", group, "initialDelay").getInt();
+
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "-----------------  Mine info  -----------------"));
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Mine: " + name + "       " + "Group: " + group));
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Reset time: " +
+						resetTime + " ( " + SecondsToString.secondsToTimeString(resetTime) + ")"));
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Initial Delay: " +
+						initialDelay + " ( " + SecondsToString.secondsToTimeString(initialDelay) + ")"));
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Smart Fill: " +
+						config.getNode("4 - MineGroups", group, name, "SmartFill").getBoolean()));
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Smart Radius: " +
+						config.getNode("4 - MineGroups", group, name, "SmartFillRadius").getInt()));
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Smart Fill Only Air: " +
+						config.getNode("4 - MineGroups", group, name, "SmartFillOnlyAir").getBoolean()));
+
+
+
 				for (final Object groupItems : config.getNode("4 - MineGroups", group, name, "ores").getChildrenMap().keySet()) {
 					String itemName = groupItems.toString();
 					if (itemName.equalsIgnoreCase("fallback")) {
@@ -102,6 +128,9 @@ public class Details implements CommandExecutor {
 						oreCount++;
 					}
 				}
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "-----------------------------------------------"));
+
 
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + name + " " + Messages.MineDoesNotExist));

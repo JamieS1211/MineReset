@@ -144,7 +144,25 @@ public class MineHelp implements CommandExecutor {
 		if (src.hasPermission("minereset.removeremindtime")) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lRemove RemindTime Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.RemoveRemindTime));
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.RemoveRemindTime));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.RemoveRemindTimeExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.setup.smartfill")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lSetup SmartFill Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.MineSetupSmartFill));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.MineSetupSmartFillExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.addairblock")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lAdd AirBlock Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.AddAirBlock));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.AddAirBlockExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.removeairblock")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lRemove AirBlock Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.RemoveAirBlock));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.RemoveAirBlockExtendedDescription));
 		}
 
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e&l[Mine Help End]"));
