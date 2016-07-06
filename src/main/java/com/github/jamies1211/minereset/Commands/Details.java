@@ -45,12 +45,11 @@ public class Details implements CommandExecutor {
 				}
 
 				if (!infoMap.isEmpty()) {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " reset time: " + SecondsToString.secondsToTimeString(infoMap.get("resetTime"))));
-					if (infoMap.get("initialDelay") == 0) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: No initial delay"));
-					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: " + SecondsToString.secondsToTimeString(infoMap.get("initialDelay"))));
-					}
+
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "-----------------  Group info  -----------------"));
+
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group: " + name));
+
 					if (mineList.size() < 1) {
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " has no mines"));
 					} else if (mineList.size() == 1) {
@@ -58,6 +57,16 @@ public class Details implements CommandExecutor {
 					} else {
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " contains mines: " + mineList));
 					}
+
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " reset time: " + SecondsToString.secondsToTimeString(infoMap.get("resetTime"))));
+
+						if (infoMap.get("initialDelay") == 0) {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: No initial delay"));
+					} else {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: " + SecondsToString.secondsToTimeString(infoMap.get("initialDelay"))));
+					}
+
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "-----------------------------------------------"));
 				} else {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoMineGroups));
 				}
