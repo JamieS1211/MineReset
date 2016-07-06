@@ -51,19 +51,22 @@ public class Details implements CommandExecutor {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group: " + name));
 
 					if (mineList.size() < 1) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " has no mines"));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "No mines"));
 					} else if (mineList.size() == 1) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " contains mine: " + mineList));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Contains mine: " + mineList));
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " contains mines: " + mineList));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Contains mines: " + mineList));
 					}
 
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " reset time: " + SecondsToString.secondsToTimeString(infoMap.get("resetTime"))));
 
-						if (infoMap.get("initialDelay") == 0) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: No initial delay"));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Reset time: " +
+							infoMap.get("resetTime") + " ( " + SecondsToString.secondsToTimeString(infoMap.get("resetTime")) + ")"));
+
+					if (infoMap.get("initialDelay") == 0) {
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Initial delay: No initial delay"));
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group " + name + " initial delay: " + SecondsToString.secondsToTimeString(infoMap.get("initialDelay"))));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Initial Delay: " +
+								infoMap.get("initialDelay") + " ( " + SecondsToString.secondsToTimeString(infoMap.get("initialDelay")) + ")"));
 					}
 
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "-----------------------------------------------"));
@@ -98,8 +101,12 @@ public class Details implements CommandExecutor {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Reset time: " +
 						resetTime + " ( " + SecondsToString.secondsToTimeString(resetTime) + ")"));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Initial Delay: " +
-						initialDelay + " ( " + SecondsToString.secondsToTimeString(initialDelay) + ")"));
+				if (initialDelay == 0) {
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Initial delay: No initial delay"));
+				} else {
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Initial Delay: " +
+							initialDelay + " ( " + SecondsToString.secondsToTimeString(initialDelay) + ")"));
+				}
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Smart Fill: " +
 						config.getNode("4 - MineGroups", group, name, "SmartFill").getBoolean()));
