@@ -1,4 +1,4 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.InfoCommands;
 
 /**
  * Created by Jamie on 31-May-16.
@@ -58,6 +58,10 @@ public class ListContents implements CommandExecutor {
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoMines));
 			}
+
+		} else if (type.equalsIgnoreCase("spawns")) {
+
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "All Spawns: " + config.getNode("3 - Spawn").getChildrenMap().keySet()));
 
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.List));

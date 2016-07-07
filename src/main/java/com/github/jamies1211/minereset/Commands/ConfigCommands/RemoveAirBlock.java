@@ -1,4 +1,4 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Messages;

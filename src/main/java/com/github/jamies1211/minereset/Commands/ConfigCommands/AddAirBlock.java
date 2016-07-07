@@ -1,4 +1,4 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Messages;
@@ -33,7 +33,7 @@ public class AddAirBlock implements CommandExecutor {
 
 			if (!airBlocks.contains(blockString)) {
 
-				String blockListString = config.getNode("2 - RemindSecondList").getString();
+				String blockListString = config.getNode("5 - Lists", "AirBlocks").getString();
 
 				if (!airBlocks.isEmpty()) { // Add comma if other values there.
 					blockListString = blockListString + ", ";

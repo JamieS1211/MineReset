@@ -1,6 +1,5 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
-import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -14,14 +13,14 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 /**
  * Created by Jamie on 28-May-16.
  */
-public class ClearMine implements CommandExecutor {
+public class DeleteMine implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
-		String mine = args.<String>getOne("name").get().toUpperCase();
+		final String mine = args.<String>getOne("name").get().toUpperCase();
 
 		String group = null;
 
@@ -31,11 +30,12 @@ public class ClearMine implements CommandExecutor {
 			}
 		}
 
-		if (group == null) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+		if (group != null) {
+			config.getNode("4 - MineGroups", group).removeChild(mine);
+			MineReset.plugin.save();
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DeletedMine + mine));
 		} else {
-			FillMineAction.fill(group, mine, "minecraft:air");
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineCleared));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		}
 
 		return CommandResult.success();

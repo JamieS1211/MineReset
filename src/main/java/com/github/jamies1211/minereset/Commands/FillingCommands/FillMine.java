@@ -1,26 +1,21 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.FillingCommands;
 
-import com.github.jamies1211.minereset.Actions.TimeUntillFill;
+import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
-import com.github.jamies1211.minereset.SecondsToString;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Jamie on 28-May-16.
  */
-public class CheckTime implements CommandExecutor {
+public class FillMine implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -41,8 +36,7 @@ public class CheckTime implements CommandExecutor {
 		if (group == null) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix  + mine + " " + Messages.ResetTime + " " +
-					SecondsToString.secondsToTimeString(TimeUntillFill.getTimeUntilFill(group))));
+			FillMineAction.fill(group, mine, null, src);
 		}
 
 		return CommandResult.success();

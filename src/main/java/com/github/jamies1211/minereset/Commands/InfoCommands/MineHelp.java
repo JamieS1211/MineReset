@@ -1,4 +1,4 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.InfoCommands;
 
 import com.github.jamies1211.minereset.Messages;
 import org.spongepowered.api.command.CommandException;
@@ -39,10 +39,28 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.SaveExtendedDescription));
 		}
 
-		if (src.hasPermission("minereset.setspawn")) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lSetSpawn Command"));
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.Setspawn));
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.SetspawnExtendedDescription));
+		if (src.hasPermission("minereset.addspawn")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lAddSpawn Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.AddSpawn));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.AddSpawnExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.removespawn")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lRemoveSpawn Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.RemoveSpawn));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.RemoveSpawnExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.updatespawn")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdateSpawn Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.UpdateSpawn));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateSpawnExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.changespawn")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lChangeSpawn Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.ChangeSpawn));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.ChangeSpawnExtendedDescription));
 		}
 
 		if (src.hasPermission("minereset.clear")) {
@@ -163,6 +181,12 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lRemove AirBlock Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.RemoveAirBlock));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.RemoveAirBlockExtendedDescription));
+		}
+
+		if (src.hasPermission("minereset.update.chatSettings")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate ChatSEttings Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.UpdateChatSettings));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateChatSettingsExtendedDescription));
 		}
 
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e&l[Mine Help End]"));

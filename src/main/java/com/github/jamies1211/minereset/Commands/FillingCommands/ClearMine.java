@@ -1,4 +1,4 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.FillingCommands;
 
 import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Messages;
@@ -14,15 +14,14 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 /**
  * Created by Jamie on 28-May-16.
  */
-public class FillMine implements CommandExecutor {
+public class ClearMine implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
-		String mine = args.<String>getOne("name").get();
-		mine = mine.toUpperCase();
+		String mine = args.<String>getOne("name").get().toUpperCase();
 
 		String group = null;
 
@@ -35,8 +34,8 @@ public class FillMine implements CommandExecutor {
 		if (group == null) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		} else {
-			FillMineAction.fill(group, mine, null);
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineFilled));
+			FillMineAction.fill(group, mine, "minecraft:air", src);
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineCleared));
 		}
 
 		return CommandResult.success();

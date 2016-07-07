@@ -1,14 +1,5 @@
 package com.github.jamies1211.minereset;
 
-import com.github.jamies1211.minereset.Commands.AddRemindTime;
-import com.github.jamies1211.minereset.Commands.ListReminder;
-import com.github.jamies1211.minereset.Commands.RemoveRemindTime;
-import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.text.Text;
-
-import java.util.Arrays;
-
 /**
  * Created by Jamie on 31-May-16.
  */
@@ -19,15 +10,17 @@ public class Messages {
 	/** Errors */
 	public static final String TeleportRotationError = "&c&l[Mines] ERROR: Teleport function direction not valid so unused. \"North\", \"South\", \"East\" or \"West\" expected.";
 	public static final String ResetTimeTooShortError = "&c&l[Mines] ERROR: Reset time was read from config at less than 60 seconds. It has been changed to 60";
+	public static final String InvalidRemindChatType = "Your config reminder chat type has is an invalid number. Please refer to the documentation";
+	public static final String InvalidFillChatType = "Your config fill chat type has is an invalid number. Please refer to the documentation";
+	public static final String WorldNotFound = "&c&l[Mines] ERROR Filling mine cannot occur as the world cannot be found for mine:";
+	public static final String BlockPlaceError = "&c&l[Mines] ERROR %errors%errors occurred when filling the mine. Check the mine config and make sure all blocks are on the server";
 
 	/** Command Messages */
 	public static final String PlayerOnlyCommand = "This command must be run by a player";
 	public static final String ConfigSaved = "The config file has been saved";
 	public static final String ConfigReloaded = "The config file has been reloaded";
-	public static final String MineFilled = "has been filled";
 	public static final String MineCleared = "has been cleared";
 	public static final String ResetTime = "will reset in:";
-	public static final String SetSpawnPoint = "You have set the spawn for all mines to";
 	public static final String MineDoesNotExist = "does not exist";
 	public static final String MineGroupDoesNotExist = "is not a mine group";
 	public static final String NoMines = "You have no mines";
@@ -69,6 +62,19 @@ public class Messages {
 	public static final String AirBlockAdd2 = "to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
 	public static final String AirBlockRemove1 = "You have removed";
 	public static final String AirBlockRemove2 = "from the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
+	public static final String AddSpawnPoint = "You have added a new spawn point for the current world!";
+	public static final String NoRemoveDefaultSpawn = "You cannot remove the default spawn point";
+	public static final String RemoveSpawnPoint = "You have removed spawn point:";
+	public static final String UpdatedSpawnPoint = "You have updated the spawn point to";
+	public static final String SpawnPointNotExist = "The listed spawn point does not exist";
+	public static final String MaxSpawnCount = "You have reached the maximum number of allowed spawns";
+	public static final String SpawnPointAlreadyInUse = "already uses that spawn point";
+	public static final String MineSpawnChanged = "has been changed to now use";
+	public static final String ChatSettingChanged = "You have successfully changed the chat setting for";
+	public static final String InvalidChatSetting = "The chat setting you listed is invalid. Please refer to documentation";
+	public static final String ChatSettingAlreadySet1 = "The chat settings for";
+	public static final String ChatSettingAlreadySet2 = "is already";
+	public static final String InvalidChatType = "That is not a valid chat type. Options (FillingText|ReminderText)";
 
 	/** Command Usages */
 	public static final String Help = "/mine help";
@@ -80,9 +86,18 @@ public class Messages {
 	public static final String Save = "/mine save";
 	public static final String SaveDescription = "Use this command to save mine config";
 	public static final String SaveExtendedDescription = "Saves the mine config being used over one in folder";
-	public static final String Setspawn = "/mine setspawn";
-	public static final String SetspawnDescription = "Saves the global mine spawn";
-	public static final String SetspawnExtendedDescription = "Use this command to save the spot players are sent to when they are in a mine on mine reset";
+	public static final String AddSpawn = "Usage /mine addspawn [x] [y] [z] [facing]";
+	public static final String AddSpawnDescription = "Adds a new spawn point with the values listed";
+	public static final String AddSpawnExtendedDescription = "Adds a new spawn point with the values listed";
+	public static final String RemoveSpawn = "Usage /mine removespawn [spawn point]";
+	public static final String RemoveSpawnDescription = "Removes the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String RemoveSpawnExtendedDescription = "Removes the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String UpdateSpawn = "Usage /mine updatespawn [spawn point] [x] [y] [z] [facing]";
+	public static final String UpdateSpawnDescription = "Updates the spawn information to the listed values (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String UpdateSpawnExtendedDescription = "Updates the spawn information to the listed values (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String ChangeSpawn = "Usage /mine changespawn [mine] [spawn point]";
+	public static final String ChangeSpawnDescription = "Set the listed mine to use the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String ChangeSpawnExtendedDescription = "Set the listed mine to use the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
 	public static final String Time = "/mine time [mine]";
 	public static final String TimeDescription = "Check time remaining before mine resets";
 	public static final String TimeExtendedDescription = "Check time remaining before mine resets";
@@ -113,10 +128,10 @@ public class Messages {
 	public static final String DeleteMine = "/mine deletemine [mine name]";
 	public static final String DeleteMineDescription = "Delete a mine";
 	public static final String DeleteMineExtendedDescription = "Delete the mine listed";
-	public static final String List = "Usage /mine list [groups|mines]";
+	public static final String List = "Usage /mine list [groups|mines|spawns]";
 	public static final String ListDescription = "List all groups or mines that exist";
 	public static final String ListExtendedDescription = "List all groups or mines that exist";
-	public static final String Info = "Usage /mine info [group|mine] [name]";
+	public static final String Info = "Usage /mine info [group|mine|spawn] [name]";
 	public static final String InfoDescription = "Get all info on group or mine";
 	public static final String InfoExtendedDescription = "Get all info on group or mine";
 	public static final String Addore = "Usage /mine addmore [mine] [percentage]";
@@ -147,6 +162,10 @@ public class Messages {
 	public static final String RemoveAirBlockDescription = "Removes the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
 	public static final String RemoveAirBlockExtendedDescription = "Removes the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
 
+	public static final String UpdateChatSettings = "Usage /mine updatechatsettings [FillingText|ReminderText(type)] [setting]";
+	public static final String UpdateChatSettingsDescription = "Changes the way messages of the listed type are sent to players";
+	public static final String UpdateChatSettingsExtendedDescription = "Changes the way messages of the listed type are sent to players";
+
 	/** Player Messages */
 	public static final String ResetingNowSingular = "is resetting now";
 	public static final String ResetingNowPlural = "are resetting now";
@@ -159,7 +178,10 @@ public class Messages {
 //	time: "minereset.check.time"
 //	reload: "minereset.reload"
 //	save: "minereset.save"
-//	setspawn: "minereset.setspawn"
+//  AddSpawn: "minereset.addspawn"
+//  RemoveSpawn: "minereset.removespawn"
+//  UpdateSpawn: "minereset.updatespawn"
+//  ChangeSpawn: "minereset.changespawn"
 //	clear: "minereset.clear"
 //	fill: "minereset.fill"
 //	fillblock: "minereset.fillblock"
@@ -180,4 +202,5 @@ public class Messages {
 //  setupsmartfill: "minereset.mine.setup.smartfill"
 //  addairblock: "minereset.mine.addairblock"
 //  removeairblock: "minereset.mine.removeairblock"
+// updatechatsettings: "minereset.update.chatSettings"
 }

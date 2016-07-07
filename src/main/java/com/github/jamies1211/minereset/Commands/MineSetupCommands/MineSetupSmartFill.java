@@ -1,6 +1,5 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
-import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -15,7 +14,7 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 /**
  * Created by Jamie on 28-May-16.
  */
-public class UpdateFallback implements CommandExecutor {
+public class MineSetupSmartFill implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -23,13 +22,12 @@ public class UpdateFallback implements CommandExecutor {
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
 		final String mine = args.<String>getOne("name").get().toUpperCase();
+		final boolean smartFillEnabled = args.<Boolean>getOne("enabled").get();
+		final int radius = args.<Integer>getOne("radius").get();
+		final boolean smartFillOnlyAir = args.<Boolean>getOne("onlyAir").get();
 
-		String group = null;
-		if (src instanceof Player) {
 
-			Player player = (Player) src;
-
-			String block = BlockBelowPlayer.getBlockStringBelowPlayer(player);
+			String group = null;
 
 			for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 				if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
@@ -38,19 +36,14 @@ public class UpdateFallback implements CommandExecutor {
 			}
 
 			if (group != null) {
-				if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.SameFallback));
-				} else {
-					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue(block);
-					MineReset.plugin.save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.ChangedFallback + " " + block));
-				}
+				config.getNode("4 - MineGroups", group, mine, "SmartFill").setValue(smartFillEnabled);
+				config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue(radius);
+				config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue(smartFillOnlyAir);
+				MineReset.plugin.save();
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RedefinedMine + " " + mine));
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 			}
-		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));
-		}
 
 		return CommandResult.success();
 	}

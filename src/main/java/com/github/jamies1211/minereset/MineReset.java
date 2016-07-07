@@ -4,8 +4,22 @@ package com.github.jamies1211.minereset;
  * Created by Jamie on 27-May-16.
  */
 import com.github.jamies1211.minereset.Actions.FillMineAction;
+import com.github.jamies1211.minereset.Actions.SendMessages;
 import com.github.jamies1211.minereset.Actions.TimeUntillFill;
-import com.github.jamies1211.minereset.Commands.*;
+import com.github.jamies1211.minereset.Actions.UpdateConfig;
+import com.github.jamies1211.minereset.Commands.ConfigCommands.*;
+import com.github.jamies1211.minereset.Commands.FillingCommands.ClearMine;
+import com.github.jamies1211.minereset.Commands.FillingCommands.FillBlock;
+import com.github.jamies1211.minereset.Commands.FillingCommands.FillMine;
+import com.github.jamies1211.minereset.Commands.GroupCommands.DefineGroup;
+import com.github.jamies1211.minereset.Commands.GroupCommands.DeleteGroup;
+import com.github.jamies1211.minereset.Commands.GroupCommands.UpdateGroup;
+import com.github.jamies1211.minereset.Commands.InfoCommands.*;
+import com.github.jamies1211.minereset.Commands.MineSetupCommands.*;
+import com.github.jamies1211.minereset.Commands.SpawnCommands.AddSpawn;
+import com.github.jamies1211.minereset.Commands.SpawnCommands.ChangeSpawn;
+import com.github.jamies1211.minereset.Commands.SpawnCommands.RemoveSpawn;
+import com.github.jamies1211.minereset.Commands.SpawnCommands.UpdateSpawn;
 import com.google.inject.Inject;
 
 import java.io.File;
@@ -15,7 +29,6 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.DefaultConfig;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
@@ -27,14 +40,13 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
-import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.3",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.4",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
@@ -89,7 +101,7 @@ public class MineReset {
 		} catch (IOException exception) {
 			getLogger().info("The default configuration could not be loaded or created!");
 		}
-
+		UpdateConfig.update1to2();
 		reload();
 	}
 
@@ -140,16 +152,48 @@ public class MineReset {
 				.executor(new ConfigSave())
 				.build());
 
-		subcommands.put(Arrays.asList("setspawn"), CommandSpec.builder()
-				.permission("minereset.setspawn")
-				.description(Text.of(Messages.SetspawnDescription))
-				.extendedDescription(Text.of(Messages.SetspawnExtendedDescription))
+		subcommands.put(Arrays.asList("addspawn"), CommandSpec.builder()
+				.permission("minereset.addspawn")
+				.description(Text.of(Messages.AddSpawnDescription))
+				.extendedDescription(Text.of(Messages.AddSpawnExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("x"))),
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("y"))),
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("z"))),
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("facing"))))
-				.executor(new MineSetSpawn())
+				.executor(new AddSpawn())
+				.build());
+
+		subcommands.put(Arrays.asList("removespawn"), CommandSpec.builder()
+				.permission("minereset.removespawn")
+				.description(Text.of(Messages.RemoveSpawnDescription))
+				.extendedDescription(Text.of(Messages.RemoveSpawnExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("spawnPoint"))))
+				.executor(new RemoveSpawn())
+				.build());
+
+		subcommands.put(Arrays.asList("Updatespawn"), CommandSpec.builder()
+				.permission("minereset.updatespawn")
+				.description(Text.of(Messages.UpdateSpawnDescription))
+				.extendedDescription(Text.of(Messages.UpdateSpawnExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("spawnPoint"))),
+						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("x"))),
+						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("y"))),
+						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("z"))),
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("facing"))))
+				.executor(new UpdateSpawn())
+				.build());
+
+		subcommands.put(Arrays.asList("changespawn"), CommandSpec.builder()
+				.permission("minereset.changespawn")
+				.description(Text.of(Messages.ChangeSpawnDescription))
+				.extendedDescription(Text.of(Messages.ChangeSpawnExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("mine"))),
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("spawnPoint"))))
+				.executor(new ChangeSpawn())
 				.build());
 
 		subcommands.put(Arrays.asList("clear"), CommandSpec.builder()
@@ -351,6 +395,16 @@ public class MineReset {
 				.executor(new RemoveAirBlock())
 				.build());
 
+		subcommands.put(Arrays.asList("updateChatSettings"), CommandSpec.builder()
+				.permission("minereset.update.chatSettings")
+				.description(Text.of(Messages.UpdateChatSettingsDescription))
+				.extendedDescription(Text.of(Messages.UpdateChatSettingsExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("type"))),
+						GenericArguments.onlyOne(GenericArguments.integer(Text.of("option"))))
+				.executor(new UpdateChatSettings())
+				.build());
+
 		final CommandSpec mineCommand = CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(Messages.HelpDescription))
@@ -362,13 +416,13 @@ public class MineReset {
 	}
 
 	private void setupconfig() {
-		this.config.getNode("1 - ConfigMode").setValue(1);
+		this.config.getNode("1 - ConfigMode").setValue(2);
 		this.config.getNode("2 - RemindSecondList").setValue("1, 5, 15, 30, 60, 120, 180, 300");
-		this.config.getNode("3 - Spawn", "SpawnX").setValue(3.5);
-		this.config.getNode("3 - Spawn", "SpawnY").setValue(85);
-		this.config.getNode("3 - Spawn", "SpawnZ").setValue(9.5);
-		this.config.getNode("3 - Spawn", "SpawnDirection").setValue("West");
-		this.config.getNode("3 - Spawn", "SpawnWorld").setValue(Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
+		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnX").setValue(0.5);
+		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnY").setValue(85.0);
+		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnZ").setValue(0.5);
+		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnDirection").setValue("West");
+		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnWorld").setValue(Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
 		this.config.getNode("5 - Lists", "AirBlocks").setValue(
 				"\"minecraft:torch\", \"minecraft:redstone_torch\", \"minecraft:redstone_wire\", \"minecraft:powered_repeater\", \"minecraft:unpowered_repeater\", \"minecraft:powered_comparator\",\n" +
 				"\"minecraft:unpowered_comparator\", \"minecraft:wooden_button\", \"minecraft:stone_button\", \"minecraft:lever\", \"minecraft:tripwire_hook\", \"minecraft:stone_pressure_plate\",\n" +
@@ -380,6 +434,13 @@ public class MineReset {
 				"\"minecraft:nether_brick_fence\", \"minecraft:iron_bars\", \"minecraft:glass_pane\", \"minecraft:vine\", \"minecraft:waterlily\", \"minecraft:cobblestone_wall\", \"minecraft:anvil\",\n" +
 				"\"minecraft:stained_glass_pane\", \"minecraft:carpet\", \"minecraft:double_plant\", \"minecraft:wall_sign\", \"minecraft:standing_sign\", \"minecraft:skull\", \"minecraft:brewing_stand\",\n" +
 				"\"minecraft:skull\", \"minecraft:standing_banner\"");
+		this.config.getNode("6 - ChatSettings", "FillingText").setValue("1");
+		this.config.getNode("6 - ChatSettings", "ReminderText").setValue("2");
+
+		// 0 = disabled
+		// 1 = chat
+		// 2 = action bar
+		// 3 = chat & action bar
 		save();
 	}
 
@@ -397,25 +458,7 @@ public class MineReset {
 			this.config = getConfigManager().load();
 			getLogger().info("File Loaded");
 			remindTimes = new ArrayList<>(Arrays.asList(config.getNode("2 - RemindSecondList").getString().split(", ")));
-
-			if (config.getNode("5 - Lists", "AirBlocks").getValue() == null) {
-				config.getNode("5 - Lists", "AirBlocks").setValue("minecraft:torch, minecraft:redstone_torch, minecraft:redstone_wire, minecraft:powered_repeater, minecraft:unpowered_repeater, minecraft:powered_comparator, " +
-						"minecraft:unpowered_comparator, minecraft:wooden_button, minecraft:stone_button, minecraft:lever, minecraft:tripwire_hook, minecraft:stone_pressure_plate, " +
-						"minecraft:wooden_pressure_plate, minecraft:light_weighted_pressure_plate, minecraft:heavy_weighted_pressure_plate, minecraft:trapdoor, minecraft:iron_trapdoor, " +
-						"minecraft:fence_gate, minecraft:spruce_fence_gate, minecraft:birch_fence_gate, minecraft:jungle_fence_gate, minecraft:dark_oak_fence_gate, minecraft:acacia_fence_gate, " +
-						"minecraft:wooden_door, minecraft:iron_door, minecraft:spruce_door, minecraft:birch_door, minecraft:jungle_door, minecraft:acacia_door, minecraft:dark_oak_door, " +
-						"minecraft:rail, minecraft:golden_rail, minecraft:detector_rail, minecraft:activator_rail, minecraft:tallgrass, minecraft:sapling, minecraft:deadbush, " +
-						"minecraft:yellow_flower, minecraft:red_flower, minecraft:brown_mushroom, minecraft:red_mushroom, minecraft:ladder, minecraft:snow_layer, minecraft:fence, " +
-						"minecraft:nether_brick_fence, minecraft:iron_bars, minecraft:glass_pane, minecraft:vine, minecraft:waterlily, minecraft:cobblestone_wall, minecraft:anvil, " +
-						"minecraft:stained_glass_pane, minecraft:carpet, minecraft:double_plant, minecraft:wall_sign, minecraft:standing_sign, minecraft:skull, minecraft:brewing_stand, " +
-						"minecraft:skull, minecraft:standing_banner");
-				MineReset.plugin.save();
-			}
-
 			airBlocks = new ArrayList<>(Arrays.asList(config.getNode("5 - Lists", "AirBlocks").getString().split(", ")));
-
-
-
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
@@ -437,36 +480,66 @@ public class MineReset {
 				listOfMines.remove("resetTime");
 				listOfMines.remove("initialDelay");
 
+				// 0 = disabled
+				// 1 = chat
+				// 2 = action bar
+				// 4 = title
+
 				if (this.remindTimes.contains(Integer.toString(timeUntilNextFill))) { // If time before group of mines reset is on remind time list send messages.
 
+					int reminderChatType = this.config.getNode("6 - ChatSettings", "ReminderText").getInt();
+
 					if (listOfMines.size() > 0) {
-						for (Player player : Sponge.getServer().getOnlinePlayers()) {
-							player.sendMessage(ChatTypes.ACTION_BAR, TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "&l" +
-									listOfMines + " " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
+
+						if (!SendMessages.messageToAllPlayers(reminderChatType, Messages.MinePrefix + "&l" + listOfMines +
+								" " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)) &&
+								reminderChatType != 0) {
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidRemindChatType));
 						}
 
 						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
 								listOfMines + " " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
+
 					}
 
 				} else if (timeUntilNextFill == 0) { // If time before group of mines should reset is 0 reset all mines in group.
 					for (final Object mineObject : listOfMines) {
-						FillMineAction.fill(groupObject.toString(), mineObject.toString(), null);
+						FillMineAction.fill(groupObject.toString(), mineObject.toString(), null, null);
 					}
+
 					if (listOfMines.size() > 0) {
+
+						int fillingChatType = this.config.getNode("6 - ChatSettings", "FillingText").getInt();
+
 						if (listOfMines.size() > 1) {
-							MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
+
+							if (!SendMessages.messageToAllPlayers(fillingChatType, Messages.MinePrefix + listOfMines + " " + Messages.ResetingNowPlural) &&
+									fillingChatType != 0) {
+								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidFillChatType));
+							}
+
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
 									listOfMines + " " + Messages.ResetingNowPlural));
+
+
 						} else {
-							MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
+
+							if (!SendMessages.messageToAllPlayers(fillingChatType, Messages.MinePrefix + listOfMines + " " + Messages.ResetingNowSingular) &&
+									fillingChatType != 0) {
+								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidFillChatType));
+							}
+
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
 									listOfMines + " " + Messages.ResetingNowSingular));
+
 						}
 					}
+
 				}
 			}
 		} else {
-			if (secondsSinceStart % 60 == 0) {
-				MessageChannel.TO_ALL.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoPlayerOnline));
+			if (secondsSinceStart % 300 == 0) {
+				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoPlayerOnline));
 			}
 		}
 		secondsSinceStart++;

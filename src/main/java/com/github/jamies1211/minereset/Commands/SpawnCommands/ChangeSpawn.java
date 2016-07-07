@@ -1,4 +1,4 @@
-package com.github.jamies1211.minereset.Commands;
+package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
@@ -11,16 +11,18 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 /**
- * Created by Jamie on 28-May-16.
+ * Created by Jamie on 06-Jul-16.
  */
-public class DeleteMine implements CommandExecutor {
+public class ChangeSpawn implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
-		final String mine = args.<String>getOne("name").get().toUpperCase();
+		final String mine = args.<String>getOne("mine").get().toUpperCase();
+		final String spawnPoint = args.<String>getOne("spawnPoint").get();
+		String spawnValue = spawnPoint.replace("Spawn", "").replace("d", "D");
 
 		String group = null;
 
@@ -31,9 +33,19 @@ public class DeleteMine implements CommandExecutor {
 		}
 
 		if (group != null) {
-			config.getNode("4 - MineGroups", group).removeChild(mine);
-			MineReset.plugin.save();
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DeletedMine + mine));
+
+			if (!config.getNode("4 - MineGroups", group, mine, "SpawnPoint").getString().equalsIgnoreCase(spawnValue)) {
+				if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnValue)) {
+					config.getNode("4 - MineGroups", group, mine, "SpawnPoint").setValue(spawnValue);
+					MineReset.plugin.save();
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineSpawnChanged + " " + "Spawn" + spawnValue));
+				} else {
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SpawnPointNotExist));
+				}
+			} else {
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.SpawnPointAlreadyInUse));
+			}
+
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		}
