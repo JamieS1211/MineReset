@@ -91,13 +91,13 @@ public class Messages {
 	public static final String AddSpawnExtendedDescription = "Adds a new spawn point with the values listed";
 	public static final String RemoveSpawn = "Usage /mine removespawn [spawn point]";
 	public static final String RemoveSpawnDescription = "Removes the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
-	public static final String RemoveSpawnExtendedDescription = "Removes the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String RemoveSpawnExtendedDescription = "Removes the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn)";
 	public static final String UpdateSpawn = "Usage /mine updatespawn [spawn point] [x] [y] [z] [facing]";
 	public static final String UpdateSpawnDescription = "Updates the spawn information to the listed values (To alter default spawn use \"Default\" other wise use the number of spawn";
-	public static final String UpdateSpawnExtendedDescription = "Updates the spawn information to the listed values (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String UpdateSpawnExtendedDescription = "Updates the spawn information to the listed values (To alter default spawn use \"Default\" other wise use the number of spawn)";
 	public static final String ChangeSpawn = "Usage /mine changespawn [mine] [spawn point]";
 	public static final String ChangeSpawnDescription = "Set the listed mine to use the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
-	public static final String ChangeSpawnExtendedDescription = "Set the listed mine to use the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
+	public static final String ChangeSpawnExtendedDescription = "Set the listed mine to use the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn)";
 	public static final String Time = "/mine time [mine]";
 	public static final String TimeDescription = "Check time remaining before mine resets";
 	public static final String TimeExtendedDescription = "Check time remaining before mine resets";
@@ -202,5 +202,5 @@ public class Messages {
 //  setupsmartfill: "minereset.mine.setup.smartfill"
 //  addairblock: "minereset.mine.addairblock"
 //  removeairblock: "minereset.mine.removeairblock"
-// updatechatsettings: "minereset.update.chatSettings"
+// updatechatsettings: "minereset.update.chatsettings"
 }

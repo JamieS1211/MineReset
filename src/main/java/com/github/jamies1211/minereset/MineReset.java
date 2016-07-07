@@ -396,7 +396,7 @@ public class MineReset {
 				.build());
 
 		subcommands.put(Arrays.asList("updateChatSettings"), CommandSpec.builder()
-				.permission("minereset.update.chatSettings")
+				.permission("minereset.update.chatsettings")
 				.description(Text.of(Messages.UpdateChatSettingsDescription))
 				.extendedDescription(Text.of(Messages.UpdateChatSettingsExtendedDescription))
 				.arguments(
