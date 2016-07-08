@@ -46,7 +46,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.4",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.5",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
