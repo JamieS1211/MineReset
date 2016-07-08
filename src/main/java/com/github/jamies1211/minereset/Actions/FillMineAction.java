@@ -45,8 +45,6 @@ public class FillMineAction {
 				if (!SendMessages.messageToPlayer(srcPlayer, 1, Messages.WorldNotFound + mine)) {
 					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidFillChatType));
 				}
-
-				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.WorldNotFound + mine));
 			}
 
 			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.WorldNotFound + mine));

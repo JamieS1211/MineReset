@@ -54,7 +54,7 @@ public class DefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "pos2", "z").setValue(z2);
 					config.getNode("4 - MineGroups", group, mine, "MineWorld").setValue(player.getWorld().getUniqueId().toString());
 					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue("minecraft:stone[variant=stone]");
-					config.getNode("4 - MineGroups", group, mine, "SpawnPoint").setValue("0");
+					config.getNode("4 - MineGroups", group, mine, "SpawnPoint").setValue("Default");
 					config.getNode("4 - MineGroups", group, mine, "SmartFill").setValue("false");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue("3");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");

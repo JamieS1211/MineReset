@@ -33,7 +33,7 @@ spongestart{
 
     //optional configs
     spongeVanillaBuild 'LATEST'
-    spongeForgeBuild '1538'
+    spongeForgeBuild '1550'
     forgeServerFolder 'run'
     //vanillaServerFolder 'run/vanilla'
 }
