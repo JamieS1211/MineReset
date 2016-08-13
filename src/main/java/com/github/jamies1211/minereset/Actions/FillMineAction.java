@@ -1,7 +1,6 @@
 package com.github.jamies1211.minereset.Actions;
 
 import com.flowpowered.math.vector.Vector3d;
-import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
@@ -18,6 +17,8 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 
 import java.util.*;
 
+import static com.github.jamies1211.minereset.Messages.*;
+
 /**
  * Created by Jamie on 27-May-16.
  */
@@ -26,6 +27,13 @@ public class FillMineAction {
 	public static void fill(String group, String mine, String definedBlock, CommandSource src) {
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
+
+		DataContainer dataContainer = new MemoryDataContainer();
+		DataContainer cont = null;
+
+		if (definedBlock != null) {
+			cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
+		}
 
 		/** Mine data */
 		int x1 = config.getNode("4 - MineGroups", group, mine, "pos1", "x").getInt();
@@ -42,23 +50,34 @@ public class FillMineAction {
 			if (src instanceof Player) {
 				Player srcPlayer = (Player) src;
 
-				if (!SendMessages.messageToPlayer(srcPlayer, 1, Messages.WorldNotFound + mine)) {
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidFillChatType));
+				if (!SendMessages.messageToPlayer(srcPlayer, 1, WorldNotFound + mine)) {
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
 				}
 			}
 
-			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.WorldNotFound + mine));
+			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(WorldNotFound + mine));
 		} else {
 
 			if (src != null) {
 				int fillingChatType = config.getNode("6 - ChatSettings", "FillingText").getInt();
 
-				if (!SendMessages.messageToAllPlayers(fillingChatType, Messages.MinePrefix + "[" + mine + "]" + " " + Messages.ResetingNowSingular)) {
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidFillChatType));
+				String sentMessage = ResettingNowSingular;
+
+				if (definedBlock != null) {
+					if (definedBlock.equalsIgnoreCase("minecraft:air")) {
+						sentMessage = ResettingNowClear;
+					} else {
+						BlockState state = BlockState.builder().build(cont).get();
+						sentMessage = ResettingNowDefined.replace("%block%", state.getType().getName().split(":", 2)[1]);
+					}
 				}
 
-				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
-						"[" + mine + "]" + " " + Messages.ResetingNowSingular));
+				if (!SendMessages.messageToAllPlayers(fillingChatType, MinePrefix + "[" + mine + "]" + " " + sentMessage)) {
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
+				}
+
+				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix +
+						"[" + mine + "]" + " " + sentMessage));
 			}
 
 			/** General data */
@@ -124,51 +143,43 @@ public class FillMineAction {
 				zSmall = z1;
 			}
 
-			/** Move players inside mine on fill to spawn if smart fill setting not being used */
+			/** Handle teleportation and location if player in mine */
+			ArrayList<Vector3d> locationList = new ArrayList<>();
+			for (Player player : Sponge.getServer().getOnlinePlayers()) {
+				if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) { // If player in world.
+					if (CheckInVolume.checkInVolume(player, xSmall, ySmall, zSmall, xLarge, yLarge, zLarge)) { // If player in mine.
+						if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
 
-			if (!useSmartFill) {
-				if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
-					for (Player player : Sponge.getServer().getOnlinePlayers()) {
+							if (useSmartFill) { // If using smart fill.
 
-						if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) {
+								locationList.add(player.getLocation().getPosition());
 
-							if (player.getLocation().getX() >= xSmall && player.getLocation().getX() - 1 <= xLarge) {
-								if (player.getLocation().getY() >= ySmall && player.getLocation().getY() <= yLarge) {
-									if (player.getLocation().getZ() >= zSmall && player.getLocation().getZ() - 1 <= zLarge) {
+							} else { // If not using smart fill.
 
-										player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InsideFillingMine));
+								player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InsideFillingMine));
+								double targetYaw = 180, targetRoll = 180;
 
-										double targetPitch = player.getRotation().getX();
-										double targetYaw = player.getRotation().getY();
-										double targetRoll = player.getRotation().getZ();
-
-										if (direction.equalsIgnoreCase("North")) {
-											targetPitch = 0;
-											targetYaw = 180;
-											targetRoll = 180;
-										} else if (direction.equalsIgnoreCase("South")) {
-											targetPitch = 0;
-											targetYaw = 0;
-											targetRoll = 0;
-										} else if (direction.equalsIgnoreCase("East")) {
-											targetPitch = 0;
-											targetYaw = 270;
-											targetRoll = 270;
-										} else if (direction.equalsIgnoreCase("West")) {
-											targetPitch = 0;
-											targetYaw = 90;
-											targetRoll = 90;
-										} else {
-											MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.TeleportRotationError));
-										}
-
-										Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
-										Vector3d spawnRotation = new Vector3d(targetPitch, targetYaw, targetRoll);
-
-										player.setLocation(Sponge.getServer().getWorld(spawnWorldUUID).get().getLocation(spawn));
-										player.setRotation(spawnRotation);
-									}
+								if (direction.equalsIgnoreCase("North")) {
+									targetYaw = 180;
+									targetRoll = 180;
+								} else if (direction.equalsIgnoreCase("South")) {
+									targetYaw = 0;
+									targetRoll = 0;
+								} else if (direction.equalsIgnoreCase("East")) {
+									targetYaw = 270;
+									targetRoll = 270;
+								} else if (direction.equalsIgnoreCase("West")) {
+									targetYaw = 90;
+									targetRoll = 90;
+								} else {
+									MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(TeleportRotationError));
 								}
+
+								Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
+								Vector3d spawnRotation = new Vector3d(0, targetYaw, targetRoll);
+
+								player.setLocation(Sponge.getServer().getWorld(spawnWorldUUID).get().getLocation(spawn));
+								player.setRotation(spawnRotation);
 							}
 						}
 					}
@@ -192,23 +203,16 @@ public class FillMineAction {
 					double percentage = config.getNode("4 - MineGroups", group, mine, "ores", groupItems.toString(), "percentage").getFloat();
 
 					double fallBackPercentage = blockMap.get(1).percentage;
-					double updatedFallBackPercentage = fallBackPercentage - percentage;
 
-					blockMap.get(1).percentage = updatedFallBackPercentage; // Updates the fall back percentage.
+					blockMap.get(1).percentage = fallBackPercentage - percentage; // Updates the fall back percentage.
 
 					blockMap.put(currentItemCount, new BlockInfo(blockStateString, percentage)); // Places the new block and percentage.
 				}
 			}
 
-			DataContainer dataContainer = new MemoryDataContainer();
-			DataContainer cont = null;
-
-			if (definedBlock != null) {
-				cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
-			}
-
 			/** Place the correct block for each block in the mine */
 			int placeError = 0;
+
 			for (int x = xSmall; x <= xLarge; x++) {
 				for (int y = ySmall; y <= yLarge; y++) {
 					for (int z = zSmall; z <= zLarge; z++) {
@@ -217,24 +221,19 @@ public class FillMineAction {
 
 						if (useSmartFill) { // If using smart fill.
 							if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
-								for (Player player : Sponge.getServer().getOnlinePlayers()) {
-									if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) { // If player in world.
-										if (CheckInVolume.checkInVolume(player, xSmall, ySmall, zSmall, xLarge, yLarge, zLarge)) { // If player in mine.
-											if (player.getLocation().getPosition().distance(x, y, z) <= safeRadius) { // If block in safty zone.
-
-												if (!smartFillOnlyAir) { // If not using only air cancel block place.
-													placement = false;
-												} else { // If using only air make sure start block is solid.
-													if (!IsSolidBlock.isSold(Sponge.getServer().getWorld(mineWorldUUID).get().getBlock(x, y, z).getType())) {
-														placement = false;
-													}
-												}
-
+								for (Vector3d playerLocation : locationList) {
+									if (playerLocation.distance(x, y, z) <= safeRadius) { // If block in safety zone.
+										if (!smartFillOnlyAir) { // If not using only air cancel block place.
+											placement = false;
+											break;
+										} else { // If using only air make sure start block is solid.
+											if (!IsSolidBlock.isSold(Sponge.getServer().getWorld(mineWorldUUID).get().getBlock(x, y, z).getType())) {
+												placement = false;
+												break;
 											}
 										}
 									}
 								}
-
 							}
 						}
 
@@ -246,7 +245,6 @@ public class FillMineAction {
 
 							if (BlockState.builder().build(cont).isPresent()) {
 								BlockState state = BlockState.builder().build(cont).get();
-
 								Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
 							} else {
 								placeError++;
@@ -255,13 +253,14 @@ public class FillMineAction {
 					}
 				}
 			}
+
 			if (placeError > 0) {
 				if (src instanceof Player) {
 					Player player = (Player) src;
-					player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
+					player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
 				}
 
-				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
+				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
 			}
 		}
 	}
@@ -269,18 +268,18 @@ public class FillMineAction {
 	public static String getRandomBlock (HashMap<Integer, BlockInfo> blockMap, int numberOfItemsToIterate, String FallbackBlock) {
 
 		double RandomlyGeneratedChanceValue = (new Random().nextDouble() * 100);
-		double currentTotalPercentate = 0;
+		double currentTotalPercentage = 0;
 
 		for (int currentItemIteration = 1; currentItemIteration <= numberOfItemsToIterate; currentItemIteration++) {
-			double nextTotalPercentate = 100;
+			double nextTotalPercentage = 100;
 
-			currentTotalPercentate = currentTotalPercentate + blockMap.get(currentItemIteration).percentage; // Updates the working percentage.
+			currentTotalPercentage = currentTotalPercentage + blockMap.get(currentItemIteration).percentage; // Updates the working percentage.
 
 			if ((currentItemIteration + 1) < numberOfItemsToIterate) { // If last item round to 100.
-				nextTotalPercentate = currentTotalPercentate + blockMap.get(currentItemIteration + 1).percentage;
+				nextTotalPercentage = currentTotalPercentage + blockMap.get(currentItemIteration + 1).percentage;
 			}
 
-			if ((currentTotalPercentate <= RandomlyGeneratedChanceValue) && (nextTotalPercentate >= RandomlyGeneratedChanceValue)) { // Random between this and next ore use this ore.
+			if ((currentTotalPercentage <= RandomlyGeneratedChanceValue) && (nextTotalPercentage >= RandomlyGeneratedChanceValue)) { // Random between this and next ore use this ore.
 				return blockMap.get(currentItemIteration + 1).blockStateString;
 			}
 		}

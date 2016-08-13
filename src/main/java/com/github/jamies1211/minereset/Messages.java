@@ -34,7 +34,7 @@ public class Messages {
 	public static final String ResetTimeTooShort = "Your reset time for a new group must be 1 minute or more";
 	public static final String DelayTooShort = "Your delay can't be less than 0";
 	public static final String AddedOre = "You have added: ";
-	public static final String OrePrecentageError = "The percentage you have listed would increase the mine beyond 100%";
+	public static final String OrePercentageError = "The percentage you have listed would increase the mine beyond 100%";
 	public static final String MineFilledBlock = "has been filled with:";
 	public static final String DeletedMine = "You have deleted your mine with the name:";
 	public static final String MineGroupDeleted = "has been deleted";
@@ -134,13 +134,13 @@ public class Messages {
 	public static final String Info = "Usage /mine info [group|mine|spawn] [name]";
 	public static final String InfoDescription = "Get all info on group or mine";
 	public static final String InfoExtendedDescription = "Get all info on group or mine";
-	public static final String Addore = "Usage /mine addmore [mine] [percentage]";
+	public static final String Addore = "Usage /mine addore [mine] [percentage]";
 	public static final String AddoreDescription = "Adds the block you are standing on to listed mine at listed percentage";
 	public static final String AddoreExtendedDescription = "Adds the block you are standing on to listed mine at listed percentage";
-	public static final String Updateore = "Usage /mine updatemore [mine] [percentage]";
+	public static final String Updateore = "Usage /mine updateore [mine] [percentage]";
 	public static final String UpdateoreDescription = "Updates the block you are standing on in listed mine to listed percentage";
 	public static final String UpdateoreExtendedDescription = "Updates the block you are standing on in listed mine to listed percentage";
-	public static final String Updatefallback = "Usage /mine updatemfallback [mine]";
+	public static final String Updatefallback = "Usage /mine updatefallback [mine]";
 	public static final String UpdatefallbackDescription = "Updates the mine listed to use the block you are standing on as the fallback block";
 	public static final String UpdatefallbackExtendedDescription = "Updates the mine listed to use the block you are standing on as the fallback block";
 	public static final String ListReminder = "Usage /mine listreminders";
@@ -167,8 +167,10 @@ public class Messages {
 	public static final String UpdateChatSettingsExtendedDescription = "Changes the way messages of the listed type are sent to players";
 
 	/** Player Messages */
-	public static final String ResetingNowSingular = "is resetting now";
-	public static final String ResetingNowPlural = "are resetting now";
+	public static final String ResettingNowSingular = "is resetting now";
+	public static final String ResettingNowDefined = "is being filled with %block%";
+	public static final String ResettingNowClear = "is being cleared";
+	public static final String ResettingNowPlural = "are resetting now";
 	public static final String NoPlayerOnline = "mine re-filling disabled as no player is online";
 	public static final String WillResetIn = "will reset in:";
 	public static final String InsideFillingMine = "&9The mine you were in has just been reset so you have been teleported to spawn.";
@@ -186,7 +188,7 @@ public class Messages {
 //	fill: "minereset.fill"
 //	fillblock: "minereset.fillblock"
 //	definegroup: "minereset.define.group"
-// updategroup: "minereset.update.group"
+//  updategroup: "minereset.update.group"
 //	deletegroup: "minereset.delete.group"
 //	definemine: "minereset.define.mine"
 //	redefinemine: "minereset.redefine.mine"
@@ -202,5 +204,5 @@ public class Messages {
 //  setupsmartfill: "minereset.mine.setup.smartfill"
 //  addairblock: "minereset.mine.addairblock"
 //  removeairblock: "minereset.mine.removeairblock"
-// updatechatsettings: "minereset.update.chatsettings"
+//  updatechatsettings: "minereset.update.chatsettings"
 }

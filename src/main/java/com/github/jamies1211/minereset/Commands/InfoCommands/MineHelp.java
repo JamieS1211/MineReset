@@ -184,7 +184,7 @@ public class MineHelp implements CommandExecutor {
 		}
 
 		if (src.hasPermission("minereset.update.chatSettings")) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate ChatSEttings Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate ChatSettings Command"));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.UpdateChatSettings));
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateChatSettingsExtendedDescription));
 		}

@@ -9,7 +9,7 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 /**
  * Created by Jamie on 27-May-16.
  */
-public class TimeUntillFill {
+public class TimeUntilFill {
 
 
 	private static ConfigurationNode config;
@@ -37,10 +37,6 @@ public class TimeUntillFill {
 		int resetTime = config.getNode("4 - MineGroups", groupName, "resetTime").getInt();
 		int initialDelay = config.getNode("4 - MineGroups", groupName, "initialDelay").getInt();
 
-		int timeUntilNextFill = (resetTime - 1 - ((secondsSinceStart - initialDelay) % resetTime));
-
-
-
-		return timeUntilNextFill;
+		return  (resetTime - 1 - ((secondsSinceStart - initialDelay) % resetTime));
 	}
 }

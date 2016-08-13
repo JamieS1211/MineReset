@@ -10,12 +10,7 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
-
-import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by Jamie on 28-May-16.
@@ -100,7 +95,7 @@ public class UpdateOre implements CommandExecutor {
 										" updated to " + Double.toString(percentage) + "% from " + Double.toString(oldBlockPercentage) + "%"));
 							}
 						} else {
-							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OrePrecentageError));
+							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OrePercentageError));
 						}
 
 

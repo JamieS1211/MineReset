@@ -5,7 +5,7 @@ package com.github.jamies1211.minereset;
  */
 import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Actions.SendMessages;
-import com.github.jamies1211.minereset.Actions.TimeUntillFill;
+import com.github.jamies1211.minereset.Actions.TimeUntilFill;
 import com.github.jamies1211.minereset.Actions.UpdateConfig;
 import com.github.jamies1211.minereset.Commands.ConfigCommands.*;
 import com.github.jamies1211.minereset.Commands.FillingCommands.ClearMine;
@@ -46,7 +46,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.5",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.6",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
@@ -84,7 +84,7 @@ public class MineReset {
 	}
 
 	@Listener
-	public void gameLoadComplere(GameStartingServerEvent event) {
+	public void gameLoadComplete(GameStartingServerEvent event) {
 		try {
 			if (!defaultConfig.exists()) {
 				defaultConfig.createNewFile();
@@ -121,7 +121,7 @@ public class MineReset {
 	public void onServerStart(GameInitializationEvent event) {
 		getLogger().info("Mine reset has started.");
 
-		final HashMap<List<String>, CommandSpec> subcommands = new HashMap<List<String>, CommandSpec>();
+		final HashMap<List<String>, CommandSpec> subcommands = new HashMap<>();
 		subcommands.put(Arrays.asList("help"), CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(Messages.HelpDescription))
@@ -475,7 +475,7 @@ public class MineReset {
 
 			for (final Object groupObject: config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 
-				int timeUntilNextFill = TimeUntillFill.getTimeUntilFill(groupObject.toString());
+				int timeUntilNextFill = TimeUntilFill.getTimeUntilFill(groupObject.toString());
 				Set<Object> listOfMines = new TreeSet<>(config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
 				listOfMines.remove("resetTime");
 				listOfMines.remove("initialDelay");
@@ -513,24 +513,24 @@ public class MineReset {
 
 						if (listOfMines.size() > 1) {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, Messages.MinePrefix + listOfMines + " " + Messages.ResetingNowPlural) &&
+							if (!SendMessages.messageToAllPlayers(fillingChatType, Messages.MinePrefix + listOfMines + " " + Messages.ResettingNowPlural) &&
 									fillingChatType != 0) {
 								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidFillChatType));
 							}
 
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
-									listOfMines + " " + Messages.ResetingNowPlural));
+									listOfMines + " " + Messages.ResettingNowPlural));
 
 
 						} else {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, Messages.MinePrefix + listOfMines + " " + Messages.ResetingNowSingular) &&
+							if (!SendMessages.messageToAllPlayers(fillingChatType, Messages.MinePrefix + listOfMines + " " + Messages.ResettingNowSingular) &&
 									fillingChatType != 0) {
 								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidFillChatType));
 							}
 
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
-									listOfMines + " " + Messages.ResetingNowSingular));
+									listOfMines + " " + Messages.ResettingNowSingular));
 
 						}
 					}

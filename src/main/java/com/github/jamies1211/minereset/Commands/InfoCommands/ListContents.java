@@ -12,7 +12,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import java.util.Set;
@@ -33,8 +32,8 @@ public class ListContents implements CommandExecutor {
 		if (type.equalsIgnoreCase("groups")) {
 
 			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().size() > 0) {
-				Set<Object> listOfGrups = new TreeSet<>(config.getNode("4 - MineGroups").getChildrenMap().keySet());
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "All Groups: " + listOfGrups.toString()));
+				Set<Object> listOfGroups = new TreeSet<>(config.getNode("4 - MineGroups").getChildrenMap().keySet());
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "All Groups: " + listOfGroups.toString()));
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoMineGroups));
 			}
@@ -42,8 +41,8 @@ public class ListContents implements CommandExecutor {
 		} else if (type.equalsIgnoreCase("mines")) {
 			String message = "All Mines: ";
 
-			Set<Object> listOfGrups = new TreeSet<>(config.getNode("4 - MineGroups").getChildrenMap().keySet());
-			for (final Object groupObject: listOfGrups) {
+			Set<Object> listOfGroups = new TreeSet<>(config.getNode("4 - MineGroups").getChildrenMap().keySet());
+			for (final Object groupObject: listOfGroups) {
 				Set<Object> listOfMines = new TreeSet<>(config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
 				listOfMines.remove("resetTime");
 				listOfMines.remove("initialDelay");

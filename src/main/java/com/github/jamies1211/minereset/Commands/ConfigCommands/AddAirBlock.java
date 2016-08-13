@@ -3,7 +3,6 @@ package com.github.jamies1211.minereset.Commands.ConfigCommands;
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
-import com.github.jamies1211.minereset.SecondsToString;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -14,7 +13,6 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import static com.github.jamies1211.minereset.MineReset.airBlocks;
-import static com.github.jamies1211.minereset.MineReset.remindTimes;
 
 /**
  * Created by Jamie on 03-Jul-16.

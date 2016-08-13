@@ -24,12 +24,7 @@ public class IsSolidBlock {
 			return false;
 		}
 
+		return !MineReset.airBlocks.contains(block.getName());
 
-
-		if (MineReset.airBlocks.contains(block.getName())) {
-			return false;
-		}
-
-		return true;
 	}
 }

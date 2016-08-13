@@ -10,8 +10,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import java.util.*;
@@ -30,7 +28,7 @@ public class Details implements CommandExecutor {
 		final String nameAltered = args.<String>getOne("name").get().toUpperCase();
 		final String nameOrigonal = args.<String>getOne("name").get();
 
-		TreeMap<String, Integer> infoMap = new TreeMap<String, Integer>();
+		TreeMap<String, Integer> infoMap = new TreeMap<>();
 
 		if (type.equalsIgnoreCase("group")) {
 			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().contains(nameAltered)) {
