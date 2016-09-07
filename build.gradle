@@ -1,5 +1,5 @@
 plugins {
-    id "com.qixalite.spongestart" version "1.4.6"
+    id "com.qixalite.spongestart" version "1.5.1"
     id 'java'
     id 'com.github.johnrengelman.shadow' version '1.2.3'
     //id 'org.spongepowered.plugin' version '0.5.1'
@@ -33,11 +33,11 @@ spongestart{
 
     //optional configs
     spongeVanillaBuild 'LATEST'
-    spongeForgeBuild '1662'
+    spongeForgeBuild '1707'
     forgeServerFolder 'run'
     //vanillaServerFolder 'run/vanilla'
 }
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:4.0.3'
+    compile 'org.spongepowered:spongeapi:5.0.0-SNAPSHOT'
 }

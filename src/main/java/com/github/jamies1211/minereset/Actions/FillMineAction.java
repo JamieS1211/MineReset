@@ -245,7 +245,9 @@ public class FillMineAction {
 
 							if (BlockState.builder().build(cont).isPresent()) {
 								BlockState state = BlockState.builder().build(cont).get();
-								Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, false, Cause.of(NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get())));
+								NamedCause cause = NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get());
+
+								Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, Cause.of(cause));
 							} else {
 								placeError++;
 							}
