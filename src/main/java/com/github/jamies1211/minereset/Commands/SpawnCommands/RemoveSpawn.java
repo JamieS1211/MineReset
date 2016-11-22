@@ -28,7 +28,7 @@ public class RemoveSpawn implements CommandExecutor {
 		} else if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnValue)) {
 
 			config.getNode("3 - Spawn").removeChild("Spawn" + spawnValue);
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemoveSpawnPoint + " Spawn" + spawnValue));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemoveSpawnPoint.replace("%spawnValue", spawnValue)));
 			MineReset.plugin.save();
 
 		} else {

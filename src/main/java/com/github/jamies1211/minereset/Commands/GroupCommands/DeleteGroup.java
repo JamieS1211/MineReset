@@ -35,14 +35,14 @@ public class DeleteGroup implements CommandExecutor {
 			if (listOfMines.isEmpty() || safe.equalsIgnoreCase("force")) {
 				config.getNode("4 - MineGroups").removeChild(group);
 				MineReset.plugin.save();
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + group + " " + Messages.MineGroupDeleted));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDeleted.replace("%group%", group)));
 			} else if (safe.equalsIgnoreCase("safe")){
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + group + " " + Messages.DeleteGroupFailContents));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DeleteGroupFailContents.replace("%group%", group)));
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.List));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + group + " " + Messages.MineGroupDoesNotExist));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDoesNotExist.replace("%group%", group)));
 		}
 
 		return CommandResult.success();

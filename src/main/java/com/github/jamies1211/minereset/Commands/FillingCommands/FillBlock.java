@@ -42,7 +42,9 @@ public class FillBlock implements CommandExecutor {
 			} else {
 				String block = BlockBelowPlayer.getBlockStringBelowPlayer(player);
 				FillMineAction.fill(group, mine, block, src);
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineFilledBlock + " " + block));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineFilledBlock
+						.replace("%mine%", mine)
+						.replace("%block%", block)));
 			}
 		} else {
 

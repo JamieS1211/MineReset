@@ -65,14 +65,17 @@ public class AddOre implements CommandExecutor {
 							config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "BlockState").setValue(block);
 							config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "percentage").setValue(percentage);
 							MineReset.plugin.save();
-							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AddedOre + block + " to mine: " + mine + " at " + percentage + "%"));
+							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AddedOre
+									.replace("%block%", block)
+									.replace("%mine%", mine)
+									.replace("%percentage%", Double.toString(percentage))));
 						} else {
 							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OrePercentageError));
 						}
 					} else if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.UnableToAddFallback));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.UnableToAddFallback.replace("%block%", block)));
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreAlreadyInMine));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreAlreadyInMine.replace("%block%", block)));
 					}
 				} else {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));

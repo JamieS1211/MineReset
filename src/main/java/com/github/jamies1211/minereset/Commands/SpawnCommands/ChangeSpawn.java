@@ -38,12 +38,14 @@ public class ChangeSpawn implements CommandExecutor {
 				if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnValue)) {
 					config.getNode("4 - MineGroups", group, mine, "SpawnPoint").setValue(spawnValue);
 					MineReset.plugin.save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineSpawnChanged + " " + "Spawn" + spawnValue));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineSpawnChanged
+							.replace("%mine%", mine)
+							.replace("%spawnValue%", spawnValue)));
 				} else {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SpawnPointNotExist));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.SpawnPointAlreadyInUse));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SpawnPointAlreadyInUse.replace("%mine%", mine)));
 			}
 
 		} else {

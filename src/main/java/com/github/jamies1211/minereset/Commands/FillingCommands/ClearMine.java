@@ -32,10 +32,10 @@ public class ClearMine implements CommandExecutor {
 		}
 
 		if (group == null) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineDoesNotExist.replace("%mine%", mine)));
 		} else {
 			FillMineAction.fill(group, mine, "minecraft:air", src);
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineCleared));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineCleared.replace("%mine%", mine)));
 		}
 
 		return CommandResult.success();

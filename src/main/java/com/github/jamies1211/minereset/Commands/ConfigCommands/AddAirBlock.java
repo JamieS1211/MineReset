@@ -42,8 +42,7 @@ public class AddAirBlock implements CommandExecutor {
 				config.getNode("5 - Lists", "AirBlocks").setValue(blockListString); // Wright changes to file.
 				MineReset.plugin.save();
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AirBlockAdd1 +
-						" " + blockString + " " + Messages.AirBlockAdd2));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AirBlockAdd.replace("%block%", blockString)));
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AirBlockExist));
 			}

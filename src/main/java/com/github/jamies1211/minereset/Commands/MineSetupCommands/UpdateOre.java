@@ -69,7 +69,7 @@ public class UpdateOre implements CommandExecutor {
 						}
 
 						MineReset.plugin.save();
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreRemoved));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreRemoved.replace("%block%", block)));
 					} else if (percentage > 0) {
 
 						/** Total up percentages */
@@ -86,7 +86,9 @@ public class UpdateOre implements CommandExecutor {
 						if (currentFullPercentage + percentage - oldBlockPercentage<= 100) {
 
 							if (Double.toString(oldBlockPercentage).equalsIgnoreCase(Double.toString(percentage))) {
-								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreSamePercentageError + " " + block + " in " + mine));
+								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreSamePercentageError
+										.replace("%block%", block)
+										.replace("%mine%", mine)));
 							} else {
 								config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "BlockState").setValue(block);
 								config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "percentage").setValue(percentage);
@@ -103,9 +105,9 @@ public class UpdateOre implements CommandExecutor {
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PercentageTooSmallUpdate));
 					}
 				} else if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.UnableToEditFallback));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.UnableToEditFallback.replace("%block%", block)));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.OreNotInMine));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreNotInMine.replace("%block%", block)));
 				}
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));

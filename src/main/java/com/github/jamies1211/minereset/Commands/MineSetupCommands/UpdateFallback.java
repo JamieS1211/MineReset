@@ -39,11 +39,11 @@ public class UpdateFallback implements CommandExecutor {
 
 			if (group != null) {
 				if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.SameFallback));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SameFallback));
 				} else {
 					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue(block);
 					MineReset.plugin.save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " " + Messages.ChangedFallback + " " + block));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChangedFallback.replace("%block%", block)));
 				}
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));

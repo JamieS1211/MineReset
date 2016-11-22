@@ -39,14 +39,16 @@ public class UpdateChatSettings implements CommandExecutor {
 				if (SendMessages.messageToAllPlayers(option, null)) {
 					config.getNode("6 - ChatSettings", type).setValue(option); // Wright changes to file.
 					MineReset.plugin.save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChatSettingChanged +
-							" " + type + " " + "to" + " " + option));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChatSettingChanged
+							.replace("%type%", type)
+							.replace("%option%", Integer.toString(option))));
 				} else {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidChatSetting));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChatSettingAlreadySet1 +
-				" " + type + " " + Messages.ChatSettingAlreadySet2 + " " + option));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChatSettingAlreadySet
+						.replace("%type%", type)
+						.replace("%option%", Integer.toString(option))));
 			}
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidChatType));

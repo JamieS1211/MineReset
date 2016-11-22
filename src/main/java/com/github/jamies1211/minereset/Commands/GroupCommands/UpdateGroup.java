@@ -34,10 +34,10 @@ public class UpdateGroup implements CommandExecutor {
 				config.getNode("4 - MineGroups", group, "resetTime").setValue(resetTime);
 				config.getNode("4 - MineGroups", group, "initialDelay").setValue(initialDelay);
 				MineReset.plugin.save();
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.UpdateMineGroup + group));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.UpdateMineGroup.replace("%group%", group)));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + group + " " + Messages.MineGroupDoesNotExist));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDoesNotExist.replace("%group%", group)));
 		}
 
 		return CommandResult.success();

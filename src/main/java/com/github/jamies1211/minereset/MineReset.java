@@ -492,13 +492,13 @@ public class MineReset {
 					if (listOfMines.size() > 0) {
 
 						if (!SendMessages.messageToAllPlayers(reminderChatType, Messages.MinePrefix + "&l" + listOfMines +
-								" " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)) &&
+								" " + Messages.WillResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))) &&
 								reminderChatType != 0) {
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidRemindChatType));
 						}
 
 						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix +
-								listOfMines + " " + Messages.WillResetIn + " " + SecondsToString.secondsToTimeString(timeUntilNextFill)));
+								listOfMines + " " + Messages.WillResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))));
 
 					}
 

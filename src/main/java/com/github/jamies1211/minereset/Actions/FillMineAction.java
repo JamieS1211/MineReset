@@ -1,10 +1,12 @@
 package com.github.jamies1211.minereset.Actions;
 
 import com.flowpowered.math.vector.Vector3d;
+import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockState;
+import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
@@ -25,6 +27,8 @@ import static com.github.jamies1211.minereset.Messages.*;
 public class FillMineAction {
 
 	public static void fill(String group, String mine, String definedBlock, CommandSource src) {
+
+		Long startTime = System.currentTimeMillis();
 
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
@@ -247,7 +251,10 @@ public class FillMineAction {
 								BlockState state = BlockState.builder().build(cont).get();
 								NamedCause cause = NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get());
 
-								Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, Cause.of(cause));
+								if (!Sponge.getServer().getWorld(mineWorldUUID).get().getBlock(x, y, z).getType().equals(state.getType())) {
+									Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, state, Cause.of(cause));
+								}
+
 							} else {
 								placeError++;
 							}
@@ -264,6 +271,13 @@ public class FillMineAction {
 
 				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
 			}
+
+			Long endTime = System.currentTimeMillis();
+			Long timeTaken = endTime - startTime;
+
+			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + Messages.MineFillTimeTaken
+					.replace("%mine%", mine)
+					.replace("%time%", Long.toString(timeTaken))));
 		}
 	}
 

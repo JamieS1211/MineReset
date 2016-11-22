@@ -38,8 +38,9 @@ public class AddRemindTime implements CommandExecutor {
 			config.getNode("2 - RemindSecondList").setValue(timeListString); // Wright changes to file.
 			MineReset.plugin.save();
 
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindTimeAdd1 +
-					" " + time + " ( " + SecondsToString.secondsToTimeString(time) + ") " + Messages.RemindTimeAdd2));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindTimeAdd
+					.replace("%time%", Integer.toString(time))
+					.replace("%%", SecondsToString.secondsToTimeString(time))));
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindTimeExist));
 		}

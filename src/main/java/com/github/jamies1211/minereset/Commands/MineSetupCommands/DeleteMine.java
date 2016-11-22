@@ -33,7 +33,7 @@ public class DeleteMine implements CommandExecutor {
 		if (group != null) {
 			config.getNode("4 - MineGroups", group).removeChild(mine);
 			MineReset.plugin.save();
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DeletedMine + mine));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DeletedMine.replace("%mine%", mine)));
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		}

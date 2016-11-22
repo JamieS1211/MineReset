@@ -25,17 +25,17 @@ public class Details implements CommandExecutor {
 		ConfigurationNode config = MineReset.plugin.getConfig();
 
 		final String type = args.<String>getOne("type").get().toUpperCase();
-		final String nameAltered = args.<String>getOne("name").get().toUpperCase();
+		final String nameUpperCase = args.<String>getOne("name").get().toUpperCase();
 		final String nameOrigonal = args.<String>getOne("name").get();
 
 		TreeMap<String, Integer> infoMap = new TreeMap<>();
 
 		if (type.equalsIgnoreCase("group")) {
-			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().contains(nameAltered)) {
+			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().contains(nameUpperCase)) {
 				List mineList = new ArrayList<>();
-				for (Object detail : config.getNode("4 - MineGroups", nameAltered).getChildrenMap().keySet()) {
+				for (Object detail : config.getNode("4 - MineGroups", nameUpperCase).getChildrenMap().keySet()) {
 					if (detail.toString().equalsIgnoreCase("initialDelay") || detail.toString().equalsIgnoreCase("resetTime")) {
-						infoMap.put(detail.toString(), config.getNode("4 - MineGroups", nameAltered, detail.toString()).getInt());
+						infoMap.put(detail.toString(), config.getNode("4 - MineGroups", nameUpperCase, detail.toString()).getInt());
 					} else {
 						mineList.add(detail.toString());
 					}
@@ -45,7 +45,7 @@ public class Details implements CommandExecutor {
 
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "----------------  Group info  ----------------"));
 
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group: " + nameAltered));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Group: " + nameUpperCase));
 
 					if (mineList.size() < 1) {
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "No mines"));
@@ -72,14 +72,14 @@ public class Details implements CommandExecutor {
 				}
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + nameAltered + " " + Messages.MineGroupDoesNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDoesNotExist.replace("%group%", nameUpperCase)));
 			}
 
 		} else if (type.equalsIgnoreCase("mine")) {
 			String group = null;
 
 			for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
-				if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(nameAltered)) {
+				if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(nameUpperCase)) {
 					group = groupObject.toString();
 				}
 			}
@@ -93,14 +93,14 @@ public class Details implements CommandExecutor {
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "----------------  Mine info  ----------------"));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Mine: " + nameAltered + "       " + "Group: " + group));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Mine: " + nameUpperCase + "       " + "Group: " + group));
 
-				int x1 = config.getNode("4 - MineGroups", group, nameAltered, "pos1", "x").getInt();
-				int y1 = config.getNode("4 - MineGroups", group, nameAltered, "pos1", "y").getInt();
-				int z1 = config.getNode("4 - MineGroups", group, nameAltered, "pos1", "z").getInt();
-				int x2 = config.getNode("4 - MineGroups", group, nameAltered, "pos2", "x").getInt();
-				int y2 = config.getNode("4 - MineGroups", group, nameAltered, "pos2", "y").getInt();
-				int z2 = config.getNode("4 - MineGroups", group, nameAltered, "pos2", "z").getInt();
+				int x1 = config.getNode("4 - MineGroups", group, nameUpperCase, "pos1", "x").getInt();
+				int y1 = config.getNode("4 - MineGroups", group, nameUpperCase, "pos1", "y").getInt();
+				int z1 = config.getNode("4 - MineGroups", group, nameUpperCase, "pos1", "z").getInt();
+				int x2 = config.getNode("4 - MineGroups", group, nameUpperCase, "pos2", "x").getInt();
+				int y2 = config.getNode("4 - MineGroups", group, nameUpperCase, "pos2", "y").getInt();
+				int z2 = config.getNode("4 - MineGroups", group, nameUpperCase, "pos2", "z").getInt();
 
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Location: Pos1: " +
@@ -118,37 +118,37 @@ public class Details implements CommandExecutor {
 
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Spawn point: Spawn" +
-						config.getNode("4 - MineGroups", group, nameAltered, "SpawnPoint").getString()));
+						config.getNode("4 - MineGroups", group, nameUpperCase, "SpawnPoint").getString()));
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Smart Fill: " +
-						config.getNode("4 - MineGroups", group, nameAltered, "SmartFill").getBoolean()));
+						config.getNode("4 - MineGroups", group, nameUpperCase, "SmartFill").getBoolean()));
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Smart Radius: " +
-						config.getNode("4 - MineGroups", group, nameAltered, "SmartFillRadius").getInt()));
+						config.getNode("4 - MineGroups", group, nameUpperCase, "SmartFillRadius").getInt()));
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Smart Fill Only Air: " +
-						config.getNode("4 - MineGroups", group, nameAltered, "SmartFillOnlyAir").getBoolean()));
+						config.getNode("4 - MineGroups", group, nameUpperCase, "SmartFillOnlyAir").getBoolean()));
 
 
 
-				for (final Object groupItems : config.getNode("4 - MineGroups", group, nameAltered, "ores").getChildrenMap().keySet()) {
+				for (final Object groupItems : config.getNode("4 - MineGroups", group, nameUpperCase, "ores").getChildrenMap().keySet()) {
 					String itemName = groupItems.toString();
 					if (itemName.equalsIgnoreCase("fallback")) {
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Default Block: " +
-								config.getNode("4 - MineGroups", group, nameAltered, "ores", itemName, "BlockState").getString()));
+								config.getNode("4 - MineGroups", group, nameUpperCase, "ores", itemName, "BlockState").getString()));
 
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Ore count: " +
-								(config.getNode("4 - MineGroups", group, nameAltered, "ores").getChildrenMap().keySet().size() - 1)));
+								(config.getNode("4 - MineGroups", group, nameUpperCase, "ores").getChildrenMap().keySet().size() - 1)));
 					}
 				}
 
 				int oreCount = 1;
 
-				for (final Object groupItems : config.getNode("4 - MineGroups", group, nameAltered, "ores").getChildrenMap().keySet()) {
+				for (final Object groupItems : config.getNode("4 - MineGroups", group, nameUpperCase, "ores").getChildrenMap().keySet()) {
 					String itemName = groupItems.toString();
 					if (!itemName.equalsIgnoreCase("fallback")) {
-						String blockStateString = config.getNode("4 - MineGroups", group, nameAltered, "ores", itemName, "BlockState").getString();
-						String percentage = config.getNode("4 - MineGroups", group, nameAltered, "ores", itemName, "percentage").getString();
+						String blockStateString = config.getNode("4 - MineGroups", group, nameUpperCase, "ores", itemName, "BlockState").getString();
+						String percentage = config.getNode("4 - MineGroups", group, nameUpperCase, "ores", itemName, "percentage").getString();
 
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + "Ore" + oreCount
 								+ " : " + blockStateString + " at " + percentage + "%"));
@@ -161,7 +161,7 @@ public class Details implements CommandExecutor {
 
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + nameAltered + " " + Messages.MineDoesNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + nameUpperCase + " " + Messages.MineDoesNotExist));
 			}
 
 		} else if (type.equalsIgnoreCase("spawn")) {

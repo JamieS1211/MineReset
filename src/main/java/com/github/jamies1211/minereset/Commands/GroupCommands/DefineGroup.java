@@ -26,7 +26,7 @@ public class DefineGroup implements CommandExecutor {
 
 
 		if (config.getNode("4 - MineGroups").getChildrenMap().containsKey(group)) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + group + " " + Messages.MineGroupAlreadyExists));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupAlreadyExists.replace("%group%", group)));
 		} else {
 			if (resetTime < 60) {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ResetTimeTooShort));
@@ -36,7 +36,7 @@ public class DefineGroup implements CommandExecutor {
 				config.getNode("4 - MineGroups", group, "resetTime").setValue(resetTime);
 				config.getNode("4 - MineGroups", group, "initialDelay").setValue(initialDelay);
 				MineReset.plugin.save();
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DefinedNewMineGroup + group));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DefinedNewMineGroup.replace("%group%", group)));
 			}
 		}
 

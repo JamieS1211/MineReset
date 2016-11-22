@@ -36,8 +36,10 @@ public class CheckTime implements CommandExecutor {
 		if (group == null) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix  + mine + " " + Messages.ResetTime + " " +
-					SecondsToString.secondsToTimeString(TimeUntilFill.getTimeUntilFill(group))));
+			String time = SecondsToString.secondsToTimeString(TimeUntilFill.getTimeUntilFill(group));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix  + Messages.ResetTime
+					.replace("%mine%", mine)
+					.replace("%time%", time)));
 		}
 
 		return CommandResult.success();

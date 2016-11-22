@@ -46,7 +46,11 @@ public class UpdateSpawn implements CommandExecutor {
 					config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnDirection").setValue("North");
 				}
 				config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnWorld").setValue(player.getWorld().getUniqueId().toString());
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.UpdatedSpawnPoint + " x:" + x + " y:" + y + " z:" + z + " facing:" + facing));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.UpdatedSpawnPoint
+						.replace("%x%", Double.toString(x))
+						.replace("%x%", Double.toString(y))
+						.replace("%x%", Double.toString(z))
+						.replace("%facing%", facing)));
 				MineReset.plugin.save();
 
 			} else {

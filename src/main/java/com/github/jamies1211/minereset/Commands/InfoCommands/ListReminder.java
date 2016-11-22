@@ -18,7 +18,7 @@ public class ListReminder implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindList + remindTimes));
+		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindList.replace("%list%", remindTimes.toString())));
 
 		return CommandResult.success();
 	}
