@@ -286,6 +286,8 @@ public class FillMineAction {
 						}
 					}
 
+					final int changedBlocks = blockOrderingMap.size();
+
 					Sponge.getScheduler().createTaskBuilder().execute(new Runnable() {
 						public void run() {
 							long syncStartTime = System.currentTimeMillis();
@@ -314,7 +316,10 @@ public class FillMineAction {
 									.replace("%mine%", mine)
 									.replace("%totalTime%", Long.toString(totalTimeTaken))
 									.replace("%asyncTime%", Long.toString(asyncTimeTaken))
-									.replace("%syncTime%", Long.toString(syncTimeTaken))));
+									.replace("%syncTime%", Long.toString(syncTimeTaken))
+									.replace("%volume%", Integer.toString(count))
+									.replace("%changedBlocks%", Integer.toString(changedBlocks))
+							));
 						}
 					}).name("MineFillingSyncedJobs").submit(MineReset.plugin);
 				}

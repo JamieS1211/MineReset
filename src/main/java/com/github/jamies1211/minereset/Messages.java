@@ -7,7 +7,7 @@ public class Messages {
 	/** General */
 	public static final String MinePrefix = "&9&l[Mines]&r &e";
 	public static final String NoPlayerOnline = "mine re-filling disabled as no player is online";
-	public static final String MineFillTimeTaken = "%mine% was filled in %totalTime% milliseconds with %asyncTime% milliseconds doing async tasks and with %syncTime% milliseconds doing synchronised tasks";
+	public static final String MineFillTimeTaken = "%mine% was filled in %totalTime% milliseconds with %asyncTime% milliseconds doing async tasks and with %syncTime% milliseconds doing synchronised tasks. Volume: %volume%. Changed blocks: %changedBlocks%";
 
 	/** Errors */
 	public static final String TeleportRotationError = "&c&l[Mines] ERROR: Teleport function direction not valid so unused. \"North\", \"South\", \"East\" or \"West\" expected.";
