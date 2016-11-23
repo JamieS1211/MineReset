@@ -43,6 +43,7 @@ import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
