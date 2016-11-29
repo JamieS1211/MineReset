@@ -272,18 +272,18 @@ public class FillMineAction {
 									} else {
 										placeError++;
 									}
-
-									if (placeError > 0) {
-										if (src instanceof Player) {
-											Player player = (Player) src;
-											player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
-										}
-
-										MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
-									}
 								}
 							}
 						}
+					}
+
+					if (placeError > 0) {
+						if (src instanceof Player) {
+							Player player = (Player) src;
+							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
+						}
+
+						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
 					}
 
 					final int changedBlocks = blockOrderingMap.size();
