@@ -6,7 +6,6 @@ import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockState;
-import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
@@ -16,10 +15,10 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
+import org.spongepowered.api.world.World;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 import static com.github.jamies1211.minereset.Messages.*;
 
@@ -53,13 +52,15 @@ public class FillMineAction {
 					if (src instanceof Player) {
 						Player srcPlayer = (Player) src;
 
-						if (!SendMessages.messageToPlayer(srcPlayer, 1, WorldNotFound + mine)) {
+						if (!SendMessages.messageToPlayer(srcPlayer, 1, WorldNotFoundFillError + mine)) {
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
 						}
 					}
 
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(WorldNotFound + mine));
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(WorldNotFoundFillError + mine));
 				} else {
+
+					final World world = Sponge.getServer().getWorld(mineWorldUUID).get();
 
 					if (src != null) {
 						int fillingChatType = config.getNode("6 - ChatSettings", "FillingText").getInt();
@@ -232,11 +233,13 @@ public class FillMineAction {
 						cont = dataContainer.set(DataQuery.of("BlockState"), definedBlock); // If mine being cleared
 					}
 
+					Boolean placement;
+
 					for (int x = xSmallFin; x <= xLargeFin; x++) {
 						for (int y = ySmallFin; y <= yLargeFin; y++) {
 							for (int z = zSmallFin; z <= zLargeFin; z++) {
 								count++;
-								Boolean placement = true;
+								placement = true;
 
 								if (useSmartFill) { // If using smart fill.
 									if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
@@ -246,7 +249,7 @@ public class FillMineAction {
 													placement = false;
 													break;
 												} else { // If using only air make sure start block is solid.
-													if (!IsSolidBlock.isSold(Sponge.getServer().getWorld(mineWorldUUID).get().getBlock(x, y, z).getType())) {
+													if (!IsSolidBlock.isSold(world.getBlock(x, y, z).getType())) {
 														placement = false;
 														break;
 													}
@@ -265,7 +268,7 @@ public class FillMineAction {
 									if (BlockState.builder().build(cont).isPresent()) {
 										BlockState state = BlockState.builder().build(cont).get();
 
-										if (!Sponge.getServer().getWorld(mineWorldUUID).get().getBlock(x, y, z).equals(state)) {
+										if (!world.getBlock(x, y, z).equals(state)) {
 											blockOrderingMap.put(count, state);
 										}
 
@@ -286,8 +289,6 @@ public class FillMineAction {
 						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
 					}
 
-					final int changedBlocks = blockOrderingMap.size();
-
 					Sponge.getScheduler().createTaskBuilder().execute(new Runnable() {
 						public void run() {
 							long syncStartTime = System.currentTimeMillis();
@@ -300,7 +301,7 @@ public class FillMineAction {
 										count++;
 
 										if (blockOrderingMap.containsKey(count)) {
-											Sponge.getServer().getWorld(mineWorldUUID).get().setBlock(x, y, z, blockOrderingMap.get(count), Cause.of(cause));
+											world.setBlock(x, y, z, blockOrderingMap.get(count), Cause.of(cause));
 										}
 
 									}
@@ -318,7 +319,7 @@ public class FillMineAction {
 									.replace("%asyncTime%", Long.toString(asyncTimeTaken))
 									.replace("%syncTime%", Long.toString(syncTimeTaken))
 									.replace("%volume%", Integer.toString(count))
-									.replace("%changedBlocks%", Integer.toString(changedBlocks))
+									.replace("%changedBlocks%", Integer.toString(blockOrderingMap.size()))
 							));
 						}
 					}).name("MineFillingSyncedJobs").submit(MineReset.plugin);

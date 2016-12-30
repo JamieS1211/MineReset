@@ -2,6 +2,7 @@ package com.github.jamies1211.minereset.Commands.FillingCommands;
 
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Actions.FillMineAction;
+import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -26,16 +27,10 @@ public class FillBlock implements CommandExecutor {
 		String mine = args.<String>getOne("name").get();
 		mine = mine.toUpperCase();
 
-		String group = null;
+		String group = GetMineGroup.getMineGroup(mine);
 
 		if (src instanceof Player) {
 			Player player = (Player) src;
-
-			for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
-				if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
-					group = groupObject.toString();
-				}
-			}
 
 			if (group == null) {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));

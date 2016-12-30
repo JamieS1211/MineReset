@@ -14,7 +14,8 @@ public class Messages {
 	public static final String ResetTimeTooShortError = "&c&l[Mines] ERROR: Reset time was read from config at less than 60 seconds. It has been changed to 60";
 	public static final String InvalidRemindChatType = "Your config reminder chat type has is an invalid number. Please refer to the documentation";
 	public static final String InvalidFillChatType = "Your config fill chat type has is an invalid number. Please refer to the documentation";
-	public static final String WorldNotFound = "&c&l[Mines] ERROR Filling mine cannot occur as the world cannot be found for mine:";
+	public static final String WorldNotFound = "&c&l[Mines] ERROR The world the mine exists in cannot be found";
+	public static final String WorldNotFoundFillError = "&c&l[Mines] ERROR Filling mine cannot occur as the world cannot be found for mine:";
 	public static final String BlockPlaceError = "&c&l[Mines] ERROR %errors%errors occurred when filling the mine. Check the mine config and make sure all blocks are on the server";
 
 	/** Command Messages */
@@ -72,6 +73,8 @@ public class Messages {
 	public static final String InvalidChatSetting = "The chat setting you listed is invalid. Please refer to documentation";
 	public static final String ChatSettingAlreadySet = "The chat settings for %type% is already %option%";
 	public static final String InvalidChatType = "That is not a valid chat type. Options (FillingText|ReminderText)";
+	public static final String MineFillSignPercentageUpdated = "You have updated the percentage of blocks that need to exist for mine fill signs to function to %percentage%";
+	public static final String MineFillSignPercentageInvalid = "The value you entered was invalid. Please enter a value between 0 and 100";
 
 	/** Command Usages */
 	public static final String Help = "/mine help";
@@ -163,6 +166,10 @@ public class Messages {
 	public static final String UpdateChatSettingsDescription = "Changes the way messages of the listed type are sent to players";
 	public static final String UpdateChatSettingsExtendedDescription = "Changes the way messages of the listed type are sent to players";
 
+	public static final String UpdateSignFillPercentage = "Usage /updateSignFillPercentage [Percentage]";
+	public static final String UpdateSignFillPercentageDescription = "Changes the percentage of blocks that are not air before the mine fill signs function";
+	public static final String UpdateSignFillPercentageExtendedDescription = "";
+
 	/** Player Messages */
 	public static final String ResettingNowSingular = "is resetting now";
 	public static final String ResettingNowDefined = "is being filled with %block%";
@@ -170,6 +177,7 @@ public class Messages {
 	public static final String ResettingNowPlural = "are resetting now";
 	public static final String WillResetIn = "will reset in: %time%";
 	public static final String InsideFillingMine = "&9The mine you were in has just been reset so you have been teleported to spawn.";
+	public static final String SignPercentageFillError = "&9The mine is currently too full to fill in this way. The mine is currently %percentage%% full";
 
 	/** Permissions */
 //	help: "minereset.help"

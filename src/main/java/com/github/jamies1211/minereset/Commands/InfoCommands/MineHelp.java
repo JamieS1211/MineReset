@@ -189,6 +189,12 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateChatSettingsExtendedDescription));
 		}
 
+		if (src.hasPermission("minereset.update.signfillpercentage")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lUpdate SignFillPercentage Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + Messages.UpdateSignFillPercentage));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + Messages.UpdateSignFillPercentageExtendedDescription));
+		}
+
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e&l[Mine Help End]"));
 		return CommandResult.success();
 	}

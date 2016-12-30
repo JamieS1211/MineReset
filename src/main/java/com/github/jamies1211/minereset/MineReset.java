@@ -3,10 +3,7 @@ package com.github.jamies1211.minereset;
 /**
  * Created by Jamie on 27-May-16.
  */
-import com.github.jamies1211.minereset.Actions.FillMineAction;
-import com.github.jamies1211.minereset.Actions.SendMessages;
-import com.github.jamies1211.minereset.Actions.TimeUntilFill;
-import com.github.jamies1211.minereset.Actions.UpdateConfig;
+import com.github.jamies1211.minereset.Actions.*;
 import com.github.jamies1211.minereset.Commands.ConfigCommands.*;
 import com.github.jamies1211.minereset.Commands.FillingCommands.ClearMine;
 import com.github.jamies1211.minereset.Commands.FillingCommands.FillBlock;
@@ -26,10 +23,17 @@ import java.io.File;
 import java.io.IOException;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.block.InteractBlockEvent;
+import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
@@ -41,13 +45,14 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.7",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.8",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
@@ -406,6 +411,15 @@ public class MineReset {
 				.executor(new UpdateChatSettings())
 				.build());
 
+		subcommands.put(Arrays.asList("updateSignFillPercentage"), CommandSpec.builder()
+				.permission("minereset.update.signfillpercentage")
+				.description(Text.of(Messages.UpdateSignFillPercentageDescription))
+				.extendedDescription(Text.of(Messages.UpdateSignFillPercentageExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("percentage"))))
+				.executor(new UpdateMineFillSignPercentage())
+				.build());
+
 		final CommandSpec mineCommand = CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(Messages.HelpDescription))
@@ -437,6 +451,7 @@ public class MineReset {
 				"minecraft:skull, minecraft:standing_banner");
 		this.config.getNode("6 - ChatSettings", "FillingText").setValue("1");
 		this.config.getNode("6 - ChatSettings", "ReminderText").setValue("2");
+		this.config.getNode("7 - MineFillSignPercentage").setValue(80.0);
 
 		// 0 = disabled
 		// 1 = chat
@@ -462,6 +477,52 @@ public class MineReset {
 			airBlocks = new ArrayList<>(Arrays.asList(config.getNode("5 - Lists", "AirBlocks").getString().split(", ")));
 		} catch (final IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Listener
+	public void onPlayerInteractBlock(InteractBlockEvent event, @Root Player player) {
+		Optional<Location<World>> optLocation = event.getTargetBlock().getLocation();
+
+		if (optLocation.isPresent() && optLocation.get().getTileEntity().isPresent()) {
+			Location<World> location = optLocation.get();
+			TileEntity clickedEntity = location.getTileEntity().get();
+
+			if (event.getTargetBlock().getState().getType().equals(BlockTypes.STANDING_SIGN) || event.getTargetBlock().getState().getType().equals(BlockTypes.WALL_SIGN)) {
+				Optional<SignData> signData = clickedEntity.getOrCreate(SignData.class);
+
+				if (signData.isPresent()) {
+					SignData data = signData.get();
+					String line0 = data.getValue(Keys.SIGN_LINES).get().get(0).toPlain();
+					String line1 = data.getValue(Keys.SIGN_LINES).get().get(1).toPlain();
+					String line2 = data.getValue(Keys.SIGN_LINES).get().get(2).toPlain();
+					String line3 = data.getValue(Keys.SIGN_LINES).get().get(3).toPlain();
+
+					if (line0.equals("[Mine]")) {
+						String mine = line1.toUpperCase();
+						String group = GetMineGroup.getMineGroup(mine);
+
+						if (group == null) {
+							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+						} else {
+							double mineFillPercentage = CheckMineFill.mineFilledPercentage(group, mine, player);
+
+							if (config.getNode("7 - MineFillSignPercentage").getValue() == null) {
+								config.getNode("7 - MineFillSignPercentage").setValue(80.0);
+							}
+
+							double percentageToFill = config.getNode("7 - MineFillSignPercentage").getDouble();
+
+							if (mineFillPercentage < percentageToFill) {
+								FillMineAction.fill(group, mine, null, player);
+							} else {
+								player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SignPercentageFillError
+										.replace("%percentage%", String.valueOf(mineFillPercentage))));
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 

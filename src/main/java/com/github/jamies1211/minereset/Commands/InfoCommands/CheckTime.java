@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.InfoCommands;
 
+import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Actions.TimeUntilFill;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
@@ -25,13 +26,7 @@ public class CheckTime implements CommandExecutor {
 		String mine = args.<String>getOne("name").get();
 		mine = mine.toUpperCase();
 
-		String group = null;
-
-		for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
-			if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
-				group = groupObject.toString();
-			}
-		}
+		String group = GetMineGroup.getMineGroup(mine);
 
 		if (group == null) {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));

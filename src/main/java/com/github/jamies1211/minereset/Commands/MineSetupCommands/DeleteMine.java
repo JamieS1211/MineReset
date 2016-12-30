@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
+import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -22,13 +23,7 @@ public class DeleteMine implements CommandExecutor {
 
 		final String mine = args.<String>getOne("name").get().toUpperCase();
 
-		String group = null;
-
-		for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
-			if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
-				group = groupObject.toString();
-			}
-		}
+		String group = GetMineGroup.getMineGroup(mine);
 
 		if (group != null) {
 			config.getNode("4 - MineGroups", group).removeChild(mine);

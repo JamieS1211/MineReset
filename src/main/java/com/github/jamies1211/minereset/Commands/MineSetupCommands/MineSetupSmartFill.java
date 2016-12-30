@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
+import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -25,24 +26,17 @@ public class MineSetupSmartFill implements CommandExecutor {
 		final int radius = args.<Integer>getOne("radius").get();
 		final boolean smartFillOnlyAir = args.<Boolean>getOne("onlyAir").get();
 
+		String group = GetMineGroup.getMineGroup(mine);
 
-			String group = null;
-
-			for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
-				if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
-					group = groupObject.toString();
-				}
-			}
-
-			if (group != null) {
-				config.getNode("4 - MineGroups", group, mine, "SmartFill").setValue(smartFillEnabled);
-				config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue(radius);
-				config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue(smartFillOnlyAir);
-				MineReset.plugin.save();
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RedefinedMine.replace("%mine%", mine)));
-			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
-			}
+		if (group != null) {
+			config.getNode("4 - MineGroups", group, mine, "SmartFill").setValue(smartFillEnabled);
+			config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue(radius);
+			config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue(smartFillOnlyAir);
+			MineReset.plugin.save();
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RedefinedMine.replace("%mine%", mine)));
+		} else {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+		}
 
 		return CommandResult.success();
 	}
