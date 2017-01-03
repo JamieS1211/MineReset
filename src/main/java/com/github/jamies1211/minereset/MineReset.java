@@ -17,9 +17,10 @@ import com.github.jamies1211.minereset.Commands.SpawnCommands.AddSpawn;
 import com.github.jamies1211.minereset.Commands.SpawnCommands.ChangeSpawn;
 import com.github.jamies1211.minereset.Commands.SpawnCommands.RemoveSpawn;
 import com.github.jamies1211.minereset.Commands.SpawnCommands.UpdateSpawn;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.PlayerDataConfig;
 import com.google.inject.Inject;
 
-import java.io.File;
 import java.io.IOException;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
@@ -27,6 +28,7 @@ import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;
@@ -48,6 +50,8 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -66,9 +70,17 @@ public class MineReset {
 	private ConfigurationNode config;
 	public static MineReset plugin;
 
+	public static MineReset getPlugin () {
+		return plugin;
+	}
+
 	@Inject
-	@DefaultConfig(sharedRoot = true)
-	private File defaultConfig;
+	@ConfigDir(sharedRoot = false)
+	private Path configDir;
+
+	public Path getConfigDir() {
+		return configDir;
+	}
 
 	@Inject
 	@DefaultConfig(sharedRoot = true)
@@ -82,45 +94,23 @@ public class MineReset {
 	public void onServerLoadComplete(GameLoadCompleteEvent event) {
 		plugin = this;
 
-		taskBuilder.execute(new Runnable() {
-			public void run() {
-				cycle();
-			}
-		}).interval(1, TimeUnit.SECONDS).name("MineTick").submit(plugin);
+		taskBuilder.execute(() -> cycle()).interval(1, TimeUnit.SECONDS).name("MineTick").submit(plugin);
 	}
 
 	@Listener
 	public void gameLoadComplete(GameStartingServerEvent event) {
-		try {
-			if (!defaultConfig.exists()) {
-				defaultConfig.createNewFile();
-				config = configManager.load();
-				configManager.save(config);
-				setupconfig();
-				save();
-				getLogger().info("Created new configuration file as none detected!");
-			} else {
-				getLogger().info("Detected configuration file and loaded");
+		// Create config Directory for VoteTools.
+		if (!Files.exists(configDir)) {
+			try {
+				Files.createDirectories(configDir);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			config = configManager.load();
-
-		} catch (IOException exception) {
-			getLogger().info("The default configuration could not be loaded or created!");
 		}
-		UpdateConfig.update1to2();
-		reload();
-	}
 
-	public ConfigurationNode getConfig() {
-		return this.config;
-	}
-
-	public File getDefaultConfig() {
-		return this.defaultConfig;
-	}
-
-	public ConfigurationLoader<CommentedConfigurationNode> getConfigManager() {
-		return this.configManager;
+		// Set up data and config files.
+		GeneralDataConfig.getConfig().setup();
+		PlayerDataConfig.getConfig().setup();
 	}
 
 	@Listener
@@ -430,56 +420,6 @@ public class MineReset {
 		Sponge.getCommandManager().register(this, mineCommand, "mine");
 	}
 
-	private void setupconfig() {
-		this.config.getNode("1 - ConfigMode").setValue(2);
-		this.config.getNode("2 - RemindSecondList").setValue("1, 5, 15, 30, 60, 120, 180, 300");
-		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnX").setValue(0.5);
-		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnY").setValue(85.0);
-		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnZ").setValue(0.5);
-		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnDirection").setValue("West");
-		this.config.getNode("3 - Spawn", "SpawnDefault", "SpawnWorld").setValue(Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
-		this.config.getNode("5 - Lists", "AirBlocks").setValue(
-				"minecraft:torch, minecraft:redstone_torch, minecraft:redstone_wire, minecraft:powered_repeater, minecraft:unpowered_repeater, minecraft:powered_comparator, " +
-				"minecraft:unpowered_comparator, minecraft:wooden_button, minecraft:stone_button, minecraft:lever, minecraft:tripwire_hook, minecraft:stone_pressure_plate, " +
-				"minecraft:wooden_pressure_plate, minecraft:light_weighted_pressure_plate, minecraft:heavy_weighted_pressure_plate, minecraft:trapdoor, minecraft:iron_trapdoor, " +
-				"minecraft:fence_gate, minecraft:spruce_fence_gate, minecraft:birch_fence_gate, minecraft:jungle_fence_gate, minecraft:dark_oak_fence_gate, minecraft:acacia_fence_gate, " +
-				"minecraft:wooden_door, minecraft:iron_door, minecraft:spruce_door, minecraft:birch_door, minecraft:jungle_door, minecraft:acacia_door, minecraft:dark_oak_door, " +
-				"minecraft:rail, minecraft:golden_rail, minecraft:detector_rail, minecraft:activator_rail, minecraft:tallgrass, minecraft:sapling, minecraft:deadbush, " +
-				"minecraft:yellow_flower, minecraft:red_flower, minecraft:brown_mushroom, minecraft:red_mushroom, minecraft:ladder, minecraft:snow_layer, minecraft:fence, " +
-				"minecraft:nether_brick_fence, minecraft:iron_bars, minecraft:glass_pane, minecraft:vine, minecraft:waterlily, minecraft:cobblestone_wall, minecraft:anvil, " +
-				"minecraft:stained_glass_pane, minecraft:carpet, minecraft:double_plant, minecraft:wall_sign, minecraft:standing_sign, minecraft:skull, minecraft:brewing_stand, g" +
-				"minecraft:skull, minecraft:standing_banner");
-		this.config.getNode("6 - ChatSettings", "FillingText").setValue("1");
-		this.config.getNode("6 - ChatSettings", "ReminderText").setValue("2");
-		this.config.getNode("7 - MineFillSignPercentage").setValue(80.0);
-
-		// 0 = disabled
-		// 1 = chat
-		// 2 = action bar
-		// 3 = chat & action bar
-		save();
-	}
-
-	public void save() {
-		try {
-			getConfigManager().save(this.config);
-		} catch (final IOException e) {
-			getLogger().info("Failed to save config file!");
-		}
-		this.reload();
-	}
-
-	public void reload() {
-		try {
-			this.config = getConfigManager().load();
-			getLogger().info("File Loaded");
-			remindTimes = new ArrayList<>(Arrays.asList(config.getNode("2 - RemindSecondList").getString().split(", ")));
-			airBlocks = new ArrayList<>(Arrays.asList(config.getNode("5 - Lists", "AirBlocks").getString().split(", ")));
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Listener
 	public void onPlayerInteractBlock(InteractBlockEvent event, @Root Player player) {
 		Optional<Location<World>> optLocation = event.getTargetBlock().getLocation();
@@ -503,7 +443,7 @@ public class MineReset {
 						String group = GetMineGroup.getMineGroup(mine);
 
 						if (group == null) {
-							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineDoesNotExist.replace("%mine%", mine)));
 						} else {
 							double mineFillPercentage = CheckMineFill.mineFilledPercentage(group, mine, player);
 

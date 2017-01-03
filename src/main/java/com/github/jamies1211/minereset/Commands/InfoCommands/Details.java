@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Commands.InfoCommands;
 
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import com.github.jamies1211.minereset.SecondsToString;
@@ -23,7 +24,7 @@ public class Details implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String type = args.<String>getOne("type").get().toUpperCase();
 		final String nameUpperCase = args.<String>getOne("name").get().toUpperCase();
@@ -38,10 +39,11 @@ public class Details implements CommandExecutor {
 			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().contains(group)) {
 				List mineList = new ArrayList<>();
 				for (Object detail : config.getNode("4 - MineGroups", group).getChildrenMap().keySet()) {
-					if (detail.toString().equalsIgnoreCase("initialDelay") || detail.toString().equalsIgnoreCase("resetTime")) {
-						infoMap.put(detail.toString(), config.getNode("4 - MineGroups", group, detail.toString()).getInt());
+					String detailString = detail.toString();
+					if (detailString.equalsIgnoreCase("initialDelay") || detailString.equalsIgnoreCase("resetTime")) {
+						infoMap.put(detailString, config.getNode("4 - MineGroups", group, detailString).getInt());
 					} else {
-						mineList.add(detail.toString());
+						mineList.add(detailString);
 					}
 				}
 
@@ -161,7 +163,7 @@ public class Details implements CommandExecutor {
 
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineDoesNotExist.replace("%mine%", mine)));
 			}
 
 		} else if (type.equalsIgnoreCase("spawn")) {

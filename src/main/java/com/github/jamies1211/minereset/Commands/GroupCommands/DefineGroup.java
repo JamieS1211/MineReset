@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.GroupCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -18,7 +19,7 @@ public class DefineGroup implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String group = args.<String>getOne("group").get().toUpperCase();
 		final int resetTime = args.<Integer>getOne("resetTime").get();
@@ -35,7 +36,7 @@ public class DefineGroup implements CommandExecutor {
 			} else {
 				config.getNode("4 - MineGroups", group, "resetTime").setValue(resetTime);
 				config.getNode("4 - MineGroups", group, "initialDelay").setValue(initialDelay);
-				MineReset.plugin.save();
+				GeneralDataConfig.getConfig().get();
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DefinedNewMineGroup.replace("%group%", group)));
 			}
 		}

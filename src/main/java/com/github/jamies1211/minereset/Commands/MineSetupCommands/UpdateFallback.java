@@ -2,6 +2,7 @@ package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -21,7 +22,7 @@ public class UpdateFallback implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String mine = args.<String>getOne("name").get().toUpperCase();
 
@@ -36,11 +37,11 @@ public class UpdateFallback implements CommandExecutor {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SameFallback));
 				} else {
 					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue(block);
-					MineReset.plugin.save();
+					GeneralDataConfig.getConfig().save();
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChangedFallback.replace("%block%", block)));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineDoesNotExist.replace("%mine%", mine)));
 			}
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));

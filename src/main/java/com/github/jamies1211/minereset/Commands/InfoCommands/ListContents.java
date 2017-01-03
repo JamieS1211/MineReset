@@ -4,6 +4,7 @@ package com.github.jamies1211.minereset.Commands.InfoCommands;
  * Created by Jamie on 31-May-16.
  */
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -25,7 +26,7 @@ public class ListContents implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String type = args.<String>getOne("type").get().toUpperCase();
 

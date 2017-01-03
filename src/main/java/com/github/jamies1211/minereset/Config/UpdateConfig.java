@@ -1,6 +1,5 @@
-package com.github.jamies1211.minereset.Actions;
+package com.github.jamies1211.minereset.Config;
 
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 
@@ -11,7 +10,7 @@ public class UpdateConfig {
 
 	public static void update1to2 () {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		if (config.getNode("1 - ConfigMode").getInt() == 1) {
 			config.getNode("1 - ConfigMode").setValue("2");
@@ -63,7 +62,7 @@ public class UpdateConfig {
 
 			config.getNode("6 - ChatSettings", "FillingText").setValue("1");
 			config.getNode("6 - ChatSettings", "ReminderText").setValue("2");
-			MineReset.plugin.save();
+			GeneralDataConfig.getConfig().save();
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -18,7 +19,7 @@ public class RemoveSpawn implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String spawnPoint = args.<String>getOne("spawnPoint").get();
 		String spawnValue = spawnPoint.replace("Spawn", "").replace("d", "D");
@@ -29,7 +30,7 @@ public class RemoveSpawn implements CommandExecutor {
 
 			config.getNode("3 - Spawn").removeChild("Spawn" + spawnValue);
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemoveSpawnPoint.replace("%spawnValue", spawnValue)));
-			MineReset.plugin.save();
+			GeneralDataConfig.getConfig().get();
 
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SpawnPointNotExist));

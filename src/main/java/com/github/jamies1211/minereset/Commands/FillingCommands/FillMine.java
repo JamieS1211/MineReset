@@ -3,8 +3,6 @@ package com.github.jamies1211.minereset.Commands.FillingCommands;
 import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
-import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;

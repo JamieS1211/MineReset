@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.GroupCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -21,7 +22,7 @@ public class DeleteGroup implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String group = args.<String>getOne("group").get().toUpperCase();
 		final String safe = args.<String>getOne("safe").get();
@@ -34,7 +35,7 @@ public class DeleteGroup implements CommandExecutor {
 
 			if (listOfMines.isEmpty() || safe.equalsIgnoreCase("force")) {
 				config.getNode("4 - MineGroups").removeChild(group);
-				MineReset.plugin.save();
+				GeneralDataConfig.getConfig().save();
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDeleted.replace("%group%", group)));
 			} else if (safe.equalsIgnoreCase("safe")){
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DeleteGroupFailContents.replace("%group%", group)));

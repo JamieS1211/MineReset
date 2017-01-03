@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import org.spongepowered.api.command.CommandException;
@@ -17,7 +18,7 @@ public class ConfigSave implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		MineReset.plugin.save();
+		GeneralDataConfig.getConfig().save();
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ConfigSaved));
 
 		return CommandResult.success();

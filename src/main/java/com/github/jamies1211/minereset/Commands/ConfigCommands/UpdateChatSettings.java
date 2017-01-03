@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Actions.SendMessages;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -19,7 +20,7 @@ public class UpdateChatSettings implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		String type = args.<String>getOne("type").get();
 		int option = args.<Integer>getOne("option").get();
@@ -38,7 +39,7 @@ public class UpdateChatSettings implements CommandExecutor {
 			if (option != oldOption) {
 				if (SendMessages.messageToAllPlayers(option, null)) {
 					config.getNode("6 - ChatSettings", type).setValue(option); // Wright changes to file.
-					MineReset.plugin.save();
+					GeneralDataConfig.getConfig().save();
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChatSettingChanged
 							.replace("%type%", type)
 							.replace("%option%", Integer.toString(option))));

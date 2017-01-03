@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import com.github.jamies1211.minereset.SecondsToString;
@@ -21,7 +22,7 @@ public class AddRemindTime implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final int time = args.<Integer>getOne("time").get();
 
@@ -36,7 +37,7 @@ public class AddRemindTime implements CommandExecutor {
 			timeListString = timeListString + time; // Add time to list.
 
 			config.getNode("2 - RemindSecondList").setValue(timeListString); // Wright changes to file.
-			MineReset.plugin.save();
+			GeneralDataConfig.getConfig().save();
 
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindTimeAdd
 					.replace("%time%", Integer.toString(time))

@@ -14,7 +14,7 @@ import org.spongepowered.api.text.title.Title;
 public class SendMessages {
 	public static boolean messageToPlayer (Player player, int messageType, String message) {
 
-		/** Title */
+		// Title
 		if (messageType >= 4) {
 			messageType -= 4;
 			// Send title message;
@@ -26,7 +26,7 @@ public class SendMessages {
 		}
 
 
-		/** Action Bar */
+		// Action Bar
 		if (messageType >= 2) {
 			messageType -= 2;
 			if (message != null) {
@@ -36,7 +36,7 @@ public class SendMessages {
 		}
 
 
-		/** Chat */
+		// Chat
 		if (messageType >= 1) {
 			messageType -= 1;
 			if (message != null) {
@@ -50,7 +50,7 @@ public class SendMessages {
 
 	public static boolean messageToAllPlayers (int messageType, String message) {
 
-		/** Title */
+		// Title
 		if (messageType >= 4) {
 			messageType -= 4;
 			// Send title message;
@@ -64,7 +64,7 @@ public class SendMessages {
 		}
 
 
-		/** Action Bar */
+		// Action Bar
 		if (messageType >= 2) {
 			messageType -= 2;
 			for (Player player : Sponge.getServer().getOnlinePlayers()) {
@@ -76,7 +76,7 @@ public class SendMessages {
 		}
 
 
-		/** Chat */
+		// Chat
 		if (messageType >= 1) {
 			messageType -= 1;
 			for (Player player : Sponge.getServer().getOnlinePlayers()) {

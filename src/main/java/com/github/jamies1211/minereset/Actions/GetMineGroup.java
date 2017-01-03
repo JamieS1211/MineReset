@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Actions;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 
@@ -9,7 +10,7 @@ import ninja.leaping.configurate.ConfigurationNode;
 public class GetMineGroup {
 
 	public static String getMineGroup (String mine) {
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		String group = null;
 

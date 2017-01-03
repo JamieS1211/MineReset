@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
@@ -19,14 +20,14 @@ public class UpdateMineFillSignPercentage implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final double percentage = args.<Double>getOne("percentage").get();
 
 		if (percentage > 0 && percentage < 100) {
 
 			config.getNode("7 - MineFillSignPercentage").setValue(percentage); // Wright changes to file.
-			MineReset.plugin.save();
+			GeneralDataConfig.getConfig().save();
 
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineFillSignPercentageUpdated
 					.replace("%percentage%", String.valueOf(percentage))));

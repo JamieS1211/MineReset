@@ -2,6 +2,7 @@ package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -21,7 +22,7 @@ public class UpdateOre implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String mine = args.<String>getOne("name").get().toUpperCase();
 		final double percentage = args.<Double>getOne("percentage").get();
@@ -63,11 +64,11 @@ public class UpdateOre implements CommandExecutor {
 							currentTargetIndex++;
 						}
 
-						MineReset.plugin.save();
+						GeneralDataConfig.getConfig().save();
 						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreRemoved.replace("%block%", block)));
 					} else if (percentage > 0) {
 
-						/** Total up percentages */
+						// Total up percentages
 						double currentFullPercentage = 0;
 
 						for (final Object groupItems : config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet()) { // For all ores in a mine
@@ -87,7 +88,7 @@ public class UpdateOre implements CommandExecutor {
 							} else {
 								config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "BlockState").setValue(block);
 								config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "percentage").setValue(percentage);
-								MineReset.plugin.save();
+								GeneralDataConfig.getConfig().save();
 								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + block + " in " + mine +
 										" updated to " + Double.toString(percentage) + "% from " + Double.toString(oldBlockPercentage) + "%"));
 							}
@@ -105,7 +106,7 @@ public class UpdateOre implements CommandExecutor {
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.OreNotInMine.replace("%block%", block)));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineDoesNotExist.replace("%mine%", mine)));
 			}
 		} else {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));

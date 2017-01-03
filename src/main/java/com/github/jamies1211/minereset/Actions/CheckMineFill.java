@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Actions;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
@@ -19,9 +20,9 @@ public class CheckMineFill {
 
 	public static double mineFilledPercentage(String group, String mine, Player player) {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
-		/** Mine data */
+		// Mine data
 		int x1 = config.getNode("4 - MineGroups", group, mine, "pos1", "x").getInt();
 		int y1 = config.getNode("4 - MineGroups", group, mine, "pos1", "y").getInt();
 		int z1 = config.getNode("4 - MineGroups", group, mine, "pos1", "z").getInt();
@@ -42,7 +43,7 @@ public class CheckMineFill {
 
 		} else {
 
-			/** Manipulate mine co-ordinates */
+			// Manipulate mine co-ordinates
 			int xLarge = x1;
 			int xSmall = x2;
 
@@ -67,7 +68,7 @@ public class CheckMineFill {
 				zSmall = z1;
 			}
 
-			/** Check what blocks are air*/
+			// Check what blocks are air
 
 			int airCount = 0;
 

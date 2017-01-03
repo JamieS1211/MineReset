@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -19,7 +20,7 @@ public class DefineMine implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String group = args.<String>getOne("group").get().toUpperCase();
 		final String mine = args.<String>getOne("name").get().toUpperCase();
@@ -58,7 +59,7 @@ public class DefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "SmartFill").setValue("false");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue("3");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");
-					MineReset.plugin.save();
+					GeneralDataConfig.getConfig().save();
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DefinedNewMine.replace("%mine%", mine)));
 				}
 

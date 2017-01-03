@@ -4,12 +4,17 @@ package com.github.jamies1211.minereset;
  * Created by Jamie on 31-May-16.
  */
 public class Messages {
-	/** General */
+	// General
 	public static final String MinePrefix = "&9&l[Mines]&r &e";
 	public static final String NoPlayerOnline = "mine re-filling disabled as no player is online";
 	public static final String MineFillTimeTaken = "%mine% was filled in %totalTime% milliseconds with %asyncTime% milliseconds doing async tasks and with %syncTime% milliseconds doing synchronised tasks. Volume: %volume%. Changed blocks: %changedBlocks%";
 
-	/** Errors */
+	// Config
+	public static final String newConfigFile = "Created new configuration file as none detected!";
+	public static final String loadedConfigFile = "Detected configuration file and loaded";
+	public static final String configLoadError = "The default configuration could not be loaded or created!";
+
+	// Errors
 	public static final String TeleportRotationError = "&c&l[Mines] ERROR: Teleport function direction not valid so unused. \"North\", \"South\", \"East\" or \"West\" expected.";
 	public static final String ResetTimeTooShortError = "&c&l[Mines] ERROR: Reset time was read from config at less than 60 seconds. It has been changed to 60";
 	public static final String InvalidRemindChatType = "Your config reminder chat type has is an invalid number. Please refer to the documentation";
@@ -18,7 +23,7 @@ public class Messages {
 	public static final String WorldNotFoundFillError = "&c&l[Mines] ERROR Filling mine cannot occur as the world cannot be found for mine:";
 	public static final String BlockPlaceError = "&c&l[Mines] ERROR %errors%errors occurred when filling the mine. Check the mine config and make sure all blocks are on the server";
 
-	/** Command Messages */
+	// Command Messages
 	public static final String PlayerOnlyCommand = "This command must be run by a player";
 	public static final String ConfigSaved = "The config file has been saved";
 	public static final String ConfigReloaded = "The config file has been reloaded";
@@ -76,7 +81,7 @@ public class Messages {
 	public static final String MineFillSignPercentageUpdated = "You have updated the percentage of blocks that need to exist for mine fill signs to function to %percentage%";
 	public static final String MineFillSignPercentageInvalid = "The value you entered was invalid. Please enter a value between 0 and 100";
 
-	/** Command Usages */
+	// Command Usages
 	public static final String Help = "/mine help";
 	public static final String HelpDescription = "Shows mine help";
 	public static final String HelpExtendedDescription = "Use this command to list all the mine sub commands user has access to and how to use them";
@@ -170,7 +175,7 @@ public class Messages {
 	public static final String UpdateSignFillPercentageDescription = "Changes the percentage of blocks that are not air before the mine fill signs function";
 	public static final String UpdateSignFillPercentageExtendedDescription = "";
 
-	/** Player Messages */
+	// Player Messages
 	public static final String ResettingNowSingular = "is resetting now";
 	public static final String ResettingNowDefined = "is being filled with %block%";
 	public static final String ResettingNowClear = "is being cleared";
@@ -179,7 +184,7 @@ public class Messages {
 	public static final String InsideFillingMine = "&9The mine you were in has just been reset so you have been teleported to spawn.";
 	public static final String SignPercentageFillError = "&9The mine is currently too full to fill in this way. The mine is currently %percentage%% full";
 
-	/** Permissions */
+	// Permissions
 //	help: "minereset.help"
 //	time: "minereset.check.time"
 //	reload: "minereset.reload"

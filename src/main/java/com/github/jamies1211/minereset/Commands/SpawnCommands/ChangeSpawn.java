@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -19,7 +20,7 @@ public class ChangeSpawn implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String mine = args.<String>getOne("mine").get().toUpperCase();
 		final String spawnPoint = args.<String>getOne("spawnPoint").get();
@@ -32,7 +33,7 @@ public class ChangeSpawn implements CommandExecutor {
 			if (!config.getNode("4 - MineGroups", group, mine, "SpawnPoint").getString().equalsIgnoreCase(spawnValue)) {
 				if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnValue)) {
 					config.getNode("4 - MineGroups", group, mine, "SpawnPoint").setValue(spawnValue);
-					MineReset.plugin.save();
+					GeneralDataConfig.getConfig().get();
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineSpawnChanged
 							.replace("%mine%", mine)
 							.replace("%spawnValue%", spawnValue)));
@@ -44,7 +45,7 @@ public class ChangeSpawn implements CommandExecutor {
 			}
 
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + mine + " " + Messages.MineDoesNotExist));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineDoesNotExist.replace("%mine%", mine)));
 		}
 
 		return CommandResult.success();

@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -20,7 +21,7 @@ public class UpdateSpawn implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = MineReset.plugin.getConfig();
+		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		final String spawnPoint = args.<String>getOne("spawnPoint").get();
 		final double x = args.<Double>getOne("x").get();
@@ -51,7 +52,7 @@ public class UpdateSpawn implements CommandExecutor {
 						.replace("%x%", Double.toString(y))
 						.replace("%x%", Double.toString(z))
 						.replace("%facing%", facing)));
-				MineReset.plugin.save();
+				GeneralDataConfig.getConfig().get();
 
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SpawnPointNotExist));
