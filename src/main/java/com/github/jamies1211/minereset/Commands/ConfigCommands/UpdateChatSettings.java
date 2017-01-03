@@ -2,8 +2,6 @@ package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Actions.SendMessages;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -11,6 +9,8 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 07-Jul-16.
@@ -40,19 +40,19 @@ public class UpdateChatSettings implements CommandExecutor {
 				if (SendMessages.messageToAllPlayers(option, null)) {
 					config.getNode("6 - ChatSettings", type).setValue(option); // Wright changes to file.
 					GeneralDataConfig.getConfig().save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChatSettingChanged
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + ChatSettingChanged
 							.replace("%type%", type)
 							.replace("%option%", Integer.toString(option))));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidChatSetting));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidChatSetting));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.ChatSettingAlreadySet
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + ChatSettingAlreadySet
 						.replace("%type%", type)
 						.replace("%option%", Integer.toString(option))));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.InvalidChatType));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidChatType));
 		}
 
 

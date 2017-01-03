@@ -1,8 +1,6 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import com.github.jamies1211.minereset.SecondsToString;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
@@ -13,6 +11,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import static com.github.jamies1211.minereset.MineReset.remindTimes;
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 03-Jul-16.
@@ -42,11 +41,11 @@ public class RemoveRemindTime implements CommandExecutor {
 			config.getNode("2 - RemindSecondList").setValue(timeListString); // Wright changes to file.
 			GeneralDataConfig.getConfig().save();
 
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindTimeRemove
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + RemindTimeRemove
 					.replace("%time%", Integer.toString(time))
-					.replace("%%", SecondsToString.secondsToTimeString(time))));
+					.replace("%readableTime%", SecondsToString.secondsToTimeString(time))));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemindTimeNotExist));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + RemindTimeNotExist));
 		}
 
 

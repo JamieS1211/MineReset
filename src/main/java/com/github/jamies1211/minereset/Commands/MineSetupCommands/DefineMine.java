@@ -1,8 +1,6 @@
 package com.github.jamies1211.minereset.Commands.MineSetupCommands;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -11,6 +9,8 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 28-May-16.
@@ -42,7 +42,7 @@ public class DefineMine implements CommandExecutor {
 				for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 					if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
 						alreadyExists = true;
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineAlreadyExists.replace("%mine%", mine)));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineAlreadyExists.replace("%mine%", mine)));
 					}
 				}
 
@@ -60,14 +60,14 @@ public class DefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue("3");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");
 					GeneralDataConfig.getConfig().save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DefinedNewMine.replace("%mine%", mine)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + DefinedNewMine.replace("%mine%", mine)));
 				}
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDoesNotExist.replace("%group%", group)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineGroupDoesNotExist.replace("%group%", group)));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
 		}
 
 		return CommandResult.success();

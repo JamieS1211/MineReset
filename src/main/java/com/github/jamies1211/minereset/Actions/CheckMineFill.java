@@ -1,7 +1,6 @@
 package com.github.jamies1211.minereset.Actions;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
@@ -34,11 +33,13 @@ public class CheckMineFill {
 
 		if (!Sponge.getServer().getWorld(mineWorldUUID).isPresent()) {
 
-			if (!SendMessages.messageToPlayer(player, 1, WorldNotFound + mine)) {
+			String message = WorldNotFound.replace("%mine%", mine);
+
+			if (!SendMessages.messageToPlayer(player, 1, message)) {
 				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
 			}
 
-			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(WorldNotFound + mine));
+			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(message));
 			return 100.0;
 
 		} else {
@@ -77,7 +78,7 @@ public class CheckMineFill {
 			for (int x = xSmall; x <= xLarge; x++) {
 				for (int y = ySmall; y <= yLarge; y++) {
 					for (int z = zSmall; z <= zLarge; z++) {
-						if (world.getBlock(x, y, z).getName().equalsIgnoreCase("minecraft:air")) {
+						if (world.getBlock(x, y, z).getName().equalsIgnoreCase(minecraftAirString)) {
 							airCount++;
 						}
 					}

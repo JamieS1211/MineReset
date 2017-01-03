@@ -4,8 +4,6 @@ import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -14,6 +12,8 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 01-Jun-16.
@@ -34,11 +34,11 @@ public class FillBlock implements CommandExecutor {
 			Player player = (Player) src;
 
 			if (group == null) {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineDoesNotExist.replace("%mine%", mine)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
 			} else {
 				String block = BlockBelowPlayer.getBlockStringBelowPlayer(player);
 				FillMineAction.fill(group, mine, block, src);
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineFilledBlock
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineFilledBlock
 						.replace("%mine%", mine)
 						.replace("%block%", block)));
 			}

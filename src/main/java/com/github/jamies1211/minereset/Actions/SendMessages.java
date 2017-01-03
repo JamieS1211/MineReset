@@ -1,12 +1,13 @@
 package com.github.jamies1211.minereset.Actions;
 
-import com.github.jamies1211.minereset.Messages;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.text.title.Title;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 07-Jul-16.
@@ -19,8 +20,8 @@ public class SendMessages {
 			messageType -= 4;
 			// Send title message;
 			if (message != null) {
-				String titleMessage = Messages.MinePrefix;
-				String subtitleMessage = message.replace(Messages.MinePrefix, "&e");
+				String titleMessage = MinePrefix;
+				String subtitleMessage = message.replace(MinePrefix, "&e");
 				sendTitleMessage(player, titleMessage, subtitleMessage);
 			}
 		}
@@ -56,8 +57,8 @@ public class SendMessages {
 			// Send title message;
 			for (Player player : Sponge.getServer().getOnlinePlayers()) {
 				if (message != null) {
-					String titleMessage = Messages.MinePrefix;
-					String subtitleMessage = message.replace(Messages.MinePrefix, "&e");
+					String titleMessage = MinePrefix;
+					String subtitleMessage = message.replace(MinePrefix, "&e");
 					sendTitleMessage(player, titleMessage, subtitleMessage);
 				}
 			}

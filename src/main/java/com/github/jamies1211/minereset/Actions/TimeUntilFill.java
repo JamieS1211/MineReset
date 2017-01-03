@@ -1,11 +1,12 @@
 package com.github.jamies1211.minereset.Actions;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 27-May-16.
@@ -26,7 +27,7 @@ public class TimeUntilFill {
 			GeneralDataConfig.getConfig().get();
 		} else if (config.getNode("4 - MineGroups", groupName, "resetTime").getInt() < 60) {
 			config.getNode("4 - MineGroups", groupName, "resetTime").setValue(60);
-			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(Messages.ResetTimeTooShortError));
+			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(ResetTimeTooShortError));
 			GeneralDataConfig.getConfig().get();
 		}
 

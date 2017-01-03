@@ -6,7 +6,6 @@ import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.spongepowered.api.Sponge;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,9 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.github.jamies1211.minereset.Messages.configLoadError;
-import static com.github.jamies1211.minereset.Messages.loadedConfigFile;
-import static com.github.jamies1211.minereset.Messages.newConfigFile;
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 27-Jul-16.

@@ -1,8 +1,6 @@
 package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -12,6 +10,8 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 29-May-16.
@@ -47,7 +47,7 @@ public class UpdateSpawn implements CommandExecutor {
 					config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnDirection").setValue("North");
 				}
 				config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnWorld").setValue(player.getWorld().getUniqueId().toString());
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.UpdatedSpawnPoint
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + UpdatedSpawnPoint
 						.replace("%x%", Double.toString(x))
 						.replace("%x%", Double.toString(y))
 						.replace("%x%", Double.toString(z))
@@ -55,10 +55,10 @@ public class UpdateSpawn implements CommandExecutor {
 				GeneralDataConfig.getConfig().get();
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SpawnPointNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + SpawnPointNotExist));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
 		}
 
 

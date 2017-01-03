@@ -2,8 +2,6 @@ package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -14,6 +12,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import static com.github.jamies1211.minereset.MineReset.airBlocks;
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 03-Jul-16.
@@ -43,12 +42,12 @@ public class AddAirBlock implements CommandExecutor {
 				config.getNode("5 - Lists", "AirBlocks").setValue(blockListString); // Wright changes to file.
 				GeneralDataConfig.getConfig().get();
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AirBlockAdd.replace("%block%", blockString)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AirBlockAdd.replace("%block%", blockString)));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.AirBlockExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AirBlockExist));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
 		}
 
 

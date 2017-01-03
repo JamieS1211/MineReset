@@ -10,9 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.github.jamies1211.minereset.Messages.configLoadError;
-import static com.github.jamies1211.minereset.Messages.loadedConfigFile;
-import static com.github.jamies1211.minereset.Messages.newConfigFile;
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 27-Jul-16.

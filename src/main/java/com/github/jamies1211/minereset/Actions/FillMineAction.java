@@ -2,7 +2,6 @@ package com.github.jamies1211.minereset.Actions;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
@@ -49,15 +48,18 @@ public class FillMineAction {
 
 			if (!Sponge.getServer().getWorld(mineWorldUUID).isPresent()) {
 
+
+				String message = WorldNotFoundFillError.replace("%mine%", mine);
+
 				if (src instanceof Player) {
 					Player srcPlayer = (Player) src;
 
-					if (!SendMessages.messageToPlayer(srcPlayer, 1, WorldNotFoundFillError + mine)) {
+					if (!SendMessages.messageToPlayer(srcPlayer, 1, message)) {
 						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
 					}
 				}
 
-				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(WorldNotFoundFillError + mine));
+				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(message));
 			} else {
 
 				final World world = Sponge.getServer().getWorld(mineWorldUUID).get();
@@ -68,20 +70,20 @@ public class FillMineAction {
 					String sentMessage = ResettingNowSingular;
 
 					if (definedBlock != null) {
-						if (definedBlock.equalsIgnoreCase("minecraft:air")) {
+						if (definedBlock.equalsIgnoreCase(minecraftAirString)) {
 							sentMessage = ResettingNowClear;
 						} else {
-							//sentMessage = ResettingNowDefined.replace("%block%", state.getType().getName().split(":", 2)[1]);
 							sentMessage = ResettingNowDefined.replace("%block%", definedBlock.split(":", 2)[1]);
 						}
 					}
 
-					if (!SendMessages.messageToAllPlayers(fillingChatType, MinePrefix + "[" + mine + "]" + " " + sentMessage)) {
+					String message = sentMessage.replace("%mine%", "[" + mine + "]");
+					if (!SendMessages.messageToAllPlayers(fillingChatType, MinePrefix + message)) {
 						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
 					}
 
 					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix +
-							"[" + mine + "]" + " " + sentMessage));
+							message));
 				}
 
 				// General data
@@ -160,7 +162,7 @@ public class FillMineAction {
 				for (Player player : Sponge.getServer().getOnlinePlayers()) {
 					if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) { // If player in world.
 						if (CheckInVolume.checkInVolume(player, xSmallFin, ySmallFin, zSmallFin, xLargeFin, yLargeFin, zLargeFin)) { // If player in mine.
-							if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
+							if (definedBlock == null || !definedBlock.equalsIgnoreCase(minecraftAirString)) { // If end block is not air
 
 								if (useSmartFill) { // If using smart fill.
 
@@ -202,7 +204,7 @@ public class FillMineAction {
 				HashMap<Integer, BlockInfo> blockMap = new HashMap<>();
 				String FallbackBlock = config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString();
 
-				blockMap.put(1, new BlockInfo("minecraft:stone[variant=stone]"));
+				blockMap.put(1, new BlockInfo(minecraftStoneString));
 				int currentItemCount = 1;
 
 				for (final Object groupItems : config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet()) { // For all ores in a mine
@@ -242,7 +244,7 @@ public class FillMineAction {
 							placement = true;
 
 							if (useSmartFill) { // If using smart fill.
-								if (definedBlock == null || !definedBlock.equalsIgnoreCase("minecraft:air")) { // If end block is not air
+								if (definedBlock == null || !definedBlock.equalsIgnoreCase(minecraftAirString)) { // If end block is not air
 									for (Vector3d playerLocation : locationList) {
 										if (playerLocation.distance(x, y, z) <= safeRadius) { // If block in safety zone.
 											if (!smartFillOnlyAir) { // If not using only air cancel block place.
@@ -313,7 +315,7 @@ public class FillMineAction {
 					Long syncTimeTaken = endTime - syncStartTime;
 					Long totalTimeTaken = endTime - startTime;
 
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + Messages.MineFillTimeTaken
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineFillTimeTaken
 							.replace("%mine%", mine)
 							.replace("%totalTime%", Long.toString(totalTimeTaken))
 							.replace("%asyncTime%", Long.toString(asyncTimeTaken))

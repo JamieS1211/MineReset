@@ -1,7 +1,6 @@
 package com.github.jamies1211.minereset.Actions;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 
 /**

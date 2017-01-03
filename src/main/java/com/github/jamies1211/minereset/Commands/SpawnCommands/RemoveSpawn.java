@@ -1,8 +1,6 @@
 package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -10,6 +8,8 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 29-May-16.
@@ -25,15 +25,15 @@ public class RemoveSpawn implements CommandExecutor {
 		String spawnValue = spawnPoint.replace("Spawn", "").replace("d", "D");
 
 		if (spawnValue.equalsIgnoreCase("Default")) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.NoRemoveDefaultSpawn));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + NoRemoveDefaultSpawn));
 		} else if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnValue)) {
 
 			config.getNode("3 - Spawn").removeChild("Spawn" + spawnValue);
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.RemoveSpawnPoint.replace("%spawnValue", spawnValue)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + RemoveSpawnPoint.replace("%spawnValue", spawnValue)));
 			GeneralDataConfig.getConfig().get();
 
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.SpawnPointNotExist));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + SpawnPointNotExist));
 		}
 
 		return CommandResult.success();

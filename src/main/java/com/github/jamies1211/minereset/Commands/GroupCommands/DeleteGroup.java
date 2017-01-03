@@ -1,8 +1,6 @@
 package com.github.jamies1211.minereset.Commands.GroupCommands;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import com.github.jamies1211.minereset.Messages;
-import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -13,6 +11,8 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 
 import java.util.Set;
 import java.util.TreeSet;
+
+import static com.github.jamies1211.minereset.Messages.*;
 
 /**
  * Created by Jamie on 28-May-16.
@@ -36,14 +36,14 @@ public class DeleteGroup implements CommandExecutor {
 			if (listOfMines.isEmpty() || safe.equalsIgnoreCase("force")) {
 				config.getNode("4 - MineGroups").removeChild(group);
 				GeneralDataConfig.getConfig().save();
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDeleted.replace("%group%", group)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineGroupDeleted.replace("%group%", group)));
 			} else if (safe.equalsIgnoreCase("safe")){
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.DeleteGroupFailContents.replace("%group%", group)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + DeleteGroupFailContents.replace("%group%", group)));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.List));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + List));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(Messages.MinePrefix + Messages.MineGroupDoesNotExist.replace("%group%", group)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineGroupDoesNotExist.replace("%group%", group)));
 		}
 
 		return CommandResult.success();
