@@ -20,8 +20,8 @@ public class SendMessages {
 			messageType -= 4;
 			// Send title message;
 			if (message != null) {
-				String titleMessage = MinePrefix;
-				String subtitleMessage = message.replace(MinePrefix, "&e");
+				String titleMessage = minePrefix;
+				String subtitleMessage = message.replace(minePrefix, "&e");
 				sendTitleMessage(player, titleMessage, subtitleMessage);
 			}
 		}
@@ -57,8 +57,8 @@ public class SendMessages {
 			// Send title message;
 			for (Player player : Sponge.getServer().getOnlinePlayers()) {
 				if (message != null) {
-					String titleMessage = MinePrefix;
-					String subtitleMessage = message.replace(MinePrefix, "&e");
+					String titleMessage = minePrefix;
+					String subtitleMessage = message.replace(minePrefix, "&e");
 					sendTitleMessage(player, titleMessage, subtitleMessage);
 				}
 			}

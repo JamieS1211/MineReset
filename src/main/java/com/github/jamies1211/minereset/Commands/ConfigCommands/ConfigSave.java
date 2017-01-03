@@ -18,8 +18,8 @@ public class ConfigSave implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		GeneralDataConfig.getConfig().save();
-		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + ConfigSaved));
+		GeneralDataConfig.getConfigFromInteraction().save();
+		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + configSaved));
 
 		return CommandResult.success();
 	}

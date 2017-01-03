@@ -25,7 +25,7 @@ public class FillMine implements CommandExecutor {
 		String group = GetMineGroup.getMineGroup(mine);
 
 		if (group == null) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist
 					.replace("%mine%", mine)));
 		} else {
 			FillMineAction.fill(group, mine, null, src);

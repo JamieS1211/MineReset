@@ -1,7 +1,6 @@
 package com.github.jamies1211.minereset.Commands.InfoCommands;
 
-import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import ninja.leaping.configurate.ConfigurationNode;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -22,27 +21,23 @@ public class ListContents implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = GeneralDataConfig.getConfig().get();
-
 		final String type = args.<String>getOne("type").get().toUpperCase();
+		Set groupMapKeySet = GeneralDataInteraction.getGroupMap().keySet();
 
 		if (type.equalsIgnoreCase("groups")) {
 
-			if (config.getNode("4 - MineGroups").getChildrenMap().keySet().size() > 0) {
-				Set<Object> listOfGroups = new TreeSet<>(config.getNode("4 - MineGroups").getChildrenMap().keySet());
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "All Groups: " + listOfGroups.toString()));
+			if (groupMapKeySet.size() > 0) {
+				Set<Object> listOfGroups = new TreeSet<>(groupMapKeySet);
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "All Groups: " + listOfGroups.toString()));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + NoMineGroups));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + noMineGroups));
 			}
 
 		} else if (type.equalsIgnoreCase("mines")) {
 			String message = "All Mines: ";
 
-			Set<Object> listOfGroups = new TreeSet<>(config.getNode("4 - MineGroups").getChildrenMap().keySet());
-			for (final Object groupObject: listOfGroups) {
-				Set<Object> listOfMines = new TreeSet<>(config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
-				listOfMines.remove("resetTime");
-				listOfMines.remove("initialDelay");
+			for (final Object groupObject: groupMapKeySet) {
+				Set<Object> listOfMines = GeneralDataInteraction.getMinesInGroup(groupObject.toString());
 
 				if (!listOfMines.isEmpty()) {
 					message = message + listOfMines.toString() + " ";
@@ -50,17 +45,17 @@ public class ListContents implements CommandExecutor {
 			}
 
 			if (!message.equalsIgnoreCase("All mines: ")) {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + message));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + message));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + NoMines));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + noMines));
 			}
 
 		} else if (type.equalsIgnoreCase("spawns")) {
 
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "All Spawns: " + config.getNode("3 - Spawn").getChildrenMap().keySet()));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "All Spawns: " + GeneralDataInteraction.getSpawnPointMap().keySet()));
 
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + List));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + list));
 		}
 
 		return CommandResult.success();

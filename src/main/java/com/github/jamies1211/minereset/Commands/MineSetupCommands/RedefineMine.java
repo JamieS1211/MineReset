@@ -55,16 +55,16 @@ public class RedefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "MineWorld").setValue(player.getWorld().getUniqueId().toString());
 					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue("minecraft:stone[variant=stone]");
 					GeneralDataConfig.getConfig().save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + RedefinedMine.replace("%mine%", mine)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + redefinedMine.replace("%mine%", mine)));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 				}
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineGroupDoesNotExist.replace("%group%", group)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineGroupDoesNotExist.replace("%group%", group)));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 		return CommandResult.success();

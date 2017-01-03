@@ -1,7 +1,10 @@
 package com.github.jamies1211.minereset.Commands.InfoCommands;
 
+import com.flowpowered.math.vector.Vector3d;
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
+import com.github.jamies1211.minereset.Config.MineLocation;
 import com.github.jamies1211.minereset.SecondsToString;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
@@ -48,36 +51,36 @@ public class Details implements CommandExecutor {
 
 				if (!infoMap.isEmpty()) {
 
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + GroupInfoHeader));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + groupInfoHeader));
 
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Group: " + group));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Group: " + group));
 
 					if (mineList.size() < 1) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "No mines"));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "No mines"));
 					} else if (mineList.size() == 1) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Contains mine: " + mineList));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Contains mine: " + mineList));
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Contains mines: " + mineList));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Contains mines: " + mineList));
 					}
 
 
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Reset time: " +
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Reset time: " +
 							infoMap.get("resetTime") + " ( " + SecondsToString.secondsToTimeString(infoMap.get("resetTime")) + ")"));
 
 					if (infoMap.get("initialDelay") == 0) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Initial delay: No initial delay"));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Initial delay: No initial delay"));
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Initial Delay: " +
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Initial Delay: " +
 								infoMap.get("initialDelay") + " ( " + SecondsToString.secondsToTimeString(infoMap.get("initialDelay")) + ")"));
 					}
 
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InfoFooter));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + infoFooter));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + NoMineGroups));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + noMineGroups));
 				}
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineGroupDoesNotExist.replace("%group%", group)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineGroupDoesNotExist.replace("%group%", group)));
 			}
 
 		} else if (type.equalsIgnoreCase("mine")) {
@@ -88,46 +91,42 @@ public class Details implements CommandExecutor {
 			if (group != null) {
 
 
-				int resetTime = config.getNode("4 - MineGroups", group, "resetTime").getInt();
-				int initialDelay = config.getNode("4 - MineGroups", group, "initialDelay").getInt();
+				int resetTime = GeneralDataInteraction.getGroupResetTime(group);
+				int initialDelay = GeneralDataInteraction.getGroupInitialDelay(group);
 
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineInfoHeader));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineInfoHeader));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Mine: " + mine + "       " + "Group: " + group));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Mine: " + mine + "       " + "Group: " + group));
 
-				int x1 = config.getNode("4 - MineGroups", group, mine, "pos1", "x").getInt();
-				int y1 = config.getNode("4 - MineGroups", group, mine, "pos1", "y").getInt();
-				int z1 = config.getNode("4 - MineGroups", group, mine, "pos1", "z").getInt();
-				int x2 = config.getNode("4 - MineGroups", group, mine, "pos2", "x").getInt();
-				int y2 = config.getNode("4 - MineGroups", group, mine, "pos2", "y").getInt();
-				int z2 = config.getNode("4 - MineGroups", group, mine, "pos2", "z").getInt();
+				MineLocation mineLocation = new MineLocation(mine, group);
 
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Location: Pos1: " +
-						x1 + ", " + y1 + ", " + z1 + "   Pos2: " + x2 + ", " + y2 + ", " + z2));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Location:"
+						+ "   Pos1: " +	mineLocation.pos1.getX() + ", " + mineLocation.pos1.getY() + ", " + mineLocation.pos1.getZ()
+						+ "   Pos2: " + mineLocation.pos1.getX() + ", " + mineLocation.pos1.getY() + ", " + mineLocation.pos1.getZ()));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Reset time: " +
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Reset time: " +
 						resetTime + " ( " + SecondsToString.secondsToTimeString(resetTime) + ")"));
 
 				if (initialDelay == 0) {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Initial delay: No initial delay"));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Initial delay: No initial delay"));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Initial Delay: " +
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Initial Delay: " +
 							initialDelay + " ( " + SecondsToString.secondsToTimeString(initialDelay) + ")"));
 				}
 
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Spawn point: Spawn" +
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Spawn point: Spawn" +
 						config.getNode("4 - MineGroups", group, mine, "SpawnPoint").getString()));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Smart Fill: " +
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Smart fill: " +
 						config.getNode("4 - MineGroups", group, mine, "SmartFill").getBoolean()));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Smart Radius: " +
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Smart Radius: " +
 						config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").getInt()));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Smart Fill Only Air: " +
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Smart fill Only Air: " +
 						config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").getBoolean()));
 
 
@@ -135,10 +134,10 @@ public class Details implements CommandExecutor {
 				for (final Object groupItems : config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet()) {
 					String itemName = groupItems.toString();
 					if (itemName.equalsIgnoreCase("fallback")) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Default Block: " +
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Default Block: " +
 								config.getNode("4 - MineGroups", group, mine, "ores", itemName, "BlockState").getString()));
 
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Ore count: " +
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Ore count: " +
 								(config.getNode("4 - MineGroups", group, mine, "ores").getChildrenMap().keySet().size() - 1)));
 					}
 				}
@@ -151,48 +150,46 @@ public class Details implements CommandExecutor {
 						String blockStateString = config.getNode("4 - MineGroups", group, mine, "ores", itemName, "BlockState").getString();
 						String percentage = config.getNode("4 - MineGroups", group, mine, "ores", itemName, "percentage").getString();
 
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Ore" + oreCount
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Ore" + oreCount
 								+ " : " + blockStateString + " at " + percentage + "%"));
 
 						oreCount++;
 					}
 				}
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InfoFooter));
-
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + infoFooter));
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 			}
 
 		} else if (type.equalsIgnoreCase("spawn")) {
 			String spawnValue = nameOrigonal.replace("Spawn", "");
+			String spawnName = "Spawn" + spawnValue;
 
+			if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains(spawnName)) {
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + spawnInfoHeader));
 
-			if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnValue)) {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + SpawnInfoHeader));
+				Vector3d spawnLocation = GeneralDataInteraction.getSpawnLocation(spawnName);
+				String direction = GeneralDataInteraction.getSpawnDirection(spawnName);
+				String spawnWorldString = GeneralDataInteraction.getSpawnWorldUUIDString(spawnName);
 
-				double xSpawn = config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnX").getDouble();
-				double ySpawn = config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnY").getDouble();
-				double zSpawn = config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnZ").getDouble();
-				String direction = config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnDirection").getString();
-				String spawnWorldString = config.getNode("3 - Spawn", "Spawn" + spawnValue, "SpawnWorld").getString();
 				String spawnWorldName = Sponge.getServer().getWorld(UUID.fromString(spawnWorldString)).get().getName();
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Spawn name: " + "Spawn" + spawnValue ));
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "World name: " + spawnWorldName));
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "World UUID: " + spawnWorldString));
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Location:" + " x:" + xSpawn + " y:" + ySpawn +
-						" z:" + zSpawn));
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Facing: " + direction));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Spawn name: " + spawnName));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "World name: " + spawnWorldName));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "World UUID: " + spawnWorldString));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Location:"
+						+ " x:" + spawnLocation.getX() + " y:" + spawnLocation.getY() + " z:" + spawnLocation.getZ()));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Facing: " + direction));
 
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InfoFooter));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + infoFooter));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + "Spawn" + spawnValue + " " + SpawnPointNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + spawnName + " " + spawnPointNotExist));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + Info));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + info));
 		}
 
 		return CommandResult.success();

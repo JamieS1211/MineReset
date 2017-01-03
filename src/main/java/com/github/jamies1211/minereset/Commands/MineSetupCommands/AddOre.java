@@ -62,26 +62,26 @@ public class AddOre implements CommandExecutor {
 							config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "BlockState").setValue(block);
 							config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "percentage").setValue(percentage);
 							GeneralDataConfig.getConfig().save();
-							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AddedOre
+							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + addedOre
 									.replace("%block%", block)
 									.replace("%mine%", mine)
 									.replace("%percentage%", Double.toString(percentage))));
 						} else {
-							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + OrePercentageError));
+							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + orePercentageError));
 						}
 					} else if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + UnableToAddFallback.replace("%block%", block)));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + unableToAddFallback.replace("%block%", block)));
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + OreAlreadyInMine.replace("%block%", block)));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + oreAlreadyInMine.replace("%block%", block)));
 					}
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PercentageTooSmall));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + percentageTooSmall));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 		return CommandResult.success();

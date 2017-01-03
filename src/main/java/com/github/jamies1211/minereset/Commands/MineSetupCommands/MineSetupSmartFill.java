@@ -34,9 +34,9 @@ public class MineSetupSmartFill implements CommandExecutor {
 			config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue(radius);
 			config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue(smartFillOnlyAir);
 			GeneralDataConfig.getConfig().save();
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + RedefinedMine.replace("%mine%", mine)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + redefinedMine.replace("%mine%", mine)));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 		}
 
 		return CommandResult.success();

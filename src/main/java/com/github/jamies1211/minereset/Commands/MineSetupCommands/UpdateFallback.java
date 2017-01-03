@@ -34,17 +34,17 @@ public class UpdateFallback implements CommandExecutor {
 
 			if (group != null) {
 				if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + SameFallback));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + sameFallback));
 				} else {
 					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue(block);
 					GeneralDataConfig.getConfig().save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + ChangedFallback.replace("%block%", block)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + changedFallback.replace("%block%", block)));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 		return CommandResult.success();

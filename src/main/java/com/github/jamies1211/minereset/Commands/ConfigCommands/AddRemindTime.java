@@ -1,8 +1,7 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
-import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import com.github.jamies1211.minereset.SecondsToString;
-import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -21,13 +20,11 @@ public class AddRemindTime implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = GeneralDataConfig.getConfig().get();
-
 		final int time = args.<Integer>getOne("time").get();
 
 		if (!remindTimes.contains(Integer.toString(time))) {
 
-			String timeListString = config.getNode("2 - RemindSecondList").getString();
+			String timeListString = GeneralDataInteraction.getRemindSecondListAsString();
 
 			if (!remindTimes.isEmpty()) { // Add comma if other values there.
 				timeListString = timeListString + ", ";
@@ -35,14 +32,13 @@ public class AddRemindTime implements CommandExecutor {
 
 			timeListString = timeListString + time; // Add time to list.
 
-			config.getNode("2 - RemindSecondList").setValue(timeListString); // Wright changes to file.
-			GeneralDataConfig.getConfig().save();
+			GeneralDataInteraction.setRemindSecondListFromString(timeListString); // Wright changes to file.
 
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + RemindTimeAdd
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + remindTimeAdd
 					.replace("%time%", Integer.toString(time))
 					.replace("%readableTime%", SecondsToString.secondsToTimeString(time))));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + RemindTimeExist));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + remindTimeExist));
 		}
 
 

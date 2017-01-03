@@ -2,6 +2,7 @@ package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -31,21 +32,21 @@ public class ChangeSpawn implements CommandExecutor {
 		if (group != null) {
 
 			if (!config.getNode("4 - MineGroups", group, mine, "SpawnPoint").getString().equalsIgnoreCase(spawnValue)) {
-				if (config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnValue)) {
+				if (GeneralDataInteraction.getSpawnPointMap().keySet().contains("Spawn" + spawnValue)) {
 					config.getNode("4 - MineGroups", group, mine, "SpawnPoint").setValue(spawnValue);
 					GeneralDataConfig.getConfig().get();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineSpawnChanged
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineSpawnChanged
 							.replace("%mine%", mine)
 							.replace("%spawnValue%", spawnValue)));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + SpawnPointNotExist));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + spawnPointNotExist));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + SpawnPointAlreadyInUse.replace("%mine%", mine)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + spawnPointAlreadyInUse.replace("%mine%", mine)));
 			}
 
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 		}
 
 		return CommandResult.success();

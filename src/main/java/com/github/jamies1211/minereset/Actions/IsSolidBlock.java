@@ -1,8 +1,6 @@
 package com.github.jamies1211.minereset.Actions;
 
-import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.MineReset;
-import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.data.property.block.MatterProperty;
 
@@ -14,8 +12,6 @@ import java.util.Optional;
 public class IsSolidBlock {
 
 	public static boolean isSold(BlockState block) {
-
-		ConfigurationNode config = GeneralDataConfig.getConfig().get();
 
 		Optional<MatterProperty> matterProperty = block.getProperty(MatterProperty.class);
 

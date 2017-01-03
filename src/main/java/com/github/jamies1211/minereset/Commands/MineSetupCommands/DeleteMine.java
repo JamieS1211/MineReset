@@ -29,9 +29,9 @@ public class DeleteMine implements CommandExecutor {
 		if (group != null) {
 			config.getNode("4 - MineGroups", group).removeChild(mine);
 			GeneralDataConfig.getConfig().save();
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + DeletedMine.replace("%mine%", mine)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + deletedMine.replace("%mine%", mine)));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 		}
 
 		return CommandResult.success();

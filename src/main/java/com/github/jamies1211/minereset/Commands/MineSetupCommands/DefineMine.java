@@ -42,7 +42,7 @@ public class DefineMine implements CommandExecutor {
 				for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 					if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
 						alreadyExists = true;
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineAlreadyExists.replace("%mine%", mine)));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineAlreadyExists.replace("%mine%", mine)));
 					}
 				}
 
@@ -60,14 +60,14 @@ public class DefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue("3");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");
 					GeneralDataConfig.getConfig().save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + DefinedNewMine.replace("%mine%", mine)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + definedNewMine.replace("%mine%", mine)));
 				}
 
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineGroupDoesNotExist.replace("%group%", group)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineGroupDoesNotExist.replace("%group%", group)));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 		return CommandResult.success();

@@ -1,8 +1,7 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Actions.SendMessages;
-import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import ninja.leaping.configurate.ConfigurationNode;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -20,39 +19,43 @@ public class UpdateChatSettings implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = GeneralDataConfig.getConfig().get();
-
 		String type = args.<String>getOne("type").get();
 		int option = args.<Integer>getOne("option").get();
+		int oldOption = -1;
 
 		if (type.equalsIgnoreCase("FillingText")) {
 			type = "FillingText";
+			oldOption = GeneralDataInteraction.getFillingTextSetting();
 		} else if (type.equalsIgnoreCase("ReminderText")) {
 			type = "ReminderText";
+			oldOption = GeneralDataInteraction.getReminderTextSetting();
 		} else {
 			type = null;
 		}
 
-		int oldOption = config.getNode("6 - ChatSettings", type).getInt();
-
 		if (type != null) {
 			if (option != oldOption) {
 				if (SendMessages.messageToAllPlayers(option, null)) {
-					config.getNode("6 - ChatSettings", type).setValue(option); // Wright changes to file.
-					GeneralDataConfig.getConfig().save();
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + ChatSettingChanged
+
+					if (type.equalsIgnoreCase("FillingText")) {
+						GeneralDataInteraction.setFillingTextSetting(option);
+					} else if (type.equalsIgnoreCase("ReminderText")) {
+						GeneralDataInteraction.setReminderTextSetting(option);
+					}
+
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + chatSettingChanged
 							.replace("%type%", type)
 							.replace("%option%", Integer.toString(option))));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidChatSetting));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidChatSetting));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + ChatSettingAlreadySet
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + chatSettingAlreadySet
 						.replace("%type%", type)
 						.replace("%option%", Integer.toString(option))));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidChatType));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidChatType));
 		}
 
 

@@ -2,6 +2,8 @@ package com.github.jamies1211.minereset.Actions;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
+import com.github.jamies1211.minereset.Config.MineLocation;
 import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
@@ -37,25 +39,19 @@ public class FillMineAction {
 			final NamedCause cause = NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get());
 
 			// Mine data
-			final int x1 = config.getNode("4 - MineGroups", group, mine, "pos1", "x").getInt();
-			final int y1 = config.getNode("4 - MineGroups", group, mine, "pos1", "y").getInt();
-			final int z1 = config.getNode("4 - MineGroups", group, mine, "pos1", "z").getInt();
-			final int x2 = config.getNode("4 - MineGroups", group, mine, "pos2", "x").getInt();
-			final int y2 = config.getNode("4 - MineGroups", group, mine, "pos2", "y").getInt();
-			final int z2 = config.getNode("4 - MineGroups", group, mine, "pos2", "z").getInt();
 			final String mineWorldString = config.getNode("4 - MineGroups", group, mine, "MineWorld").getString();
 			final UUID mineWorldUUID = UUID.fromString(mineWorldString);
 
 			if (!Sponge.getServer().getWorld(mineWorldUUID).isPresent()) {
 
 
-				String message = WorldNotFoundFillError.replace("%mine%", mine);
+				String message = worldNotFoundFillError.replace("%mine%", mine);
 
 				if (src instanceof Player) {
 					Player srcPlayer = (Player) src;
 
 					if (!SendMessages.messageToPlayer(srcPlayer, 1, message)) {
-						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
+						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 					}
 				}
 
@@ -67,22 +63,22 @@ public class FillMineAction {
 				if (src != null) {
 					int fillingChatType = config.getNode("6 - ChatSettings", "FillingText").getInt();
 
-					String sentMessage = ResettingNowSingular;
+					String sentMessage = resettingNowSingular;
 
 					if (definedBlock != null) {
 						if (definedBlock.equalsIgnoreCase(minecraftAirString)) {
-							sentMessage = ResettingNowClear;
+							sentMessage = resettingNowClear;
 						} else {
-							sentMessage = ResettingNowDefined.replace("%block%", definedBlock.split(":", 2)[1]);
+							sentMessage = resettingNowDefined.replace("%block%", definedBlock.split(":", 2)[1]);
 						}
 					}
 
 					String message = sentMessage.replace("%mine%", "[" + mine + "]");
-					if (!SendMessages.messageToAllPlayers(fillingChatType, MinePrefix + message)) {
-						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
+					if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + message)) {
+						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 					}
 
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix +
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
 							message));
 				}
 
@@ -118,50 +114,19 @@ public class FillMineAction {
 					spawnPoint = config.getNode("4 - MineGroups", group, mine, "SpawnPoint").getString();
 				}
 
-				final double xSpawn = config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnX").getDouble();
-				final double ySpawn = config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnY").getDouble();
-				final double zSpawn = config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnZ").getDouble();
-				final String direction = config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnDirection").getString();
-				final String spawnWorldString = config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnWorld").getString();
-				final UUID spawnWorldUUID = UUID.fromString(spawnWorldString);
+				String spawnName = "Spawn" + spawnPoint;
 
-				// Manipulate mine co-ordinates
-				int xLarge = x1;
-				int xSmall = x2;
+				Vector3d spawn = GeneralDataInteraction.getSpawnLocation(spawnName);
+				String direction = GeneralDataInteraction.getSpawnDirection(spawnName);
+				UUID spawnWorldUUID = UUID.fromString(GeneralDataInteraction.getSpawnWorldUUIDString(spawnName));
 
-				if (x2 > x1) {
-					xLarge = x2;
-					xSmall = x1;
-				}
-
-				int yLarge = y1;
-				int ySmall = y2;
-
-				if (y2 > y1) {
-					yLarge = y2;
-					ySmall = y1;
-				}
-
-				int zLarge = z1;
-				int zSmall = z2;
-
-				if (z2 > z1) {
-					zLarge = z2;
-					zSmall = z1;
-				}
-
-				final int xSmallFin = xSmall;
-				final int xLargeFin = xLarge;
-				final int ySmallFin = ySmall;
-				final int yLargeFin = yLarge;
-				final int zSmallFin = zSmall;
-				final int zLargeFin = zLarge;
+				MineLocation mineLocation = new MineLocation(mine, group);
 
 				// Handle teleportation and location if player in mine
 				ArrayList<Vector3d> locationList = new ArrayList<>();
 				for (Player player : Sponge.getServer().getOnlinePlayers()) {
 					if (player.getWorld().getUniqueId().toString().equalsIgnoreCase(mineWorldString)) { // If player in world.
-						if (CheckInVolume.checkInVolume(player, xSmallFin, ySmallFin, zSmallFin, xLargeFin, yLargeFin, zLargeFin)) { // If player in mine.
+						if (CheckInVolume.checkInVolume(player, mineLocation.posSmall, mineLocation.posLarge)) { // If player in mine.
 							if (definedBlock == null || !definedBlock.equalsIgnoreCase(minecraftAirString)) { // If end block is not air
 
 								if (useSmartFill) { // If using smart fill.
@@ -170,7 +135,7 @@ public class FillMineAction {
 
 								} else { // If not using smart fill.
 
-									player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InsideFillingMine));
+									player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + insideFillingMine));
 									double targetYaw = 180, targetRoll = 180;
 
 									if (direction.equalsIgnoreCase("North")) {
@@ -186,10 +151,9 @@ public class FillMineAction {
 										targetYaw = 90;
 										targetRoll = 90;
 									} else {
-										MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(TeleportRotationError));
+										MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(teleportRotationError));
 									}
 
-									Vector3d spawn = new Vector3d(xSpawn, ySpawn, zSpawn);
 									Vector3d spawnRotation = new Vector3d(0, targetYaw, targetRoll);
 
 									player.setLocation(Sponge.getServer().getWorld(spawnWorldUUID).get().getLocation(spawn));
@@ -237,9 +201,9 @@ public class FillMineAction {
 
 				Boolean placement;
 
-				for (int x = xSmallFin; x <= xLargeFin; x++) {
-					for (int y = ySmallFin; y <= yLargeFin; y++) {
-						for (int z = zSmallFin; z <= zLargeFin; z++) {
+				for (int x = mineLocation.posSmall.getX(); x <= mineLocation.posLarge.getX(); x++) {
+					for (int y = mineLocation.posSmall.getY(); y <= mineLocation.posLarge.getY(); y++) {
+						for (int z = mineLocation.posSmall.getZ(); z <= mineLocation.posLarge.getZ(); z++) {
 							count++;
 							placement = true;
 
@@ -280,10 +244,10 @@ public class FillMineAction {
 				if (placeError > 0) {
 					if (src instanceof Player) {
 						Player player = (Player) src;
-						player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
+						player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(blockPlaceError.replace("%errors%", Integer.toString(placeError))));
 					}
 
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(BlockPlaceError.replace("%errors%", Integer.toString(placeError))));
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(blockPlaceError.replace("%errors%", Integer.toString(placeError))));
 				}
 
 				// Synchronously check the block states and place blocks
@@ -292,9 +256,9 @@ public class FillMineAction {
 					int count1 = 0;
 					int changedBlocks = 0;
 
-					for (int x = xSmallFin; x <= xLargeFin; x++) {
-						for (int y = ySmallFin; y <= yLargeFin; y++) {
-							for (int z = zSmallFin; z <= zLargeFin; z++) {
+					for (int x = mineLocation.posSmall.getX(); x <= mineLocation.posLarge.getX(); x++) {
+						for (int y = mineLocation.posSmall.getY(); y <= mineLocation.posLarge.getY(); y++) {
+							for (int z = mineLocation.posSmall.getZ(); z <= mineLocation.posLarge.getZ(); z++) {
 
 								count1++;
 
@@ -315,7 +279,7 @@ public class FillMineAction {
 					Long syncTimeTaken = endTime - syncStartTime;
 					Long totalTimeTaken = endTime - startTime;
 
-					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineFillTimeTaken
+					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineFillTimeTaken
 							.replace("%mine%", mine)
 							.replace("%totalTime%", Long.toString(totalTimeTaken))
 							.replace("%asyncTime%", Long.toString(asyncTimeTaken))

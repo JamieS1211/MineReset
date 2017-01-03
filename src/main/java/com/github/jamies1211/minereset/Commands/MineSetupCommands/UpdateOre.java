@@ -65,7 +65,7 @@ public class UpdateOre implements CommandExecutor {
 						}
 
 						GeneralDataConfig.getConfig().save();
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + OreRemoved.replace("%block%", block)));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + oreRemoved.replace("%block%", block)));
 					} else if (percentage > 0) {
 
 						// Total up percentages
@@ -82,34 +82,34 @@ public class UpdateOre implements CommandExecutor {
 						if (currentFullPercentage + percentage - oldBlockPercentage<= 100) {
 
 							if (Double.toString(oldBlockPercentage).equalsIgnoreCase(Double.toString(percentage))) {
-								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + OreSamePercentageError
+								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + oreSamePercentageError
 										.replace("%block%", block)
 										.replace("%mine%", mine)));
 							} else {
 								config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "BlockState").setValue(block);
 								config.getNode("4 - MineGroups", group, mine, "ores", itemIndex, "percentage").setValue(percentage);
 								GeneralDataConfig.getConfig().save();
-								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + block + " in " + mine +
+								src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + block + " in " + mine +
 										" updated to " + Double.toString(percentage) + "% from " + Double.toString(oldBlockPercentage) + "%"));
 							}
 						} else {
-							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + OrePercentageError));
+							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + orePercentageError));
 						}
 
 
 					} else {
-						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PercentageTooSmallUpdate));
+						src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + percentageTooSmallUpdate));
 					}
 				} else if (config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").getString().equalsIgnoreCase(block)) {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + UnableToEditFallback.replace("%block%", block)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + unableToEditFallback.replace("%block%", block)));
 				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + OreNotInMine.replace("%block%", block)));
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + oreNotInMine.replace("%block%", block)));
 				}
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 		return CommandResult.success();

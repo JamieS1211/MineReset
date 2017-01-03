@@ -10,10 +10,10 @@ public class UpdateConfig {
 
 	public static void update1to2 () {
 
-		ConfigurationNode config = GeneralDataConfig.getConfig().get();
+		ConfigurationNode config = GeneralDataConfig.getConfigFromInteraction().get();
 
-		if (config.getNode("1 - ConfigMode").getInt() == 1) {
-			config.getNode("1 - ConfigMode").setValue("2");
+		if (GeneralDataInteraction.getConfigMode() == 1) {
+			GeneralDataInteraction.setConfigMode(2);
 
 			if (config.getNode("3 - Spawn", "SpawnX").getValue() == null) {
 				config.getNode("3 - Spawn", "SpawnDefault", "SpawnX").setValue(0.5);
@@ -39,7 +39,7 @@ public class UpdateConfig {
 			for (Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 				String group = groupObject.toString();
 				for (Object objects : config.getNode("4 - MineGroups", group).getChildrenMap().keySet()) {
-					if (!objects.toString().equalsIgnoreCase("InitialDelay") && !objects.toString().equalsIgnoreCase("ResetTime")) {
+					if (!objects.toString().equalsIgnoreCase("InitialDelay") && !objects.toString().equalsIgnoreCase("resetTime")) {
 						String mine = objects.toString();
 						if (config.getNode("4 - MineGroups", group, mine, "SpawnPoint").getValue() == null) {
 							config.getNode("4 - MineGroups", group, mine, "SpawnPoint").setValue("Default");
@@ -62,7 +62,7 @@ public class UpdateConfig {
 
 			config.getNode("6 - ChatSettings", "FillingText").setValue("1");
 			config.getNode("6 - ChatSettings", "ReminderText").setValue("2");
-			GeneralDataConfig.getConfig().save();
+			GeneralDataConfig.getConfigFromInteraction().save();
 		}
 	}
 

@@ -1,7 +1,6 @@
 package com.github.jamies1211.minereset.Commands.SpawnCommands;
 
-import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import ninja.leaping.configurate.ConfigurationNode;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -9,6 +8,8 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import java.util.Set;
 
 import static com.github.jamies1211.minereset.Messages.*;
 
@@ -20,43 +21,48 @@ public class AddSpawn implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = GeneralDataConfig.getConfig().get();
-
 		final double x = args.<Double>getOne("x").get();
 		final double y = args.<Double>getOne("y").get();
 		final double z = args.<Double>getOne("z").get();
-		final String facing = args.<String>getOne("facing").get();
+		String facing = args.<String>getOne("facing").get();
 
 		if (src instanceof Player) {
 			Player player = (Player) src;
 			int spawnPoint;
+			Set<Object> spawnPointSet = GeneralDataInteraction.getSpawnPointMap().keySet();
 
 			for (spawnPoint = 1; spawnPoint <= 100; spawnPoint++) {
-				if (!config.getNode("3 - Spawn").getChildrenMap().keySet().contains("Spawn" + spawnPoint)) {
+				if (!spawnPointSet.contains("Spawn" + spawnPoint)) {
 					break;
 				}
 			}
 
 			if (spawnPoint < 100) {
-				config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnX").setValue(x);
-				config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnY").setValue(y);
-				config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnZ").setValue(z);
+				String spawnName = "Spawn" + spawnPoint;
 
-				if (facing.equalsIgnoreCase("North") || facing.equalsIgnoreCase("South") || facing.equalsIgnoreCase("East") || facing.equalsIgnoreCase("West")) {
-					config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnDirection").setValue(facing);
-				} else {
-					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(NoDirectionToSpawn));
-					config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnDirection").setValue("North");
+				if (!(facing.equalsIgnoreCase("North")
+						|| facing.equalsIgnoreCase("South")
+						|| facing.equalsIgnoreCase("East")
+						|| facing.equalsIgnoreCase("West"))) {
+					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(noDirectionToSpawn));
+					facing = "North";
 				}
-				config.getNode("3 - Spawn", "Spawn" + spawnPoint, "SpawnWorld").setValue(player.getWorld().getUniqueId().toString());
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AddSpawnPoint +
-						" SpawnPoint: Spawn" + spawnPoint + " x:" + x + " y:" + y + " z:" + z + " facing:" + facing));
-				GeneralDataConfig.getConfig().get();
+
+				String worldUUIDString = player.getWorld().getUniqueId().toString();
+				GeneralDataInteraction.setSpawnPoint(spawnName, x, y, z, facing, worldUUIDString);
+
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + addSpawnPoint
+						.replace("%spawnName%", spawnName)
+						.replace("%x%", Double.toString(x))
+						.replace("%y%", Double.toString(y)
+						.replace("%z%", Double.toString(z))
+						.replace("%facing%", facing)
+						.replace("%worldUUIDString%", worldUUIDString))));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MaxSpawnCount));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + maxSpawnCount));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 

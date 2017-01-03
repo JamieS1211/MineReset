@@ -15,11 +15,12 @@ import com.github.jamies1211.minereset.Commands.SpawnCommands.ChangeSpawn;
 import com.github.jamies1211.minereset.Commands.SpawnCommands.RemoveSpawn;
 import com.github.jamies1211.minereset.Commands.SpawnCommands.UpdateSpawn;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import com.github.jamies1211.minereset.Config.PlayerDataConfig;
 import com.google.inject.Inject;
 
 import java.io.IOException;
-import ninja.leaping.configurate.ConfigurationNode;
+
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.block.tileentity.TileEntity;
@@ -71,7 +72,6 @@ public class MineReset {
 
 	@Inject
 	private Logger logger;
-	private ConfigurationNode config;
 	public static MineReset plugin;
 
 	public static MineReset getPlugin () {
@@ -124,15 +124,15 @@ public class MineReset {
 		final HashMap<List<String>, CommandSpec> subcommands = new HashMap<>();
 		subcommands.put(Arrays.asList("help"), CommandSpec.builder()
 				.permission("minereset.help")
-				.description(Text.of(HelpDescription))
-				.extendedDescription(Text.of(HelpExtendedDescription))
+				.description(Text.of(helpDescription))
+				.extendedDescription(Text.of(helpExtendedDescription))
 				.executor(new MineHelp())
 				.build());
 
 		subcommands.put(Arrays.asList("time"), CommandSpec.builder()
 				.permission("minereset.check.time")
-				.description(Text.of(TimeDescription))
-				.extendedDescription(Text.of(TimeExtendedDescription))
+				.description(Text.of(timeDescription))
+				.extendedDescription(Text.of(timeExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
 				.executor(new CheckTime())
@@ -140,22 +140,22 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("reload"), CommandSpec.builder()
 				.permission("minereset.reload")
-				.description(Text.of(ReloadDescription))
-				.extendedDescription(Text.of(ReloadExtendedDescription))
+				.description(Text.of(reloadDescription))
+				.extendedDescription(Text.of(reloadExtendedDescription))
 				.executor(new ConfigReload())
 				.build());
 
 		subcommands.put(Arrays.asList("save"), CommandSpec.builder()
 				.permission("minereset.save")
-				.description(Text.of(SaveDescription))
-				.extendedDescription(Text.of(SaveExtendedDescription))
+				.description(Text.of(saveDescription))
+				.extendedDescription(Text.of(saveExtendedDescription))
 				.executor(new ConfigSave())
 				.build());
 
 		subcommands.put(Arrays.asList("addspawn"), CommandSpec.builder()
 				.permission("minereset.addspawn")
-				.description(Text.of(AddSpawnDescription))
-				.extendedDescription(Text.of(AddSpawnExtendedDescription))
+				.description(Text.of(addSpawnDescription))
+				.extendedDescription(Text.of(addSpawnExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("x"))),
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("y"))),
@@ -166,8 +166,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("removespawn"), CommandSpec.builder()
 				.permission("minereset.removespawn")
-				.description(Text.of(RemoveSpawnDescription))
-				.extendedDescription(Text.of(RemoveSpawnExtendedDescription))
+				.description(Text.of(removeSpawnDescription))
+				.extendedDescription(Text.of(removeSpawnExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("spawnPoint"))))
 				.executor(new RemoveSpawn())
@@ -175,8 +175,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("Updatespawn"), CommandSpec.builder()
 				.permission("minereset.updatespawn")
-				.description(Text.of(UpdateSpawnDescription))
-				.extendedDescription(Text.of(UpdateSpawnExtendedDescription))
+				.description(Text.of(updateSpawnDescription))
+				.extendedDescription(Text.of(updateSpawnExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("spawnPoint"))),
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("x"))),
@@ -188,8 +188,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("changespawn"), CommandSpec.builder()
 				.permission("minereset.changespawn")
-				.description(Text.of(ChangeSpawnDescription))
-				.extendedDescription(Text.of(ChangeSpawnExtendedDescription))
+				.description(Text.of(changeSpawnDescription))
+				.extendedDescription(Text.of(changeSpawnExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("mine"))),
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("spawnPoint"))))
@@ -198,8 +198,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("clear"), CommandSpec.builder()
 				.permission("minereset.clear")
-				.description(Text.of(ClearDescription))
-				.extendedDescription(Text.of(ClearExtendedDescription))
+				.description(Text.of(clearDescription))
+				.extendedDescription(Text.of(clearExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
 				.executor(new ClearMine())
@@ -207,8 +207,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("fill"), CommandSpec.builder()
 				.permission("minereset.fill")
-				.description(Text.of(FillDescription))
-				.extendedDescription(Text.of(FillExtendedDescription))
+				.description(Text.of(fillDescription))
+				.extendedDescription(Text.of(fillExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
 				.executor(new FillMine())
@@ -216,8 +216,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("fillblock"), CommandSpec.builder()
 				.permission("minereset.fillblock")
-				.description(Text.of(FillblockDescription))
-				.extendedDescription(Text.of(FillblockExtendedDescription))
+				.description(Text.of(fillblockDescription))
+				.extendedDescription(Text.of(fillblockExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
 				.executor(new FillBlock())
@@ -225,8 +225,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("definegroup"), CommandSpec.builder()
 				.permission("minereset.define.group")
-				.description(Text.of(DefineGroupDescription))
-				.extendedDescription(Text.of(DefineGroupExtendedDescription))
+				.description(Text.of(defineGroupDescription))
+				.extendedDescription(Text.of(defineGroupExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("resetTime"))),
@@ -236,8 +236,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("updategroup"), CommandSpec.builder()
 				.permission("minereset.update.group")
-				.description(Text.of(UpdateGroupDescription))
-				.extendedDescription(Text.of(UpdateGroupExtendedDescription))
+				.description(Text.of(updateGroupDescription))
+				.extendedDescription(Text.of(updateGroupExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("resetTime"))),
@@ -247,8 +247,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("deletegroup"), CommandSpec.builder()
 				.permission("minereset.define.group")
-				.description(Text.of(DeleteGroupDescription))
-				.extendedDescription(Text.of(DeleteGroupExtendedDescription))
+				.description(Text.of(deleteGroupDescription))
+				.extendedDescription(Text.of(deleteGroupExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
 						GenericArguments.onlyOne(GenericArguments.remainingJoinedStrings(Text.of("safe"))))
@@ -257,8 +257,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("definemine"), CommandSpec.builder()
 				.permission("minereset.define.mine")
-				.description(Text.of(DefineMineDescription))
-				.extendedDescription(Text.of(DefineMineExtendedDescription))
+				.description(Text.of(defineMineDescription))
+				.extendedDescription(Text.of(defineMineExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
@@ -273,8 +273,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("redefinemine"), CommandSpec.builder()
 				.permission("minereset.redefine.mine")
-				.description(Text.of(RedefineMineDescription))
-				.extendedDescription(Text.of(RedefineMineExtendedDescription))
+				.description(Text.of(redefineMineDescription))
+				.extendedDescription(Text.of(redefineMineExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("group"))),
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
@@ -289,8 +289,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("deletemine"), CommandSpec.builder()
 				.permission("minereset.delete.mine")
-				.description(Text.of(DeleteMineDescription))
-				.extendedDescription(Text.of(DeleteMineExtendedDescription))
+				.description(Text.of(deleteMineDescription))
+				.extendedDescription(Text.of(deleteMineExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
 				.executor(new DeleteMine())
@@ -298,8 +298,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("list"), CommandSpec.builder()
 				.permission("minereset.list")
-				.description(Text.of(ListDescription))
-				.extendedDescription(Text.of(ListExtendedDescription))
+				.description(Text.of(listDescription))
+				.extendedDescription(Text.of(listExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("type"))))
 				.executor(new ListContents())
@@ -307,8 +307,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("info"), CommandSpec.builder()
 				.permission("minereset.details")
-				.description(Text.of(InfoDescription))
-				.extendedDescription(Text.of(InfoExtendedDescription))
+				.description(Text.of(infoDescription))
+				.extendedDescription(Text.of(infoExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("type"))),
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
@@ -317,8 +317,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("addore"), CommandSpec.builder()
 				.permission("minereset.mine.addore")
-				.description(Text.of(AddoreDescription))
-				.extendedDescription(Text.of(AddoreExtendedDescription))
+				.description(Text.of(addoreDescription))
+				.extendedDescription(Text.of(addoreExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("percentage"))))
@@ -327,8 +327,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("updateore"), CommandSpec.builder()
 				.permission("minereset.mine.updateore")
-				.description(Text.of(UpdateoreDescription))
-				.extendedDescription(Text.of(UpdateoreExtendedDescription))
+				.description(Text.of(updateoreDescription))
+				.extendedDescription(Text.of(updateoreExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("percentage"))))
@@ -337,8 +337,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("updatefallback"), CommandSpec.builder()
 				.permission("minereset.mine.updatefallback")
-				.description(Text.of(UpdatefallbackDescription))
-				.extendedDescription(Text.of(UpdatefallbackExtendedDescription))
+				.description(Text.of(updatefallbackDescription))
+				.extendedDescription(Text.of(updatefallbackExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
 				.executor(new UpdateFallback())
@@ -346,15 +346,15 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("listreminders"), CommandSpec.builder()
 				.permission("minereset.mine.listremindtime")
-				.description(Text.of(ListReminderDescription))
-				.extendedDescription(Text.of(ListReminderExtendedDescription))
+				.description(Text.of(listReminderDescription))
+				.extendedDescription(Text.of(listReminderExtendedDescription))
 				.executor(new ListReminder())
 				.build());
 
 		subcommands.put(Arrays.asList("addremindtime"), CommandSpec.builder()
 				.permission("minereset.mine.addremindtime")
-				.description(Text.of(AddRemindTimeDescription))
-				.extendedDescription(Text.of(AddRemindTimeExtendedDescription))
+				.description(Text.of(addRemindTimeDescription))
+				.extendedDescription(Text.of(addRemindTimeExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("time"))))
 				.executor(new AddRemindTime())
@@ -362,8 +362,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("removeremindtime"), CommandSpec.builder()
 				.permission("minereset.mine.removeremindtime")
-				.description(Text.of(RemoveRemindTimeDescription))
-				.extendedDescription(Text.of(RemoveRemindTimeExtendedDescription))
+				.description(Text.of(removeRemindTimeDescription))
+				.extendedDescription(Text.of(removeRemindTimeExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("time"))))
 				.executor(new RemoveRemindTime())
@@ -371,8 +371,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("setupsmartfill"), CommandSpec.builder()
 				.permission("minereset.mine.setup.smartfill")
-				.description(Text.of(MineSetupSmartFillDescription))
-				.extendedDescription(Text.of(MineSetupSmartFillExtendedDescription))
+				.description(Text.of(mineSetupSmartFillDescription))
+				.extendedDescription(Text.of(mineSetupSmartFillExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
 						GenericArguments.onlyOne(GenericArguments.bool(Text.of("enabled"))),
@@ -383,22 +383,22 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("addairblock"), CommandSpec.builder()
 				.permission("minereset.mine.addairblock")
-				.description(Text.of(AddAirBlockDescription))
-				.extendedDescription(Text.of(AddAirBlockExtendedDescription))
+				.description(Text.of(addAirBlockDescription))
+				.extendedDescription(Text.of(addAirBlockExtendedDescription))
 				.executor(new AddAirBlock())
 				.build());
 
 		subcommands.put(Arrays.asList("removeairblock"), CommandSpec.builder()
 				.permission("minereset.mine.removeairblock")
-				.description(Text.of(RemoveAirBlockDescription))
-				.extendedDescription(Text.of(RemoveAirBlockExtendedDescription))
+				.description(Text.of(removeAirBlockDescription))
+				.extendedDescription(Text.of(removeAirBlockExtendedDescription))
 				.executor(new RemoveAirBlock())
 				.build());
 
 		subcommands.put(Arrays.asList("updateChatSettings"), CommandSpec.builder()
 				.permission("minereset.update.chatsettings")
-				.description(Text.of(UpdateChatSettingsDescription))
-				.extendedDescription(Text.of(UpdateChatSettingsExtendedDescription))
+				.description(Text.of(updateChatSettingsDescription))
+				.extendedDescription(Text.of(updateChatSettingsExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.string(Text.of("type"))),
 						GenericArguments.onlyOne(GenericArguments.integer(Text.of("option"))))
@@ -407,8 +407,8 @@ public class MineReset {
 
 		subcommands.put(Arrays.asList("updateSignFillPercentage"), CommandSpec.builder()
 				.permission("minereset.update.signfillpercentage")
-				.description(Text.of(UpdateSignFillPercentageDescription))
-				.extendedDescription(Text.of(UpdateSignFillPercentageExtendedDescription))
+				.description(Text.of(updateSignFillPercentageDescription))
+				.extendedDescription(Text.of(updateSignFillPercentageExtendedDescription))
 				.arguments(
 						GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("percentage"))))
 				.executor(new UpdateMineFillSignPercentage())
@@ -416,8 +416,8 @@ public class MineReset {
 
 		final CommandSpec mineCommand = CommandSpec.builder()
 				.permission("minereset.help")
-				.description(Text.of(HelpDescription))
-				.extendedDescription(Text.of(HelpExtendedDescription))
+				.description(Text.of(helpDescription))
+				.extendedDescription(Text.of(helpExtendedDescription))
 				.executor(new MineHelp())
 				.children(subcommands)
 				.build();
@@ -447,20 +447,15 @@ public class MineReset {
 						String group = GetMineGroup.getMineGroup(mine);
 
 						if (group == null) {
-							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+							player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 						} else {
 							double mineFillPercentage = CheckMineFill.mineFilledPercentage(group, mine, player);
-
-							if (config.getNode("7 - MineFillSignPercentage").getValue() == null) {
-								config.getNode("7 - MineFillSignPercentage").setValue(80.0);
-							}
-
-							double percentageToFill = config.getNode("7 - MineFillSignPercentage").getDouble();
+							double percentageToFill = GeneralDataInteraction.getMineFillSignPercentage();
 
 							if (mineFillPercentage < percentageToFill) {
 								FillMineAction.fill(group, mine, null, player);
 							} else {
-								player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + SignPercentageFillError
+								player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + signPercentageFillError
 										.replace("%percentage%", String.valueOf(mineFillPercentage))));
 							}
 						}
@@ -479,10 +474,10 @@ public class MineReset {
 	public void cycle() {
 		if (Sponge.getServer().getOnlinePlayers().size() > 0) {
 
-			for (final Object groupObject: config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
+			for (final Object groupObject: GeneralDataConfig.getConfig().get().getNode("4 - MineGroups").getChildrenMap().keySet()) {
 
 				int timeUntilNextFill = TimeUntilFill.getTimeUntilFill(groupObject.toString());
-				Set<Object> listOfMines = new TreeSet<>(config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
+				Set<Object> listOfMines = new TreeSet<>(GeneralDataConfig.getConfig().get().getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
 				listOfMines.remove("resetTime");
 				listOfMines.remove("initialDelay");
 
@@ -493,18 +488,18 @@ public class MineReset {
 
 				if (this.remindTimes.contains(Integer.toString(timeUntilNextFill))) { // If time before group of mines reset is on remind time list send messages.
 
-					int reminderChatType = this.config.getNode("6 - ChatSettings", "ReminderText").getInt();
+					int reminderChatType = GeneralDataInteraction.getReminderTextSetting();
 
 					if (listOfMines.size() > 0) {
 
-						if (!SendMessages.messageToAllPlayers(reminderChatType, MinePrefix + "&l" + listOfMines +
-								" " + WillResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))) &&
+						if (!SendMessages.messageToAllPlayers(reminderChatType, minePrefix + "&l" + listOfMines +
+								" " + willResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))) &&
 								reminderChatType != 0) {
-							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidRemindChatType));
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidRemindChatType));
 						}
 
-						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix +
-								listOfMines + " " + WillResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))));
+						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
+								listOfMines + " " + willResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))));
 
 					}
 
@@ -515,28 +510,28 @@ public class MineReset {
 
 					if (listOfMines.size() > 0) {
 
-						int fillingChatType = this.config.getNode("6 - ChatSettings", "FillingText").getInt();
+						int fillingChatType = GeneralDataInteraction.getFillingTextSetting();
 
 						if (listOfMines.size() > 1) {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, MinePrefix + listOfMines + " " + ResettingNowPlural) &&
+							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + listOfMines + " " + resettingNowPlural) &&
 									fillingChatType != 0) {
-								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
+								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 							}
 
-							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix +
-									listOfMines + " " + ResettingNowPlural));
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
+									listOfMines + " " + resettingNowPlural));
 
 
 						} else {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, MinePrefix + listOfMines + " " + ResettingNowSingular) &&
+							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + listOfMines + " " + resettingNowSingular) &&
 									fillingChatType != 0) {
-								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + InvalidFillChatType));
+								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 							}
 
-							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix +
-									listOfMines + " " + ResettingNowSingular));
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
+									listOfMines + " " + resettingNowSingular));
 
 						}
 					}
@@ -545,7 +540,7 @@ public class MineReset {
 			}
 		} else {
 			if (secondsSinceStart % 300 == 0) {
-				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + NoPlayerOnline));
+				MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + noPlayerOnline));
 			}
 		}
 		secondsSinceStart++;

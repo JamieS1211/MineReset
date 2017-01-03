@@ -45,12 +45,12 @@ public class RemoveAirBlock implements CommandExecutor {
 				config.getNode("5 - Lists", "AirBlocks").setValue(blockListString); // Wright changes to file.
 				GeneralDataConfig.getConfig().save();
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AirBlockRemove.replace("%block%", blockString)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + airBlockRemove.replace("%block%", blockString)));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AirBlockNotExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + airBlockNotExist));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 

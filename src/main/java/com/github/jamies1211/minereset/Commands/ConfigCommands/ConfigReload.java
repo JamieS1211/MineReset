@@ -18,8 +18,8 @@ public class ConfigReload implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		GeneralDataConfig.getConfig().load();
-		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + ConfigReloaded));
+		GeneralDataConfig.getConfigFromInteraction().load();
+		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + configReloaded));
 
 		return CommandResult.success();
 	}

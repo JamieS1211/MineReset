@@ -24,10 +24,10 @@ public class ClearMine implements CommandExecutor {
 		String group = GetMineGroup.getMineGroup(mine);
 
 		if (group == null) {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineDoesNotExist.replace("%mine%", mine)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 		} else {
 			FillMineAction.fill(group, mine, minecraftAirString, src);
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineCleared.replace("%mine%", mine)));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineCleared.replace("%mine%", mine)));
 		}
 
 		return CommandResult.success();

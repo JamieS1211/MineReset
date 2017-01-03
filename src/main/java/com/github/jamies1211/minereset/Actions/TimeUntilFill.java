@@ -27,7 +27,7 @@ public class TimeUntilFill {
 			GeneralDataConfig.getConfig().get();
 		} else if (config.getNode("4 - MineGroups", groupName, "resetTime").getInt() < 60) {
 			config.getNode("4 - MineGroups", groupName, "resetTime").setValue(60);
-			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(ResetTimeTooShortError));
+			MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(resetTimeTooShortError));
 			GeneralDataConfig.getConfig().get();
 		}
 

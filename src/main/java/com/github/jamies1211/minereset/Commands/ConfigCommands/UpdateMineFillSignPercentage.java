@@ -1,7 +1,6 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
-import com.github.jamies1211.minereset.Config.GeneralDataConfig;
-import ninja.leaping.configurate.ConfigurationNode;
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -19,19 +18,16 @@ public class UpdateMineFillSignPercentage implements CommandExecutor {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-		ConfigurationNode config = GeneralDataConfig.getConfig().get();
-
 		final double percentage = args.<Double>getOne("percentage").get();
 
 		if (percentage > 0 && percentage < 100) {
 
-			config.getNode("7 - MineFillSignPercentage").setValue(percentage); // Wright changes to file.
-			GeneralDataConfig.getConfig().save();
+			GeneralDataInteraction.setMineFillSignPercentage(percentage);
 
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineFillSignPercentageUpdated
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineFillSignPercentageUpdated
 					.replace("%percentage%", String.valueOf(percentage))));
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + MineFillSignPercentageInvalid));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineFillSignPercentageInvalid));
 		}
 
 

@@ -26,6 +26,10 @@ public class GeneralDataConfig {
 		return config;
 	}
 
+	public static GeneralDataConfig getConfigFromInteraction() {
+		return config;
+	}
+
 	private Path configFile = Paths.get(MineReset.getPlugin().getConfigDir() + "/general.conf");
 	private ConfigurationLoader<CommentedConfigurationNode> configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	private CommentedConfigurationNode configNode;
@@ -71,7 +75,7 @@ public class GeneralDataConfig {
 			configNode = configLoader.load();
 
 			if (get().getNode("2 - RemindSecondList").getValue() != null) {
-				MineReset.remindTimes = new ArrayList<>(Arrays.asList(get().getNode("2 - RemindSecondList").getString().split(", ")));
+				MineReset.remindTimes = GeneralDataInteraction.getRemindSecondListAsArray();
 			}
 
 			if (get().getNode("5 - Lists", "AirBlocks").getValue() != null) {
@@ -96,13 +100,20 @@ public class GeneralDataConfig {
 
 	public void enterData() {
 
-		get().getNode("1 - ConfigMode").setValue(2);
-		get().getNode("2 - RemindSecondList").setValue("1, 5, 15, 30, 60, 120, 180, 300");
-		get().getNode("3 - Spawn", "SpawnDefault", "SpawnX").setValue(0.5);
-		get().getNode("3 - Spawn", "SpawnDefault", "SpawnY").setValue(85.0);
-		get().getNode("3 - Spawn", "SpawnDefault", "SpawnZ").setValue(0.5);
-		get().getNode("3 - Spawn", "SpawnDefault", "SpawnDirection").setValue("West");
-		get().getNode("3 - Spawn", "SpawnDefault", "SpawnWorld").setValue(Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
+
+		//get().getNode("1 - ConfigMode").setValue(2);
+		GeneralDataInteraction.setConfigMode(2);
+
+		//get().getNode("2 - RemindSecondList").setValue("1, 5, 15, 30, 60, 120, 180, 300");
+		GeneralDataInteraction.setRemindSecondListFromString("1, 5, 15, 30, 60, 120, 180, 300");
+
+		//get().getNode("3 - Spawn", "SpawnDefault", "SpawnX").setValue(0.5);
+		//get().getNode("3 - Spawn", "SpawnDefault", "SpawnY").setValue(85.0);
+		//get().getNode("3 - Spawn", "SpawnDefault", "SpawnZ").setValue(0.5);
+		//get().getNode("3 - Spawn", "SpawnDefault", "SpawnDirection").setValue("West");
+		//get().getNode("3 - Spawn", "SpawnDefault", "SpawnWorld").setValue(Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
+		GeneralDataInteraction.setSpawnPoint("SpawnDefault", 0.5, 85.0, 0.5, "West", Sponge.getServer().getDefaultWorld().get().getUniqueId().toString());
+
 		get().getNode("5 - Lists", "AirBlocks").setValue(
 				"minecraft:torch, minecraft:redstone_torch, minecraft:redstone_wire, minecraft:powered_repeater, minecraft:unpowered_repeater, minecraft:powered_comparator, " +
 						"minecraft:unpowered_comparator, minecraft:wooden_button, minecraft:stone_button, minecraft:lever, minecraft:tripwire_hook, minecraft:stone_pressure_plate, " +

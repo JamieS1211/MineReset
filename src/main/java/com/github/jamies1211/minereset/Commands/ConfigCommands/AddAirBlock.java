@@ -42,12 +42,12 @@ public class AddAirBlock implements CommandExecutor {
 				config.getNode("5 - Lists", "AirBlocks").setValue(blockListString); // Wright changes to file.
 				GeneralDataConfig.getConfig().get();
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AirBlockAdd.replace("%block%", blockString)));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + airBlockAdd.replace("%block%", blockString)));
 			} else {
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + AirBlockExist));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + airBlockExist));
 			}
 		} else {
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(MinePrefix + PlayerOnlyCommand));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + playerOnlyCommand));
 		}
 
 
