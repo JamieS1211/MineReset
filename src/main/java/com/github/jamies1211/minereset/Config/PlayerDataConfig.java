@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
+import java.util.UUID;
 
 import static com.github.jamies1211.minereset.Messages.*;
 
@@ -59,6 +61,19 @@ public class PlayerDataConfig {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Set<Object> getPlayersOptedOutOfMessages () {
+		return config.get().getNode("Players", "NoMessages").getChildrenMap().keySet();
+	}
+
+	public static void togglePlayerOptOutOfMessages (String playerUUIDString) {
+		if (config.get().getNode("Players", "NoMessages").getChildrenMap().keySet().contains(playerUUIDString)) {
+			config.get().getNode("Players", "NoMessages").removeChild(playerUUIDString);
+		} else {
+			config.get().getNode("Players", "NoMessages", playerUUIDString).setValue(System.currentTimeMillis());
+		}
+		config.save();
 	}
 
 	public CommentedConfigurationNode get() {

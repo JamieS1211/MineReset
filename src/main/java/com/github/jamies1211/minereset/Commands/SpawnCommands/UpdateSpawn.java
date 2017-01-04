@@ -48,10 +48,10 @@ public class UpdateSpawn implements CommandExecutor {
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + updatedSpawnPoint
 						.replace("%x%", Double.toString(x))
-						.replace("%x%", Double.toString(y))
-						.replace("%x%", Double.toString(z))
+						.replace("%y%", Double.toString(y))
+						.replace("%z%", Double.toString(z))
 						.replace("%facing%", facing)
-						.replace("%worldUUIDString", worldUUIDString)));
+						.replace("%worldUUIDString%", worldUUIDString)));
 			} else {
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + spawnPointNotExist));
 			}

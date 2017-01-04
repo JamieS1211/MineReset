@@ -85,6 +85,8 @@ public class Messages {
 	public static final String mineFillSignPercentageUpdated = "You have updated the percentage of blocks that need to exist for mine fill signs to function to %percentage%";
 	public static final String mineFillSignPercentageInvalid = "The value you entered was invalid. Please enter a value between 0 and 100";
 	public static final String noDirectionToSpawn = "direction not entered correctly so defaulting to North";
+	public static final String settingSetMessageOptOut = "You have successfully changed your message settings to block mine fill and remind messages";
+	public static final String settingSetMessageOptIn = "You have successfully changed your message settings to receive mine fill and remind messages";
 
 	// info command strings
 	public static final String groupInfoHeader = "----------------  Group info  ----------------";
@@ -96,84 +98,111 @@ public class Messages {
 	public static final String help = "/mine help";
 	public static final String helpDescription = "Shows mine help";
 	public static final String helpExtendedDescription = "Use this command to list all the mine sub commands user has access to and how to use them";
+
 	public static final String reload = "/mine reload";
 	public static final String reloadDescription = "Reloads mine config file";
 	public static final String reloadExtendedDescription = "Reloads mine config file";
+
 	public static final String save = "/mine save";
 	public static final String saveDescription = "Use this command to save mine config";
 	public static final String saveExtendedDescription = "Saves the mine config being used over one in folder";
+
 	public static final String addSpawn = "Usage /mine addspawn [x] [y] [z] [facing]";
 	public static final String addSpawnDescription = "Adds a new spawn point with the values listed";
 	public static final String addSpawnExtendedDescription = "Adds a new spawn point with the values listed";
+
 	public static final String removeSpawn = "Usage /mine removespawn [spawn point]";
 	public static final String removeSpawnDescription = "Removes the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
 	public static final String removeSpawnExtendedDescription = "Removes the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn)";
+
 	public static final String updateSpawn = "Usage /mine updatespawn [spawn point] [x] [y] [z] [facing]";
 	public static final String updateSpawnDescription = "Updates the spawn information to the listed values (To alter default spawn use \"Default\" other wise use the number of spawn";
 	public static final String updateSpawnExtendedDescription = "Updates the spawn information to the listed values (To alter default spawn use \"Default\" other wise use the number of spawn)";
+
 	public static final String changeSpawn = "Usage /mine changespawn [mine] [spawn point]";
 	public static final String changeSpawnDescription = "Set the listed mine to use the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn";
 	public static final String changeSpawnExtendedDescription = "Set the listed mine to use the listed spawn point (To alter default spawn use \"Default\" other wise use the number of spawn)";
+
 	public static final String time = "/mine time [mine]";
 	public static final String timeDescription = "Check time remaining before mine resets";
 	public static final String timeExtendedDescription = "Check time remaining before mine resets";
+
 	public static final String clear = "/mine clear [mine]";
 	public static final String clearDescription = "clear all blocks from a  mine";
 	public static final String clearExtendedDescription = "clear all block from a mine";
+
 	public static final String fill = "/mine fill [mine]";
 	public static final String fillDescription = "fill a mine according to its blocks and percentages";
 	public static final String fillExtendedDescription = "fill a mine according to its blocks and percentages";
+
 	public static final String fillblock = "/mine fillblock [mine]";
 	public static final String fillblockDescription = "fill a mine with the block you are currently standing on";
 	public static final String fillblockExtendedDescription = "fill a mine with the block you are currently standing on";
+
 	public static final String defineGroup = "/mine definegroup [group name] [reset time] [initial delay]";
 	public static final String defineGroupDescription = "Create a new mine group";
 	public static final String defineGroupExtendedDescription = "Create a new mine group with name, reset time and initial delay as listed";
+
 	public static final String updateGroup = "/mine updategroup [group name] [reset time] [initial delay]";
 	public static final String updateGroupDescription = "Updates an existing mine group";
 	public static final String updateGroupExtendedDescription = "Updates an existing mine group with name, reset time and initial delay as listed";
+
 	public static final String deleteGroup = "/mine deletegroup [group name] [safe|force]";
 	public static final String deleteGroupDescription = "Deletes an existing mine group";
 	public static final String deleteGroupExtendedDescription = "Deletes an existing mine group. If safe then deletion will fail if mine group has contents";
+
 	public static final String defineMine = "/mine definemine [group] [mine name] [pos1x] [pos1y] [pos1z] [pos2x] [pos2y] [pos2z]";
 	public static final String defineMineDescription = "Create a new mine";
 	public static final String defineMineExtendedDescription = "Create a new mine in listed group with name and positions as listed";
+
 	public static final String redefineMine = "/mine redefinemine [group] [mine name] [pos1x] [pos1y] [pos1z] [pos2x] [pos2y] [pos2z]";
 	public static final String redefineMineDescription = "Redefine a mine to change its settings";
 	public static final String redefineMineExtendedDescription = "Redefine a mine to change its settings to listed group with name and positions as listed";
+
 	public static final String deleteMine = "/mine deletemine [mine name]";
 	public static final String deleteMineDescription = "Delete a mine";
 	public static final String deleteMineExtendedDescription = "Delete the mine listed";
+
 	public static final String list = "Usage /mine list [groups|mines|spawns]";
 	public static final String listDescription = "list all groups or mines that exist";
 	public static final String listExtendedDescription = "list all groups or mines that exist";
+
 	public static final String info = "Usage /mine info [group|mine|spawn] [name]";
 	public static final String infoDescription = "Get all info on group or mine";
 	public static final String infoExtendedDescription = "Get all info on group or mine";
+
 	public static final String addore = "Usage /mine addore [mine] [percentage]";
 	public static final String addoreDescription = "Adds the block you are standing on to listed mine at listed percentage";
 	public static final String addoreExtendedDescription = "Adds the block you are standing on to listed mine at listed percentage";
+
 	public static final String updateore = "Usage /mine updateore [mine] [percentage]";
 	public static final String updateoreDescription = "Updates the block you are standing on in listed mine to listed percentage";
 	public static final String updateoreExtendedDescription = "Updates the block you are standing on in listed mine to listed percentage";
+
 	public static final String updatefallback = "Usage /mine updatefallback [mine]";
 	public static final String updatefallbackDescription = "Updates the mine listed to use the block you are standing on as the fallback block";
 	public static final String updatefallbackExtendedDescription = "Updates the mine listed to use the block you are standing on as the fallback block";
+
 	public static final String listReminder = "Usage /mine listreminders";
 	public static final String listReminderDescription = "list the times before a mine reset reminder messages are sent";
 	public static final String listReminderExtendedDescription = "list the times before a mine reset reminder messages are sent";
+
 	public static final String addRemindTime = "Usage /mine addremindtime [seconds]";
 	public static final String addRemindTimeDescription = "Add a time (in seconds) to send a reset reminder message before a mine reset";
 	public static final String addRemindTimeExtendedDescription = "Add a time (in seconds) to send a reset reminder message before a mine reset";
+
 	public static final String removeRemindTime = "Usage /mine removeremindtime [seconds]";
 	public static final String removeRemindTimeDescription = "Remove a time (in seconds) to send a reset reminder message before a mine reset";
 	public static final String removeRemindTimeExtendedDescription = "Remove a time (in seconds) to send a reset reminder message before a mine reset";
+
 	public static final String mineSetupSmartFill = "Usage /mine setupsmartfill [mine] [true|false(enabled)] [radius] [true|false(only air)]";
 	public static final String mineSetupSmartFillDescription = "Changes the smart fill settings for the listed mine to the listed settings";
 	public static final String mineSetupSmartFillExtendedDescription = "Changes the smart fill settings for the listed mine to the listed settings";
+
 	public static final String addAirBlock = "Usage /mine addairblock";
 	public static final String addAirBlockDescription = "Adds the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
 	public static final String addAirBlockExtendedDescription = "Adds the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
+
 	public static final String removeAirBlock = "Usage /mine removeairblock";
 	public static final String removeAirBlockDescription = "Removes the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
 	public static final String removeAirBlockExtendedDescription = "Removes the block the player is standing on to the list of blocks that will not be modified when using SmartFill and SmartFillOnlyAir settings";
@@ -182,9 +211,15 @@ public class Messages {
 	public static final String updateChatSettingsDescription = "Changes the way messages of the listed type are sent to players";
 	public static final String updateChatSettingsExtendedDescription = "Changes the way messages of the listed type are sent to players";
 
-	public static final String updateSignFillPercentage = "Usage /updateSignFillPercentage [Percentage]";
+	public static final String updateSignFillPercentage = "Usage /mine updateSignFillPercentage [Percentage]";
 	public static final String updateSignFillPercentageDescription = "Changes the percentage of blocks that are not air before the mine fill signs function";
-	public static final String updateSignFillPercentageExtendedDescription = "";
+	public static final String updateSignFillPercentageExtendedDescription = "Changes the percentage of blocks that are not air before the mine fill signs function";
+
+	public static final String toggleOptOutOfMessages = "Usage /mine toggleMessageSettings";
+	public static final String toggleOptOutOfMessagesDescription = "Toggles your settings between receiving and blocking mine fill and reminder messages";
+	public static final String toggleOptOutOfMessagesExtendedDescription = "Toggles your settings between receiving and blocking mine fill and reminder messages";
+
+
 
 	// Player Messages
 	public static final String resettingNowSingular = "%mine% is resetting now";

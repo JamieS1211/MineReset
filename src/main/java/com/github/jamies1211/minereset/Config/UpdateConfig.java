@@ -11,7 +11,6 @@ public class UpdateConfig {
 	public static void update1to2 () {
 
 		ConfigurationNode config = GeneralDataConfig.getConfigFromInteraction().get();
-
 		if (GeneralDataInteraction.getConfigMode() == 1) {
 			GeneralDataInteraction.setConfigMode(2);
 

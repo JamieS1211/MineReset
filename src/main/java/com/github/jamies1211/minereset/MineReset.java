@@ -61,7 +61,7 @@ import static com.github.jamies1211.minereset.Messages.*;
  */
 
 @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.8",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.8(BETA)",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
@@ -414,6 +414,13 @@ public class MineReset {
 				.executor(new UpdateMineFillSignPercentage())
 				.build());
 
+		subcommands.put(Arrays.asList("toggleMessageSettings"), CommandSpec.builder()
+				.permission("minereset.player.togglemessagesettings")
+				.description(Text.of(toggleOptOutOfMessagesDescription))
+				.extendedDescription(Text.of(toggleOptOutOfMessagesExtendedDescription))
+				.executor(new ToggleOptOutOfMessages())
+				.build());
+
 		final CommandSpec mineCommand = CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(helpDescription))
@@ -474,12 +481,10 @@ public class MineReset {
 	public void cycle() {
 		if (Sponge.getServer().getOnlinePlayers().size() > 0) {
 
-			for (final Object groupObject: GeneralDataConfig.getConfig().get().getNode("4 - MineGroups").getChildrenMap().keySet()) {
+			for (final Object groupObject: GeneralDataInteraction.getGroupMap().keySet()) {
 
 				int timeUntilNextFill = TimeUntilFill.getTimeUntilFill(groupObject.toString());
-				Set<Object> listOfMines = new TreeSet<>(GeneralDataConfig.getConfig().get().getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().keySet());
-				listOfMines.remove("resetTime");
-				listOfMines.remove("initialDelay");
+				Set<Object> listOfMines = GeneralDataInteraction.getMinesInGroup(groupObject.toString());
 
 				// 0 = disabled
 				// 1 = chat

@@ -1,11 +1,15 @@
 package com.github.jamies1211.minereset.Actions;
 
+import com.github.jamies1211.minereset.Config.PlayerDataConfig;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.text.title.Title;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 import static com.github.jamies1211.minereset.Messages.*;
 
@@ -51,11 +55,21 @@ public class SendMessages {
 
 	public static boolean messageToAllPlayers (int messageType, String message) {
 
+		Set optedOutPlayers = PlayerDataConfig.getPlayersOptedOutOfMessages();
+		ArrayList<Player> playersToMessage =  new ArrayList<>();
+
+
+		for (Player player : Sponge.getServer().getOnlinePlayers()) {
+			if (!optedOutPlayers.contains(player.getUniqueId().toString())) {
+				playersToMessage.add(player);
+			}
+		}
+
 		// Title
 		if (messageType >= 4) {
 			messageType -= 4;
 			// Send title message;
-			for (Player player : Sponge.getServer().getOnlinePlayers()) {
+			for (Player player : playersToMessage) {
 				if (message != null) {
 					String titleMessage = minePrefix;
 					String subtitleMessage = message.replace(minePrefix, "&e");
@@ -68,7 +82,7 @@ public class SendMessages {
 		// Action Bar
 		if (messageType >= 2) {
 			messageType -= 2;
-			for (Player player : Sponge.getServer().getOnlinePlayers()) {
+			for (Player player : playersToMessage) {
 				if (message != null) {
 					// Send actionBar message;
 					player.sendMessage(ChatTypes.ACTION_BAR, TextSerializers.FORMATTING_CODE.deserialize(message));
@@ -80,7 +94,7 @@ public class SendMessages {
 		// Chat
 		if (messageType >= 1) {
 			messageType -= 1;
-			for (Player player : Sponge.getServer().getOnlinePlayers()) {
+			for (Player player : playersToMessage) {
 				if (message != null) {
 					// Send chat message;
 					player.sendMessage(ChatTypes.CHAT, TextSerializers.FORMATTING_CODE.deserialize(message));

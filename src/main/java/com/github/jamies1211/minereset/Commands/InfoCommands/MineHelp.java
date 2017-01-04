@@ -196,6 +196,12 @@ public class MineHelp implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + updateSignFillPercentageExtendedDescription));
 		}
 
+		if (src.hasPermission("minereset.player.togglemessagesettings")) {
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&9&lToggle Mine Messages Command"));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&eUsage: &c" + toggleOptOutOfMessages));
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e" + toggleOptOutOfMessagesExtendedDescription));
+		}
+
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&e&l[Mine help End]"));
 		return CommandResult.success();
 	}
