@@ -225,7 +225,7 @@ public class Messages {
 	public static final String resettingNowSingular = "%mine% is resetting now";
 	public static final String resettingNowDefined = "%mine% is being filled with %block%";
 	public static final String resettingNowClear = "%mine% is being cleared";
-	public static final String resettingNowPlural = "%mines% are resetting now";
+	public static final String resettingNowPlural ="%mines% are resetting now";
 	public static final String willResetIn = "%mines% will reset in: %time%";
 	public static final String insideFillingMine = "&9The mine you were in has just been reset so you have been teleported to spawn.";
 	public static final String signPercentageFillError = "&9The mine is currently too full to fill in this way. The mine is currently %percentage%% full";
@@ -260,4 +260,6 @@ public class Messages {
 //  addairblock: "minereset.mine.addairblock"
 //  removeairblock: "minereset.mine.removeairblock"
 //  updatechatsettings: "minereset.update.chatsettings"
+// updatesignfillpercentage: "minereset.update.signfillpercentage"
+// toggleoptoutmessage: "minereset.player.togglemessagesettings"
 }

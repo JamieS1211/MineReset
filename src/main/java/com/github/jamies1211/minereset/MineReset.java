@@ -497,14 +497,16 @@ public class MineReset {
 
 					if (listOfMines.size() > 0) {
 
-						if (!SendMessages.messageToAllPlayers(reminderChatType, minePrefix + "&l" + listOfMines +
-								" " + willResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))) &&
+						if (!SendMessages.messageToAllPlayers(reminderChatType, minePrefix  + willResetIn
+								.replace("%mines%", listOfMines.toString())
+								.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))) &&
 								reminderChatType != 0) {
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidRemindChatType));
 						}
 
-						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
-								listOfMines + " " + willResetIn.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))));
+						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + willResetIn
+								.replace("%mines%", listOfMines.toString())
+								.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))));
 
 					}
 
@@ -519,13 +521,13 @@ public class MineReset {
 
 						if (listOfMines.size() > 1) {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + listOfMines + " " + resettingNowPlural) &&
+							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + resettingNowPlural.replace("%mines%", listOfMines.toString())) &&
 									fillingChatType != 0) {
 								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 							}
 
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
-									listOfMines + " " + resettingNowPlural));
+									resettingNowPlural.replace("%mines%", listOfMines.toString())));
 
 
 						} else {
@@ -540,7 +542,6 @@ public class MineReset {
 
 						}
 					}
-
 				}
 			}
 		} else {
