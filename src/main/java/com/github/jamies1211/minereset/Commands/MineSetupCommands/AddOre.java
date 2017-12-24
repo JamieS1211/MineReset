@@ -62,6 +62,7 @@ public class AddOre implements CommandExecutor {
 							config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "BlockState").setValue(block);
 							config.getNode("4 - MineGroups", group, mine, "ores", currentSize, "percentage").setValue(percentage);
 							GeneralDataConfig.getConfig().save();
+							GeneralDataConfig.getConfig().load();
 							src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + addedOre
 									.replace("%block%", block)
 									.replace("%mine%", mine)

@@ -8,7 +8,7 @@ plugins {
 defaultTasks 'build', 'shadowJar'
 
 group = 'io.github.jamies1211.minereset'
-version = '1.0.8(BETA)'
+version = '1.0.8(BETA2)'
 description = 'MineReset'
 sourceCompatibility = 1.8
 
@@ -32,10 +32,10 @@ spongestart{
     eula true
 
     //optional configs
-    spongeForgeBuild '1844'
+    spongeForgeBuild '2794'
     forgeServerFolder 'run'
 }
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:6.0.0-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
 }

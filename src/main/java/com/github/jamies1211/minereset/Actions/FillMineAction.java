@@ -13,8 +13,8 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.MemoryDataContainer;
 import org.spongepowered.api.entity.living.player.Player;
+//import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.World;
@@ -36,7 +36,7 @@ public class FillMineAction {
 
 		Sponge.getScheduler().createTaskBuilder().execute(() -> {
 			ConfigurationNode config = GeneralDataConfig.getConfig().get();
-			final NamedCause cause = NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get());
+			//final NamedCause cause = NamedCause.source(Sponge.getPluginManager().getPlugin("minereset").get());
 
 			// Mine data
 			final String mineWorldString = config.getNode("4 - MineGroups", group, mine, "MineWorld").getString();
@@ -266,7 +266,8 @@ public class FillMineAction {
 									BlockState state = blockOrderingMap.get(count1);
 
 									if (!world.getBlock(x, y, z).equals(state)) {
-										world.setBlock(x, y, z, state, Cause.of(cause));
+										//world.setBlock(x, y, z, state, Cause.of(cause));
+										world.setBlock(x, y, z, state);
 										changedBlocks++;
 									}
 								}
