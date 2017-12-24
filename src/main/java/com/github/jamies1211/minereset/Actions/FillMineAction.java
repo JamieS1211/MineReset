@@ -156,8 +156,10 @@ public class FillMineAction {
 
 									Vector3d spawnRotation = new Vector3d(0, targetYaw, targetRoll);
 
-									player.setLocation(Sponge.getServer().getWorld(spawnWorldUUID).get().getLocation(spawn));
-									player.setRotation(spawnRotation);
+									Sponge.getScheduler().createTaskBuilder().execute(() -> {
+										player.setLocation(Sponge.getServer().getWorld(spawnWorldUUID).get().getLocation(spawn));
+										player.setRotation(spawnRotation);
+									}).name("MineFillingPlayerTeleportation").submit(MineReset.plugin);
 								}
 							}
 						}
