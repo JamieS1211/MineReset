@@ -16,6 +16,7 @@ import com.github.jamies1211.minereset.Commands.SpawnCommands.RemoveSpawn;
 import com.github.jamies1211.minereset.Commands.SpawnCommands.UpdateSpawn;
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
+import com.github.jamies1211.minereset.Config.MessageConfig;
 import com.github.jamies1211.minereset.Config.PlayerDataConfig;
 import com.google.inject.Inject;
 
@@ -61,7 +62,7 @@ import static com.github.jamies1211.minereset.Messages.*;
  */
 
 @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.8(BETA2)",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.9",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
@@ -115,6 +116,7 @@ public class MineReset {
 		// Set up data and config files.
 		GeneralDataConfig.getConfig().setup();
 		PlayerDataConfig.getConfig().setup();
+		MessageConfig.getConfig().setup();
 	}
 
 	@Listener

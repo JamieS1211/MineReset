@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.MessageConfig;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -19,6 +20,8 @@ public class ConfigReload implements CommandExecutor {
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
 		GeneralDataConfig.getConfigFromInteraction().load();
+		MessageConfig.getConfig().load();
+		MessageConfig.getConfig().refreshData();
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + configReloaded));
 
 		return CommandResult.success();

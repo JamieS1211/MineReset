@@ -1,6 +1,7 @@
 package com.github.jamies1211.minereset.Commands.ConfigCommands;
 
 import com.github.jamies1211.minereset.Config.GeneralDataConfig;
+import com.github.jamies1211.minereset.Config.MessageConfig;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -19,6 +20,7 @@ public class ConfigSave implements CommandExecutor {
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
 		GeneralDataConfig.getConfigFromInteraction().save();
+		MessageConfig.getConfig().save();
 		src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + configSaved));
 
 		return CommandResult.success();
