@@ -62,7 +62,7 @@ import static com.github.jamies1211.minereset.Messages.*;
  */
 
 @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.10",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.11",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
@@ -534,13 +534,12 @@ public class MineReset {
 
 						} else {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + listOfMines + " " + resettingNowSingular) &&
-									fillingChatType != 0) {
+							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + resettingNowSingular.replace("%mine%", listOfMines.toString()))
+									&& fillingChatType != 0) {
 								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 							}
 
-							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
-									listOfMines + " " + resettingNowSingular));
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + resettingNowSingular.replace("%mine%", listOfMines.toString())));
 
 						}
 					}

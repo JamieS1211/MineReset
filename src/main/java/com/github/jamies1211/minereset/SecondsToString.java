@@ -11,30 +11,30 @@ public class SecondsToString {
 		final int hours = ((((totalSeconds - seconds) / 60) - minutes) / 60); // Hours rounded down.
 
 
-		String secondUnit = Messages.secondUnitPlural;
-		String minuteUnit = Messages.minuteUnitPlural;
-		String hourUnit = Messages.hourUnitPlural;
+		String secondUnit = Messages.secondUnitPlural + " ";
+		String minuteUnit = Messages.minuteUnitPlural + " ";
+		String hourUnit = Messages.hourUnitPlural + " ";
 
 		String secondsString = Integer.toString(seconds);
 		String minutesString = Integer.toString(minutes);
 		String hoursString = Integer.toString(hours);
 
 		if (seconds == 1) { // Removes plural if not needed.
-			secondUnit = Messages.secondUnitSingular;
+			secondUnit = Messages.secondUnitSingular + " ";
 		} else if (seconds == 0 && (hours != 0 || minutes != 0)) {
 			secondsString = "";
 			secondUnit = "";
 		}
 
 		if (minutes == 1) { // Removes plural if not needed.
-			minuteUnit = Messages.minuteUnitSingular;
+			minuteUnit = Messages.minuteUnitSingular + " ";
 		} else if (minutes == 0) {
 			minutesString = "";
 			minuteUnit = "";
 		}
 
 		if (hours == 1) { // Removes plural if not needed.
-			hourUnit = Messages.hourUnitSingular;
+			hourUnit = Messages.hourUnitSingular + " ";
 		} else if (hours == 0) {
 			hoursString = "";
 			hourUnit = "";
@@ -42,7 +42,7 @@ public class SecondsToString {
 
 
 
-		return hoursString + hourUnit + " " + minutesString + minuteUnit + " " + secondsString + secondUnit + " ";
+		return hoursString + hourUnit + minutesString + minuteUnit + secondsString + secondUnit;
 	}
 
 }
