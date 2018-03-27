@@ -287,6 +287,14 @@ public class MessageConfig {
 		getConfig().get().getNode("5 - Player Messages", "insideFillingMine").setValue("&9The mine you were in has just been reset so you have been teleported to spawn.");
 		getConfig().get().getNode("5 - Player Messages", "signPercentageFillError").setValue("&9The mine is currently too full to fill in this way. The mine is currently %percentage%% full");
 
+
+		// Time units
+		getConfig().get().getNode("6 - Time Units", "second").setValue("second");
+		getConfig().get().getNode("6 - Time Units", "seconds").setValue("seconds");
+		getConfig().get().getNode("6 - Time Units", "minute").setValue("minute");
+		getConfig().get().getNode("6 - Time Units", "minutes").setValue("minutes");
+		getConfig().get().getNode("6 - Time Units", "hour").setValue("hour");
+		getConfig().get().getNode("6 - Time Units", "hours").setValue("hours");
 	}
 
 
@@ -502,5 +510,26 @@ public class MessageConfig {
 		willResetIn = getConfig().get().getNode("5 - Player Messages", "willResetIn").getString();
 		insideFillingMine = getConfig().get().getNode("5 - Player Messages", "insideFillingMine").getString();
 		signPercentageFillError = getConfig().get().getNode("5 - Player Messages", "signPercentageFillError").getString();
+
+
+		// Time units
+
+		// When loading check config isn't an old version that dosn't have time units (and add time units if required)
+		if (getConfig().get().getNode("6 - Time Units").getChildrenMap().isEmpty()) {
+			getConfig().get().getNode("6 - Time Units", "second").setValue("second");
+			getConfig().get().getNode("6 - Time Units", "seconds").setValue("seconds");
+			getConfig().get().getNode("6 - Time Units", "minute").setValue("minute");
+			getConfig().get().getNode("6 - Time Units", "minutes").setValue("minutes");
+			getConfig().get().getNode("6 - Time Units", "hour").setValue("hour");
+			getConfig().get().getNode("6 - Time Units", "hours").setValue("hours");
+			getConfig().save();
+		}
+
+		secondUnitSingular = getConfig().get().getNode("6 - Time Units", "second").getString();
+		secondUnitPlural = getConfig().get().getNode("6 - Time Units", "seconds").getString();
+		minuteUnitSingular = getConfig().get().getNode("6 - Time Units", "minute").getString();
+		minuteUnitPlural = getConfig().get().getNode("6 - Time Units", "minutes").getString();
+		hourUnitSingular = getConfig().get().getNode("6 - Time Units", "hour").getString();
+		hourUnitPlural = getConfig().get().getNode("6 - Time Units", "hours").getString();
 	}
 }

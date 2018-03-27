@@ -230,6 +230,16 @@ public class Messages {
 	public static String insideFillingMine = "&9The mine you were in has just been reset so you have been teleported to spawn.";
 	public static String signPercentageFillError = "&9The mine is currently too full to fill in this way. The mine is currently %percentage%% full";
 
+
+
+	// Time units
+	public static String secondUnitSingular = "second";
+	public static String secondUnitPlural = "seconds";
+	public static String minuteUnitSingular = "minute";
+	public static String minuteUnitPlural = "minutes";
+	public static String hourUnitSingular = "hour";
+	public static String hourUnitPlural = "hours";
+
 	// Permissions
 //	help: "minereset.help"
 //	time: "minereset.check.time"
