@@ -2,6 +2,7 @@ package com.github.jamies1211.minereset.Commands.FillingCommands;
 
 import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -27,7 +28,8 @@ public class ClearMine implements CommandExecutor {
 			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineDoesNotExist.replace("%mine%", mine)));
 		} else {
 			FillMineAction.fill(group, mine, minecraftAirString, src);
-			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineCleared.replace("%mine%", mine)));
+			String mineDisplayName = GeneralDataConfig.getConfig().get().getNode("4 - MineGroups", group, mine, "DisplayName").getString();
+			src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineCleared.replace("%mine%", mineDisplayName)));
 		}
 
 		return CommandResult.success();

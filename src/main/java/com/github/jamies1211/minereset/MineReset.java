@@ -55,6 +55,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import static com.github.jamies1211.minereset.Config.GeneralDataInteraction.getMineDisplayNamesInGroup;
 import static com.github.jamies1211.minereset.Messages.*;
 
 /**
@@ -423,6 +424,18 @@ public class MineReset {
 				.executor(new ToggleOptOutOfMessages())
 				.build());
 
+
+
+		subcommands.put(Arrays.asList("updateDisplayName"), CommandSpec.builder()
+				.permission("minereset.mine.updateDisplayName")
+				.description(Text.of(updateDisplayNameDescription))
+				.extendedDescription(Text.of(updateDisplayNameExtendedDescription))
+				.arguments(
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))),
+						GenericArguments.onlyOne(GenericArguments.string(Text.of("displayName"))))
+				.executor(new UpdateDisplayName())
+				.build());
+
 		final CommandSpec mineCommand = CommandSpec.builder()
 				.permission("minereset.help")
 				.description(Text.of(helpDescription))
@@ -487,6 +500,7 @@ public class MineReset {
 
 				int timeUntilNextFill = TimeUntilFill.getTimeUntilFill(groupObject.toString());
 				Set<Object> listOfMines = GeneralDataInteraction.getMinesInGroup(groupObject.toString());
+				String displayNames = getMineDisplayNamesInGroup(groupObject.toString());
 
 				// 0 = disabled
 				// 1 = chat
@@ -500,14 +514,14 @@ public class MineReset {
 					if (listOfMines.size() > 0) {
 
 						if (!SendMessages.messageToAllPlayers(reminderChatType, minePrefix  + willResetIn
-								.replace("%mines%", listOfMines.toString())
+								.replace("%mines%", displayNames)
 								.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))) &&
 								reminderChatType != 0) {
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidRemindChatType));
 						}
 
 						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + willResetIn
-								.replace("%mines%", listOfMines.toString())
+								.replace("%mines%", displayNames)
 								.replace("%time%", SecondsToString.secondsToTimeString(timeUntilNextFill))));
 
 					}
@@ -523,23 +537,23 @@ public class MineReset {
 
 						if (listOfMines.size() > 1) {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + resettingNowPlural.replace("%mines%", listOfMines.toString())) &&
+							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + resettingNowPlural.replace("%mines%", displayNames)) &&
 									fillingChatType != 0) {
 								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 							}
 
 							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix +
-									resettingNowPlural.replace("%mines%", listOfMines.toString())));
+									resettingNowPlural.replace("%mines%", displayNames)));
 
 
 						} else {
 
-							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + resettingNowSingular.replace("%mine%", listOfMines.toString()))
+							if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + resettingNowSingular.replace("%mine%", displayNames))
 									&& fillingChatType != 0) {
 								MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 							}
 
-							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + resettingNowSingular.replace("%mine%", listOfMines.toString())));
+							MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + resettingNowSingular.replace("%mine%", displayNames)));
 
 						}
 					}

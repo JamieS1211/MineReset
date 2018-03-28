@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.github.jamies1211.minereset.Config.GeneralDataInteraction.*;
 import static com.github.jamies1211.minereset.Messages.*;
 
 /**
@@ -68,6 +69,7 @@ public class GeneralDataConfig {
 		}
 
 		UpdateConfig.update1to2();
+		UpdateConfig.update2to3();
 	}
 
 	public void load() {
@@ -102,7 +104,7 @@ public class GeneralDataConfig {
 
 
 		//get().getNode("1 - ConfigMode").setValue(2);
-		GeneralDataInteraction.setConfigMode(2);
+		setConfigMode(2);
 
 		//get().getNode("2 - RemindSecondList").setValue("1, 5, 15, 30, 60, 120, 180, 300");
 		GeneralDataInteraction.setRemindSecondListFromString("1, 5, 15, 30, 60, 120, 180, 300");

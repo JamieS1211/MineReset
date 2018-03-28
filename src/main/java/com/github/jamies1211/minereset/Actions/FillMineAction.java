@@ -32,6 +32,7 @@ public class FillMineAction {
 	public static void fill(String group, String mine, String definedBlock, CommandSource src) {
 
 		final Long startTime = System.currentTimeMillis();
+		String mineDisplayName = GeneralDataConfig.getConfig().get().getNode("4 - MineGroups", group, mine, "DisplayName").getString();
 		ConcurrentHashMap<Integer, BlockState> blockOrderingMap = new ConcurrentHashMap<>();
 
 		Sponge.getScheduler().createTaskBuilder().execute(() -> {
@@ -73,7 +74,7 @@ public class FillMineAction {
 						}
 					}
 
-					String message = sentMessage.replace("%mine%", "[" + mine + "]");
+					String message = sentMessage.replace("%mine%", "[" + mineDisplayName + "]");
 					if (!SendMessages.messageToAllPlayers(fillingChatType, minePrefix + message)) {
 						MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + invalidFillChatType));
 					}
@@ -283,7 +284,7 @@ public class FillMineAction {
 					Long totalTimeTaken = endTime - startTime;
 
 					MessageChannel.TO_CONSOLE.send(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineFillTimeTaken
-							.replace("%mine%", mine)
+							.replace("%mine%", mineDisplayName)
 							.replace("%totalTime%", Long.toString(totalTimeTaken))
 							.replace("%asyncTime%", Long.toString(asyncTimeTaken))
 							.replace("%syncTime%", Long.toString(syncTimeTaken))

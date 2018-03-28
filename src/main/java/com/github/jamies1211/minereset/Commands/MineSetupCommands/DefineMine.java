@@ -59,6 +59,7 @@ public class DefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "SmartFill").setValue("false");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillRadius").setValue("3");
 					config.getNode("4 - MineGroups", group, mine, "SmartFillOnlyAir").setValue("false");
+					config.getNode("4 - MineGroups", group, mine, "DisplayName").setValue(mine);
 					GeneralDataConfig.getConfig().save();
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + definedNewMine.replace("%mine%", mine)));
 				}

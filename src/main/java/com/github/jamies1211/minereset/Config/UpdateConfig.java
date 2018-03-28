@@ -3,6 +3,8 @@ package com.github.jamies1211.minereset.Config;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 
+import static com.github.jamies1211.minereset.Config.GeneralDataInteraction.*;
+
 /**
  * Created by Jamie on 06-Jul-16.
  */
@@ -61,6 +63,22 @@ public class UpdateConfig {
 
 			config.getNode("6 - ChatSettings", "FillingText").setValue("1");
 			config.getNode("6 - ChatSettings", "ReminderText").setValue("2");
+			GeneralDataConfig.getConfigFromInteraction().save();
+		}
+	}
+
+	public static void update2to3() {
+
+		ConfigurationNode config = GeneralDataConfig.getConfigFromInteraction().get();
+		if (GeneralDataInteraction.getConfigMode() == 2) {
+			GeneralDataInteraction.setConfigMode(3);
+
+			for (Object group : getGroupMap().keySet()) {
+				for (Object mine : getMinesInGroup(group.toString())) {
+					config.getNode("4 - MineGroups", group, mine, "DisplayName").setValue(mine.toString());
+				}
+			}
+
 			GeneralDataConfig.getConfigFromInteraction().save();
 		}
 	}

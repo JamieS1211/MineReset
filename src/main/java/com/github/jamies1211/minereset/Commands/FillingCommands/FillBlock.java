@@ -3,6 +3,7 @@ package com.github.jamies1211.minereset.Commands.FillingCommands;
 import com.github.jamies1211.minereset.Actions.BlockBelowPlayer;
 import com.github.jamies1211.minereset.Actions.FillMineAction;
 import com.github.jamies1211.minereset.Actions.GetMineGroup;
+import com.github.jamies1211.minereset.Config.GeneralDataConfig;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -34,8 +35,9 @@ public class FillBlock implements CommandExecutor {
 			} else {
 				String block = BlockBelowPlayer.getBlockStringBelowPlayer(player);
 				FillMineAction.fill(group, mine, block, src);
+				String mineDisplayName = GeneralDataConfig.getConfig().get().getNode("4 - MineGroups", group, mine, "DisplayName").getString();
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineFilledBlock
-						.replace("%mine%", mine)
+						.replace("%mine%", mineDisplayName)
 						.replace("%block%", block)));
 			}
 		} else {

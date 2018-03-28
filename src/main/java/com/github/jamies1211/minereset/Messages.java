@@ -87,6 +87,7 @@ public class Messages {
 	public static String noDirectionToSpawn = "direction not entered correctly so defaulting to North";
 	public static String settingSetMessageOptOut = "You have successfully changed your message settings to block mine fill and remind messages";
 	public static String settingSetMessageOptIn = "You have successfully changed your message settings to receive mine fill and remind messages";
+	public static String updatedDisplayName = "You have updated the display name for %mine% from %old% to %new%";
 
 	// info command strings
 	public static String groupInfoHeader = "----------------  Group info  ----------------";
@@ -218,6 +219,10 @@ public class Messages {
 	public static String toggleOptOutOfMessages = "Usage /mine toggleMessageSettings";
 	public static String toggleOptOutOfMessagesDescription = "Toggles your settings between receiving and blocking mine fill and reminder messages";
 	public static String toggleOptOutOfMessagesExtendedDescription = "Toggles your settings between receiving and blocking mine fill and reminder messages";
+
+	public static String updateDisplayName = "Usage /mine updatedDisplayName [mine name] [new display name]";
+	public static String updateDisplayNameDescription = "Updates the display name of a mine";
+	public static String updateDisplayNameExtendedDescription = "Updates the display name of a mine";
 
 
 

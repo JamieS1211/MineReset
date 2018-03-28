@@ -4,14 +4,11 @@ import com.github.jamies1211.minereset.MineReset;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.spongepowered.api.Sponge;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.github.jamies1211.minereset.Messages.*;
 
@@ -145,6 +142,7 @@ public class MessageConfig {
 		getConfig().get().getNode("2 - Command Messages", "noDirectionToSpawn").setValue("direction not entered correctly so defaulting to North");
 		getConfig().get().getNode("2 - Command Messages", "settingSetMessageOptOut").setValue("You have successfully changed your message settings to block mine fill and remind messages");
 		getConfig().get().getNode("2 - Command Messages", "settingSetMessageOptIn").setValue("You have successfully changed your message settings to receive mine fill and remind messages");
+		getConfig().get().getNode("2 - Command Messages", "updatedDisplayName").setValue("You have updated the display name for %mine% from %old% to %new%");
 
 		// info command strings
 		getConfig().get().getNode("3 - Info Command Strings", "groupInfoHeader").setValue("----------------  Group info  ----------------");
@@ -277,6 +275,10 @@ public class MessageConfig {
 		getConfig().get().getNode("4 - Command Usages", "toggleOptOutOfMessagesDescription").setValue("Toggles your settings between receiving and blocking mine fill and reminder messages");
 		getConfig().get().getNode("4 - Command Usages", "toggleOptOutOfMessagesExtendedDescription").setValue("Toggles your settings between receiving and blocking mine fill and reminder messages");
 
+		getConfig().get().getNode("4 - Command Usages", "updatedDisplayName").setValue("Usage /mine updatedDisplayName [mine name] [new display name]");
+		getConfig().get().getNode("4 - Command Usages", "updateDisplayNameDescription").setValue("Updates the display name of a mine");
+		getConfig().get().getNode("4 - Command Usages", "updateDisplayNameExtendedDescription").setValue("Updates the display name of a mine");
+
 
 		// Player Messages
 		getConfig().get().getNode("5 - Player Messages", "resettingNowSingular").setValue("%mine% is resetting now");
@@ -367,6 +369,13 @@ public class MessageConfig {
 		noDirectionToSpawn = getConfig().get().getNode("2 - Command Messages", "noDirectionToSpawn").getString();
 		settingSetMessageOptOut = getConfig().get().getNode("2 - Command Messages", "settingSetMessageOptOut").getString();
 		settingSetMessageOptIn = getConfig().get().getNode("2 - Command Messages", "settingSetMessageOptIn").getString();
+
+		if (getConfig().get().getNode("2 - Command Messages", "updatedDisplayName").getValue() == null) {
+			getConfig().get().getNode("2 - Command Messages", "updatedDisplayName").setValue("You have updated the display name for %mine% from %old% to %new%");
+			getConfig().save();
+		}
+
+		updatedDisplayName = getConfig().get().getNode("2 - Command Messages", "updatedDisplayName").getString();
 
 
 		// info command strings
@@ -500,6 +509,19 @@ public class MessageConfig {
 		toggleOptOutOfMessages = getConfig().get().getNode("4 - Command Usages", "toggleOptOutOfMessages").getString();
 		toggleOptOutOfMessagesDescription = getConfig().get().getNode("4 - Command Usages", "toggleOptOutOfMessagesDescription").getString();
 		toggleOptOutOfMessagesExtendedDescription = getConfig().get().getNode("4 - Command Usages", "toggleOptOutOfMessagesExtendedDescription").getString();
+
+
+
+		if (getConfig().get().getNode("4 - Command Usages", "updatedDisplayName").getValue() == null) {
+			getConfig().get().getNode("4 - Command Usages", "updatedDisplayName").setValue("Usage /mine updatedDisplayName [mine name] [new display name]");
+			getConfig().get().getNode("4 - Command Usages", "updateDisplayNameDescription").setValue("Updates the display name of a mine");
+			getConfig().get().getNode("4 - Command Usages", "updateDisplayNameExtendedDescription").setValue("Updates the display name of a mine");
+			getConfig().save();
+		}
+
+		updateDisplayName = getConfig().get().getNode("4 - Command Usages", "updatedDisplayName").getString();
+		updateDisplayNameDescription = getConfig().get().getNode("4 - Command Usages", "updateDisplayNameDescription").getString();
+		updateDisplayNameExtendedDescription = getConfig().get().getNode("4 - Command Usages", "updateDisplayNameExtendedDescription").getString();
 
 
 		// Player Messages

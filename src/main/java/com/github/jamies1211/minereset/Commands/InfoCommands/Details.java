@@ -87,6 +87,7 @@ public class Details implements CommandExecutor {
 
 			String mine = nameOrigonal.toUpperCase();
 			String group = GetMineGroup.getMineGroup(mine);
+			String mineDisplayName = GeneralDataConfig.getConfig().get().getNode("4 - MineGroups", group, mine, "DisplayName").getString();
 
 			if (group != null) {
 
@@ -97,7 +98,9 @@ public class Details implements CommandExecutor {
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + mineInfoHeader));
 
-				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Mine: " + mine + "       " + "Group: " + group));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Mine: " + mine));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Group: " + group));
+				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "DisplayName: " + mineDisplayName));
 
 				MineLocation mineLocation = new MineLocation(mine, group);
 

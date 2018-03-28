@@ -9,6 +9,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
+import static com.github.jamies1211.minereset.Config.GeneralDataInteraction.getMineDisplayNamesInGroup;
 import static com.github.jamies1211.minereset.Messages.*;
 
 /**

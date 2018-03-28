@@ -109,6 +109,20 @@ public class GeneralDataInteraction {
 		return listOfMines;
 	}
 
+	public static String getMineDisplayNamesInGroup (String group) {
+		ArrayList<String> list = new ArrayList<>();
+
+		for (Object mine : getMinesInGroup(group)) {
+			if (GeneralDataConfig.getConfigFromInteraction().get().getNode("4 - MineGroups", group, mine, "DisplayName").getValue() != null) {
+				list.add(GeneralDataConfig.getConfigFromInteraction().get().getNode("4 - MineGroups", group, mine, "DisplayName").getString());
+			} else {
+				list.add(mine.toString());
+			}
+		}
+
+		return list.toString();
+	}
+
 	public static void setGroupValues (String group, int resetTime, int initialDelay) {
 		GeneralDataConfig.getConfigFromInteraction().get().getNode("4 - MineGroups", group, "resetTime").setValue(resetTime);
 		GeneralDataConfig.getConfigFromInteraction().get().getNode("4 - MineGroups", group, "initialDelay").setValue(initialDelay);
