@@ -186,8 +186,52 @@ public class GeneralDataInteraction {
 		GeneralDataConfig.getConfigFromInteraction().save();
 	}
 
+	public static int getTitleFadeIn () {
+		GeneralDataConfig configFile = GeneralDataConfig.getConfigFromInteraction();
+
+		if (configFile.get().getNode("6 - ChatSettings", "TitleFadeIn").getValue() == null) {
+			setTitleFadeIn(20);
+		}
+
+		return configFile.get().getNode("6 - ChatSettings", "TitleFadeIn").getInt();
+	}
+
+	public static void setTitleFadeIn (int ticks) {
+		GeneralDataConfig.getConfigFromInteraction().get().getNode("6 - ChatSettings", "TitleFadeIn").setValue(ticks);
+		GeneralDataConfig.getConfigFromInteraction().save();
+	}
 
 
+	public static int getTitleStay () {
+		GeneralDataConfig configFile = GeneralDataConfig.getConfigFromInteraction();
+
+		if (configFile.get().getNode("6 - ChatSettings", "TitleStay").getValue() == null) {
+			setTitleStay(20);
+		}
+
+		return configFile.get().getNode("6 - ChatSettings", "TitleStay").getInt();
+	}
+
+	public static void setTitleStay (int ticks) {
+		GeneralDataConfig.getConfigFromInteraction().get().getNode("6 - ChatSettings", "TitleStay").setValue(ticks);
+		GeneralDataConfig.getConfigFromInteraction().save();
+	}
+
+
+	public static int getTitleFadeOut () {
+		GeneralDataConfig configFile = GeneralDataConfig.getConfigFromInteraction();
+
+		if (configFile.get().getNode("6 - ChatSettings", "TitleFadeOut").getValue() == null) {
+			setTitleFadeOut(20);
+		}
+
+		return configFile.get().getNode("6 - ChatSettings", "TitleFadeOut").getInt();
+	}
+
+	public static void setTitleFadeOut (int ticks) {
+		GeneralDataConfig.getConfigFromInteraction().get().getNode("6 - ChatSettings", "TitleFadeOut").setValue(ticks);
+		GeneralDataConfig.getConfigFromInteraction().save();
+	}
 
 	// 7 - MineFillSignPercentages
 

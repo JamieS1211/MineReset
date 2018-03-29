@@ -1,5 +1,6 @@
 package com.github.jamies1211.minereset.Actions;
 
+import com.github.jamies1211.minereset.Config.GeneralDataInteraction;
 import com.github.jamies1211.minereset.Config.PlayerDataConfig;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
@@ -118,6 +119,10 @@ public class SendMessages {
 		Text title = TextSerializers.FORMATTING_CODE.deserialize(titleString);
 		Text subTitle = TextSerializers.FORMATTING_CODE.deserialize(subTitleString);
 
-		player.sendTitle(Title.of(title, subTitle));
+		int fadeInTicks = GeneralDataInteraction.getTitleFadeIn();
+		int stayTicks = GeneralDataInteraction.getTitleStay();
+		int fadeOutTicks = GeneralDataInteraction.getTitleFadeOut();
+
+		player.sendTitle(Title.builder().title(title).subtitle(subTitle).fadeIn(fadeInTicks).stay(stayTicks).fadeOut(fadeOutTicks).build());
 	}
 }
