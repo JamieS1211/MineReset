@@ -38,10 +38,12 @@ public class RedefineMine implements CommandExecutor {
 
 			if (config.getNode("4 - MineGroups").getChildrenMap().containsKey(group)) {
 				Boolean alreadyExists = false;
+				String oldGroup = "";
 
 				for (final Object groupObject : config.getNode("4 - MineGroups").getChildrenMap().keySet()) {
 					if (config.getNode("4 - MineGroups", groupObject.toString()).getChildrenMap().containsKey(mine)) {
 						alreadyExists = true;
+						oldGroup = groupObject.toString();
 					}
 				}
 
@@ -53,7 +55,7 @@ public class RedefineMine implements CommandExecutor {
 					config.getNode("4 - MineGroups", group, mine, "pos2", "y").setValue(y2);
 					config.getNode("4 - MineGroups", group, mine, "pos2", "z").setValue(z2);
 					config.getNode("4 - MineGroups", group, mine, "MineWorld").setValue(player.getWorld().getUniqueId().toString());
-					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue("minecraft:stone[variant=stone]");
+					config.getNode("4 - MineGroups", group, mine, "ores", "fallback", "BlockState").setValue(config.getNode("4 - MineGroups", oldGroup, mine, "ores", "fallback", "BlockState").getString());
 					GeneralDataConfig.getConfig().save();
 					src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + redefinedMine.replace("%mine%", mine)));
 				} else {
