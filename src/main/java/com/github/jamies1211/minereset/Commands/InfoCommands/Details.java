@@ -107,7 +107,7 @@ public class Details implements CommandExecutor {
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Location:"
 						+ "   Pos1: " +	mineLocation.pos1.getX() + ", " + mineLocation.pos1.getY() + ", " + mineLocation.pos1.getZ()
-						+ "   Pos2: " + mineLocation.pos1.getX() + ", " + mineLocation.pos1.getY() + ", " + mineLocation.pos1.getZ()));
+						+ "   Pos2: " + mineLocation.pos2.getX() + ", " + mineLocation.pos2.getY() + ", " + mineLocation.pos2.getZ()));
 
 				src.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(minePrefix + "Reset time: " +
 						resetTime + " ( " + SecondsToString.secondsToTimeString(resetTime) + ")"));
