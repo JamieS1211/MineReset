@@ -8,7 +8,7 @@ plugins {
 defaultTasks 'build', 'shadowJar'
 
 group = 'io.github.jamies1211.minereset'
-version = '1.0.11'
+version = '1.0.12'
 description = 'MineReset'
 sourceCompatibility = 1.8
 

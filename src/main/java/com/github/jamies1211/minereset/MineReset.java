@@ -63,7 +63,7 @@ import static com.github.jamies1211.minereset.Messages.*;
  */
 
 @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-@Plugin(id = "minereset", name = "MineReset", version = "1.0.11",
+@Plugin(id = "minereset", name = "MineReset", version = "1.0.12",
 		description = "Resets mines",
 		authors = {"JamieS1211"},
 		url = "http://pixelmonweb.officialtjp.com")
